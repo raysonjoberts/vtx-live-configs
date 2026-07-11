@@ -1,0 +1,20 @@
+stretches:
+- name: apps_missing_updaters
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: C:\BTDM_7.1\var\detailedreporting\apps_missing_updaters.html
+  external_file: var/interactive/apps_missing_updaters.html
+  _vtx_origin: AUTO:attribute_reporting
+- name: windows_servers_without_apps
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: C:\BTDM_7.1\var\detailedreporting\windows_servers_without_apps.csv
+  external_file: var/interactive/windows_servers_without_apps.csv
+  _vtx_origin: AUTO:attribute_reporting
+- name: linux_servers_without_apps
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: C:\BTDM_7.1\var\detailedreporting\linux_servers_without_apps.csv
+  external_file: var/interactive/linux_servers_without_apps.csv
+  _vtx_origin: AUTO:attribute_reporting
+_vtx_origin: AUTO:config_autogen

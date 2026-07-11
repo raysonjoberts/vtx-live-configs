@@ -1,0 +1,16 @@
+stretches:
+  - name: ccoe_consolidated_application_view
+    internal_csv: VTX_ROOT/var/tables/views/ccoe_consolidated_application_view.csv
+    external_xlsx: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_application_view.xlsx
+    sheet_name: Sheet1
+    key_columns: [ID]   # optional but recommended
+    xlsx_truncate_extra_rows: true  # default true
+    xlsx_truncate_extra_cols: false # default false (safer)
+
+  - name: ccoe_consolidated_server_view
+    internal_csv: VTX_ROOT/var/tables/views/ccoe_consolidated_server_view.csv
+    external_xlsx: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_server_view.xlsx
+    sheet_name: Sheet1
+    key_columns: [RECORDID]   # optional but recommended
+    xlsx_truncate_extra_rows: true  # default true
+    xlsx_truncate_extra_cols: false # default false (safer)

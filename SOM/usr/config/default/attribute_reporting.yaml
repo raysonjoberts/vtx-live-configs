@@ -1,0 +1,212 @@
+reports:
+#  - report_name: CMCC_rvtools_v_serverinventory
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\cmcc-rvtools_vinfo_server_audit.csv
+#      filter:
+#        - field: Powerstate
+#          operator: ==
+#          value: poweredOn
+#      key: Server
+#    target:
+#      file: C:\BTDM_7.1\var\tables\consolidated_application_view.csv
+#      key: Server
+#    comparison:
+#      type: difference
+#      direction: source_only
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\dedailedreporting\cmcc_rvtools_vs_inventory_diff.csv
+#      include_row_data: true
+#      include_count_summary: true
+
+#  - report_name: InsightVM versus Server Inventory
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\insightvm.csv
+#      filter:
+#      key: Asset IP Address
+#    target:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#      key: IPADDRESS
+#    comparison:
+#      type: difference
+#      direction: source_only
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_insightvm_notin_serverinventory.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [Asset Names, Asset IP Address, Asset OS Family]
+#
+#  - report_name: Server Inventory versus InsightVM
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#      filter:
+#      key: IPADDRESS
+#    target:
+#      file: C:\BTDM_7.1\var\tables\insightvm.csv
+#      key: Asset IP Address
+#    comparison:
+#      type: difference
+#      direction: source_only
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_serverinventory_notin_insightvm.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [SERVERNAME, IPADDRESS, TYPEOS]
+
+#  - report_name: InsightVM versus Server Inventory
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\insightvm.csv
+#      filter:
+#    target:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#    comparison:
+#      type: difference
+#      direction: source_only
+#      match_condition: any
+#      match_keys:
+#        - source_field: Asset IP Address
+#          target_field: IPADDRESS
+#          is_hostmane: false
+#        - source_field: Asset Names
+#          target_field: SERVERNAME
+#          is_hostname: true
+#      
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_insightvm_notin_serverinventory.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [Asset Names, Asset IP Address, Asset OS Family]
+#
+#  - report_name: Server Inventory versus InsightVM
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#      filter:
+#    target:
+#      file: C:\BTDM_7.1\var\tables\insightvm.csv
+#    comparison:
+#      type: difference
+#      direction: source_only
+#      match_condition: any
+#      match_keys:
+#        - source_field: SERVERNAME
+#          target_field: Asset Names
+#          is_hostnamee: false
+#        - source_field: IPADDRESS
+#          target_field: Asset IP Address
+#          is_hostname: true
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_serverinventory_notin_insightvm.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [SERVERNAME, IPADDRESS, TYPEOS]
+#
+#
+#  - report_name: CMCC RVTools - Servers not in Server Inventory
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\cmcc-rvtools_vinfo_server_audit.csv
+#      filter:
+#        - field: Powerstate
+#          operator: ==
+#          value: poweredOn
+#    target:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#    comparison:
+#      type: difference
+#      direction: source_only
+#      match_condition: any
+#      match_keys:
+#        - source_field: VM
+#          target_field: SERVERNAME
+#          is_hostname: true
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_cmccrvtools_notin_serverinventory.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [VM, Primary IP Address]
+#
+#  - report_name: SSDC RVTools - Servers not in Server Inventory
+#    source: 
+#      file: C:\BTDM_7.1\var\tables\ssdc-rvtools_vinfo_server_audit.csv
+#      filter:
+#        - field: Powerstate
+#          operator: ==
+#          value: poweredOn
+#    target:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#    comparison:
+#      type: difference
+#      direction: source_only
+#      match_condition: any
+#      match_keys:
+#        - source_field: VM
+#          target_field: SERVERNAME
+#          is_hostname: true
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\servers_in_ssdcrvtools_notin_serverinventory.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [VM, Primary IP Address]
+#
+#
+#  - report_name: Applications_missing_Updaters
+#    source:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_application_view.csv
+#      filter:
+#        - field: ACTIVE
+#          operator: ==
+#          value: Y
+#        - field: Application Inventory Updater
+#          operator: isnull
+#    comparison:
+#      type: count
+#      count_type: total  # options: total, distinct
+#      count_field: Application  # required if count_type is distinct
+#    output:
+#      format: html  # options: csv, json, html
+#      destination: C:\BTDM_7.1\var\detailedreporting\apps_missing_updaters.html
+#      include_row_data: false
+#
+#
+#  - report_name: Windows_Servers_without_Applications
+#    source:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#      filter:
+#        - field: Application
+#          operator: isnull
+#        - field: TYPEOS
+#          operator: ==
+#          value: Windows
+#      key: SERVERNAME
+#    comparison:
+#      type: filter_only
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\windows_servers_without_apps.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [SERVERNAME, TYPEOS, ENVIRONMENT, IPADDRESS, APPLICATION_perSI]
+#
+#  - report_name: Linux_Servers_without_Applications
+#    source:
+#      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+#      filter:
+#        - field: Application
+#          operator: isnull
+#        - field: TYPEOS
+#          operator: ==
+#          value: Linux
+#      key: SERVERNAME
+#    comparison:
+#      type: filter_only
+#    output:
+#      format: csv
+#      destination: C:\BTDM_7.1\var\detailedreporting\linux_servers_without_apps.csv
+#      include_row_data: true
+#      include_count_summary: true
+#      fields: [SERVERNAME, TYPEOS, ENVIRONMENT, IPADDRESS, APPLICATION_perSI]

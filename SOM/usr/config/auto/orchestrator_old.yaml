@@ -1,0 +1,649 @@
+# AUTO-GENERATED - DO NOT EDIT
+cron_jobs: []
+backbone_jobs:
+#- id: Run CCoE Program Attributes Dictionary
+#  job_type: backbone_job
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/publish_dictionaries.py
+#  args: '--job "CCoE Program Attributes Dictionary"
+#
+#    '
+#  rule: mtime_input_newer_than_last_success_marker
+#  require_inputs_exist: true
+#  inputs:
+#  - usr/config/default/data_source_analysis.yaml
+#  - usr/config/custom/data_source_analysis.yaml
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  outputs: []
+#  tags: []
+#- job_type: backbone_job
+#  id: Stretch Job ccoe_consolidated_application_view external to internal
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name ccoe_consolidated_application_view
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_application_view.xlsx
+#  outputs:
+#  - var/interactive/ccoe_consolidated_application_view.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job ccoe_consolidated_application_view internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name ccoe_consolidated_application_view
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/interactive/ccoe_consolidated_application_view.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_application_view.xlsx
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job ccoe_consolidated_server_view external to internal
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name ccoe_consolidated_server_view
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_server_view.xlsx
+#  outputs:
+#  - var/interactive/ccoe_consolidated_server_view.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job ccoe_consolidated_server_view internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name ccoe_consolidated_server_view
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/interactive/ccoe_consolidated_server_view.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_server_view.xlsx
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job inferred_decision_engine external to internal
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name inferred_decision_engine
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\inferred_decision_engine.xlsx
+#  outputs:
+#  - bin/ui/inferred_decision_engine.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job inferred_decision_engine internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name inferred_decision_engine
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - bin/ui/inferred_decision_engine.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\inferred_decision_engine.xlsx
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job raid external to internal
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name raid
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\raid.xlsx
+#  outputs:
+#  - var/interactive/views/raid.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job raid internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name raid
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/interactive/views/raid.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\raid.xlsx
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job stretch_application_inventory_changes.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_application_inventory_changes.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/application_inventory_changes.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\application_inventory_changes.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_application_report_cards.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_application_report_cards.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/application_report_cards.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\application_report_cards.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_archer_program_attributes.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_archer_program_attributes.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/analysis/archer_program_attributes.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\archer_program_attributes.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_ccoe_program_attribute_dictionary.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_ccoe_program_attribute_dictionary.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/dictionaries/ccoe_program_attribute_dictionary.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\ccoe_program_attribute_dictionary.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_consolidated_application_view_stats_timeline.html internal
+#    to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_consolidated_application_view_stats_timeline.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/consolidated_application_view_stats_timeline.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_application_view_stats_timeline.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_consolidated_server_and_application_mapping.html internal
+#    to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_consolidated_server_and_application_mapping.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_mapping.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_consolidated_server_and_application_report_visual.html internal
+#    to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_consolidated_server_and_application_report_visual.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_report_visual.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_report_visual.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_consolidated_server_view.csv internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_consolidated_server_view.csv
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/tables/views/consolidated_server_view.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory\consolidated_server_view.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_consolidated_server_view_stats_timeline.html internal to
+#    external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_consolidated_server_view_stats_timeline.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/consolidated_server_view_stats_timeline.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_view_stats_timeline.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_index.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_index.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/index.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\index.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_linux_servers_without_apps.csv internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_linux_servers_without_apps.csv
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/detailedreporting/linux_servers_without_apps.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\linux_servers_without_apps.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_program_timeline.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_program_timeline.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/program_timeline.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\program_timeline.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_raid.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_raid.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/raid.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\raid.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_server_inventory_changes.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_server_inventory_changes.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/server_inventory_changes.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\server_inventory_changes.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_server_inventory_view.csv internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_server_inventory_view.csv
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/tables/views/server_inventory_view.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\server_inventory_view.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#  id: Stretch Job stretch_servers_without_apps.csv internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_servers_without_apps.csv
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/tables/views/consolidated_server_view.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\windows_servers_without_apps.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job stretch_tasks.html internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name stretch_tasks.html
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/reporting/tasks.html
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\tasks.html
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - internal_to_external
+#- job_type: backbone_job
+#  id: Stretch Job tasks external to internal
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name tasks
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\tasks.xlsx
+#  outputs:
+#  - var/interactive/views/tasks.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#- job_type: backbone_job
+#  id: Stretch Job tasks internal to external
+#  enabled: true
+#  role: client
+#  script: usr\scripts\default\stretch_sync.py
+#  args: --name tasks
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_any_input_newer_than_any_output
+#  require_inputs_exist: true
+#  inputs:
+#  - var/interactive/views/tasks.csv
+#  outputs:
+#  - C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\tasks.xlsx
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  tags:
+#  - stretch
+#  - autogen
+#  - external_file
+#  - two_way_sync
+#

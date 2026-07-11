@@ -1,0 +1,49 @@
+jobs:
+- id: app_inventory_changes
+  title: Application Inventory — Active count changes
+  output:
+    dir: ${BTDM_ROOT}/var/reporting
+    file: application_inventory_changes.html
+  sources:
+    snapshots_dir: ${BTDM_ROOT}/var/dailysnapshot
+    snapshots_pattern: consolidated_application_view_%Y%m%d.csv
+    lookback_days: 30
+  filters:
+  - field: ACTIVE
+    op: '='
+    value: Y
+  compare_field: ID
+  detail_fields:
+  - TITLE_NAME
+  - ID
+  - DEPARTMENT_NAME
+  - LAST_UPDATED_BY
+  column_aliases:
+    TITLE_NAME: Application Name
+    ID: Application ID
+    LAST_UPDATED_BY: Last Updated By
+    ACTIVE: Active Flag
+  theme:
+    dark: true
+  _vtx_origin: DEFAULT:usr/config/default/count_change_dashboards.yaml
+- id: server_inv_changes
+  title: Server Inventory — Active count changes
+  output:
+    dir: ${BTDM_ROOT}/var/reporting
+    file: server_inventory_changes.html
+  sources:
+    snapshots_dir: ${BTDM_ROOT}/var/dailysnapshot
+    snapshots_pattern: consolidated_server_view_%Y%m%d.csv
+    lookback_days: 30
+  compare_field: RECORDID
+  detail_fields:
+  - SERVERNAME
+  - TYPEOS
+  - MODIFIEDBY
+  column_aliases:
+    SERVERNAME: Hostname
+    RECIRD: Server ID
+    MODIFIEDBY: Modified By
+  theme:
+    dark: true
+  _vtx_origin: DEFAULT:usr/config/default/count_change_dashboards.yaml

@@ -1,0 +1,80 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: table_aggregator_v2
+  title: Table Aggregator V2
+  description: Fully expanded raw application inventory builder.
+  owner: default
+  version: 1.0.0
+  tags:
+  - aggregation
+  - masterdata
+  consumers:
+  - usr/scripts/default/application_raw_table_builder_v2.py
+  _vtx_origin: DEFAULT:usr/config/default/table_aggregator_v2.yaml
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: true
+    cwd: ''
+  payload:
+    jobs:
+    - id: raw_application_table_v2
+      enabled: true
+      seed: var/tables/applications.csv
+      delimiter: ;
+      outputs:
+        parquet: var/masterdata/raw_application_table_v2.parquet
+        manifest_yaml: usr/config/manifests/raw_application_table_manifest.yaml
+      transactions:
+      - type: lookup_replace
+        lookup_table: var/tables/application_types_lu.csv
+        key: ID
+        seed_field: APPLICATION_TYPE_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: simple_lookup
+        lookup_table: var/tables/bfms_organizations.csv
+        key: ID
+        seed_field: ORGANIZATION_ID
+      - type: simple_lookup
+        lookup_table: var/tables/application_x_database.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/databases.csv
+        key: ID
+        seed_field: DATABASE_ID
+      - type: simple_lookup
+        lookup_table: var/tables/staff_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/staff.csv
+        key: ID
+        seed_field: STAFF_ID
+        include_fields:
+        - STAFF_NAME
+      - type: lookup_replace
+        lookup_table: var/tables/staff_roles_lu.csv
+        key: ID
+        seed_field: STAFF_ROLE_ID
+        lookup_field: DESCRIPTION
+        output_field: STAFF_ROLE
+      - type: transform_tidy
+        column_field: STAFF_ROLE
+        value_field: STAFF_NAME
+        drop_fields:
+        - STAFF_ID
+        - STAFF_ROLE_ID
+        - STAFF_ROLE
+        - STAFF_NAME
+        source_file: staff_x_applications.csv
+        output_prefix: ''
+  _vtx_origin: DEFAULT:usr/config/default/table_aggregator_v2.yaml

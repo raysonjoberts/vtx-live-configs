@@ -1,0 +1,140 @@
+_vtx:
+  schema: v1
+  kind: processor
+  id: master_inventory_compiler_vtx
+  title: Master Inventory Compiler VTX
+  description: Consolidates raw inventory, program attributes, approximations, inferred decisions, and enrichment logic.
+  owner: default
+  version: 1.0.0
+  tags: [inventory, compiler, consolidation]
+  consumers:
+    - usr/scripts/default/master_inventory_compiler_vtx.py
+
+config:
+  payload:
+    jobs:
+      - id: applications
+        enabled: true
+        base_source:
+          alias: app_raw
+          path: var/masterdata/consolidated_application_view_wide.parquet
+          key_field: RECORDID
+
+        additive_sources:
+          - alias: app_program
+            path: var/tables/views/consolidated_application_view.csv
+            key_field: ID
+            source_key_field: TITLE_NAME
+            target_key_field: TITLE_NAME
+            include_fields:
+              - ID
+              - RECORDID
+          - alias: app_approx
+            path: var/masterdata/application_attribute_approximation.parquet
+            key_field: ID
+            source_key_field: ID
+            target_key_field: ID
+            include_non_duplicative_fields: true
+
+        inferred_decisions:
+          path: bin/ui/inferred_decision_engine_v2.csv
+          required_status: approved
+
+        cross_source_enrichment:
+          - source_field: RECORDID
+            delimiter: ";"
+            lookup_source:
+              alias: server_program
+              path: var/masterdata/unified_server_inventory.csv
+              key_field: RECORDID
+            field_mappings:
+              - lookup_field: Hostname
+                output_field: Server_Hostname
+              - lookup_field: Environment
+                output_field: Server_Environment
+              - lookup_field: CPU
+                output_field: Server_CPU
+              - lookup_field: OS
+                output_field: Server_OS
+              - lookup_field: Memory
+                output_field: Server_Memory
+              - lookup_field: Storage
+                output_field: Server_Storage
+
+        coalesce:
+          - target_field: Planned Disposition
+            source_fields:
+              - Disposition Override
+              - Assumed Disposition
+              - DISPOSITION
+
+        expanded_rows:
+          source_field: RECORDID
+          delimiter: ";"
+          allow_output_overwrite: true
+          lookup_source:
+            alias: server_program
+            path: var/masterdata/unified_server_inventory.csv
+            key_field: RECORDID
+          field_mappings:
+            - lookup_field: Hostname
+              output_field: Server_Hostname
+            - lookup_field: Environment
+              output_field: Server_Environment
+            - lookup_field: CPU
+              output_field: Server_CPU
+            - lookup_field: OS
+              output_field: Server_OS
+            - lookup_field: Memory
+              output_field: Server_Memory
+            - lookup_field: Storage
+              output_field: Server_Storage
+          outputs:
+            csv: var/masterdata/applications_expanded.csv
+            parquet: var/masterdata/applications_expanded.parquet
+
+        outputs:
+          csv: var/masterdata/applications.csv
+          parquet: var/masterdata/applications.parquet
+
+      - id: servers
+        enabled: true
+        base_source:
+          alias: server_raw
+          path: var/masterdata/unified_server_inventory.csv
+          key_field: Hostname
+
+        additive_sources:
+          - alias: server_program
+            path: var/masterdata/unified_server_inventory.csv
+            key_field: Hostname
+            include_non_duplicative_fields: true
+
+        inferred_decisions:
+          path: bin/ui/inferred_decision_engine_v2.csv
+          required_status: approved
+
+        cross_source_enrichment:
+          - source_field: Hostname
+            delimiter: ";"
+            lookup_source:
+              alias: app_program
+              path: var/masterdata/applications_expanded.csv
+              key_field: Server_Hostname
+            field_mappings:
+              - lookup_field: Planned Disposition
+                output_field: Application Planned Disposition
+
+
+        coalesce:
+          - target_field: Final Environment
+            source_fields:
+              - Environment
+          - target_field: Final Server Disposition
+            source_fields:
+              - Server_Disposition
+              - Application Planned Disposition
+
+        outputs:
+          csv: var/masterdata/servers.csv
+          parquet: var/masterdata/servers.parquet

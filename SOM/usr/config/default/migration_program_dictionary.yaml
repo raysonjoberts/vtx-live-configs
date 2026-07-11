@@ -1,0 +1,110 @@
+migration_program:
+  - phase: Discover
+    description: |
+      The Discover phase is solely focussed on understanding Application and Server Inventories, as well as mapping of Applications to Servers.
+      There are also required attributes for each, Application and Server which are identified in the Discover Phase.
+      Each of the other phases of the Migration Program have dependencies on the Discover phase.
+
+      Generally speaking, Rationalization, Migration Planning and Migration Execution decisions are made based on Applications, Servers, and their attributes.
+      The focus of the Discover Phase is to first identify Inventory Sources for Applications, Servers and their metadata, as well as non-Inventory Sources used also used to gather metadata and/or to validate Inventory Data.
+      Second, Program Attribute will be mapped to Source of Truth Attributes.
+      Third, analysis of this inventory is completed to determine gaps and discrepancies. 
+      These gaps and discrepancies will be the basis of workstreams created for mitigation efforts.
+
+      It is important to note that although the Discover Phase kicks off early in the timeline of the Migration Program, this phase will continue for the duration of the program as updates are made and progress is tracked.
+
+    components:
+      - name: Identify Inventory Sources
+        description: |
+          A comprehensive, context based inventory will be created and maintained during the Migration Program which will consist of only attributes relevant to the effort.
+          The starting point of this is to identify Sources of Truth for Application and Server Inventory.
+          Then, identify other data sources which will include relevant Attribute data that may not exist in the sources of truth.
+          Finally, other data sources such as monitoring systems, hypervisor reports, security and patching systems, etc. can be identified to use as an audit source to determine if the sources of truth themselves are complete.
+
+      - name: Program Attribute Mapping
+        description: |
+          Once the Data Sources are identified, analysis will be performed to attempt to identify which attributes within the data sources can be "mapped" to Program Attributes.
+          The "mapping" provides a logic that will be followed during the data source compilation process, in which to translate nomenclature from source data to the Migration Program.
+          i.e. Source Data value "Application Owner" = Program Attribute "Business Owner"
+
+      - name: Inventory Analysis and Reporting (ongoing)
+        description: |
+          Inventory Analysis and Reporting is a continual process which will continue through the duration of the Migration Program.
+          There are always gaps and discrepancies identified in the source data and when identified, workstreams will be created for mitigation.
+          The progress of these workstreams will be tracked over time to ensure adherence to the Migration Program Timeline.
+          Also, Application and Server Inventories are fluid and change, the Migration Program needs to keep pace with these changes.
+          It is important to establish a cadence of data collection, automated or manual, to intake all identified data sources on a regular basis (hourly, daily, weekly).
+          Once the Inventory Sources have been identified and the Program Attribute Mapping is started, the Analysis and Reporting can begin.
+          A standard set of Gap and Discrepancy reports will be created, the following are examples of the types of Gaps and Discrepancies identified during this phase:
+
+          Gaps
+            - Missing Application or Server Program Attributes (Example: The Application Program Attribute "Business Owner" is required for a Migration Program, but this value does not exist in the source data.)
+            - Missing Application or Server Program Attribute Values (Example: The Program Attribute "Business Owner" exists in the Source Data, but only 70% of Applications have a value for this field.)
+            - Applications without Servers
+            - Servers without Applications
+            - Servers identified in other data sources which are not in the Source of Truth for Server Inventory
+            - (Optional) Servers which are in the Inventory Source of Truth which are not in other data sources
+            - Applications identified in other data sources which are not in the Source of Truth for Application Inventory
+            - (Optional) Applications which are in the Inventory Source of Truth which are not in other data sources
+
+          Discrepancies
+            - Program Attribute Discrepancies
+              Any time the value of a data source discrepancy is identified, it will be reported as a Discrepancy.
+                (Example: The Application Program Attribute "Business Owner" should identify a person, but 10% of the source data values refers to a Team or Department.)
+
+    raci:
+      description: >
+        Discover Phase RACI Framework
+          This standard RACI Model is used for the Discover Phase, additional responsibilities may be added as needed.
+
+      table: >
+        Responsibility: Identify Application Inventory Source of Truth
+          Responsible: Project Sponsor (or delegate)
+          Accountable: Project Sponsor
+          Consulted: Program Manager
+          Informed: Migration Program Team
+        Responsibility: Identify supplemental and/or audit Data Sources
+          Responsible: Project Sponsor (or delegate)
+          Accountable: Project Sponsor
+          Consulted: Program Manager
+          Informed: Migration Program Team
+        Responsibility: Complete Program Attribute Mapping
+          Responsible: Lead Consultant, Project Sponsor (or delegate)
+          Accountable: Program Manager
+          Consulted: Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Report Gaps and Discrepancies (for all)
+          Responsible: Technical Consultant
+          Accountable: Program Manager
+          Consulted: Lead Consultant
+          Informed: Project Sponsor, Migration Program Team
+        Responsibility: Add missing Program Attribute Fields to Application source of truth
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Add missing Program Attribute Fields to Server source of truth
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Application Inventory Gap Remediation (by grouping)
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Server Inventory Gap Remediation (by grouping)
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Application Inventory Discrepancy Remediation (by grouping)
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team
+        Responsibility: Server Inventory Discrepancy Remediation (by grouping)
+          Responsible:
+          Accountable: Project Sponsor
+          Consulted: Lead Consultant, Technical Consultant
+          Informed: Migration Program Team

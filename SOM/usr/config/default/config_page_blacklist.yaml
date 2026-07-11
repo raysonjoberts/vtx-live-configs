@@ -1,0 +1,27 @@
+_vtx:
+  description: Controls which default YAML files are excluded from generating configuration
+    pages in the VTX web UI.
+  _vtx_origin: DEFAULT:usr/config/default/config_page_blacklist.yaml
+config:
+  page_blacklist:
+    filenames:
+    - config_page_blacklist.yaml
+    - aws_pricing_catalog_builder_vtx.yaml
+    - aws_pricing_policies.yaml
+    - aws_server_pricing_shortlist_builder_vtx.yaml
+    - data_source_analysis_reporting.yaml
+    - data_source_analysis.yaml
+    - orchestrator.yaml
+    - snapshot_statistics.yaml
+    - stretch_file_processor.yaml
+    - stretch.yaml
+    - table_aggregator_v2.yaml
+    - table_aggregator_vtx_old.yaml
+    - table_aggregator_vtx.yaml
+    - tasks_autogen.yaml
+    - visual_program_attribute_mapping_vtx.yaml
+    - visual_tasks_dashboard_vtx.yaml
+    - workflow_autogen.yaml
+    patterns:
+    - '*_old.yaml'
+  _vtx_origin: DEFAULT:usr/config/default/config_page_blacklist.yaml

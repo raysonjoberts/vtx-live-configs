@@ -1,0 +1,27 @@
+tables:
+- name: applications
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: DEFAULT:usr/config/default/snapshot_statistics.yaml
+- name: consolidated_application_view
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: DEFAULT:usr/config/default/snapshot_statistics.yaml
+_autogen:
+  orchestrator:
+    id: Snapshot Statistics - {name}
+    role: server
+    args:
+    - --mode=auto
+    script: usr/scripts/default/snapshot_statistics.py
+    job_type: cron
+    schedule: 30 21 * * *
+  _vtx_origin: DEFAULT:usr/config/default/snapshot_statistics.yaml

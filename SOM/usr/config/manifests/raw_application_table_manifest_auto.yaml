@@ -1,0 +1,339 @@
+entries:
+- source: applications.csv
+  fields:
+  - field: ID
+    classification: ''
+  - field: ACTIVE
+    classification: ''
+  - field: ACRONYM
+    classification: ''
+  - field: TITLE_NAME
+    classification: ''
+  - field: TOTAL_USERS
+    classification: ''
+  - field: REMARKS
+    classification: ''
+  - field: HYPERLINK
+    classification: ''
+  - field: VENDOR
+    classification: ''
+  - field: ORGANIZATION_ID
+    classification: ''
+  - field: APPLICATION_TYPE_ID
+    classification: ''
+  - field: RISK_URGENCY_ID
+    classification: ''
+  - field: APPLICATION_STATUS_ID
+    classification: ''
+  - field: IMPORTANCE
+    classification: ''
+  - field: AGENCY_RESPONSIBLE
+    classification: ''
+  - field: HOSTING_ARRANGEMENT
+    classification: ''
+  - field: HOSTING_LOCATION
+    classification: ''
+  - field: EXTERNAL_APP
+    classification: ''
+  - field: DISPOSITION
+    classification: ''
+  - field: DEPT_ID
+    classification: ''
+  - field: END_PT_TEST
+    classification: ''
+  - field: TLP_RATING
+    classification: ''
+  - field: APP_REVIEWED
+    classification: ''
+  - field: BUSINESS_CATEGORY
+    classification: ''
+  - field: PS_DEVELOPMENT_CODE
+    classification: ''
+  - field: RFC_PROD
+    classification: ''
+  - field: RFC_DECOMM
+    classification: ''
+  - field: EMAIL_DIST_LIST
+    classification: ''
+  - field: NON_SOM_NETWORK
+    classification: ''
+  - field: NON_SOM_NETWORK_DESC
+    classification: ''
+  - field: VPN_REQUIRED
+    classification: ''
+  - field: VPN_DESC
+    classification: ''
+  - field: UTILIZES_LOAD_BALANCER
+    classification: ''
+  - field: LOAD_BALANCER_URL
+    classification: ''
+  - field: UTILIZES_GATEWAYS
+    classification: ''
+  - field: GATEWAY_URL
+    classification: ''
+  - field: UTILIZES_ARR
+    classification: ''
+  - field: ARR_URL
+    classification: ''
+  - field: WHO_ADMINISTERS
+    classification: ''
+  - field: WHO_MAINTAINS
+    classification: ''
+  - field: HOSTING_DETAILS
+    classification: ''
+  - field: DESKTOP_DEPENDENCIES
+    classification: ''
+  - field: AUTHENTICATION_METHOD
+    classification: ''
+  - field: ITBA_BUDGET_EXISTS
+    classification: ''
+  - field: ITBA_BUDGET_NAME
+    classification: ''
+  - field: OPER_OUTSIDE_BUS_HOURS
+    classification: ''
+  - field: OPER_LEVEL
+    classification: ''
+  - field: JAVA_ON_SERVER
+    classification: ''
+  - field: SERVER_JAVA_VERSION
+    classification: ''
+  - field: JAVA_ON_CLIENT
+    classification: ''
+  - field: CLIENT_JAVA_VERSION
+    classification: ''
+  - field: PUBLIC_END_POINT_URL
+    classification: ''
+  - field: PUBLIC_END_POINT_IP
+    classification: ''
+  - field: HAS_PUBLIC_END_POINT
+    classification: ''
+  - field: Inferred Scope
+    classification: ''
+  - field: applications_DESCRIPTION
+    classification: ''
+  - field: applications_LAST_UPDATED_DATE
+    classification: ''
+  - field: applications_LAST_UPDATED_BY
+    classification: ''
+  - field: DESCRIPTION
+    classification: ''
+  - field: LAST_UPDATED_BY
+    classification: ''
+  - field: LAST_UPDATED_DATE
+    classification: ''
+  - field: VERSION_CONTROL_USED
+    classification: ''
+  - field: GATEWAY_TYPE
+    classification: ''
+  - field: BFMS_DEPARTMENT_ID
+    classification: ''
+  - field: BFMS_BUREAU_ID
+    classification: ''
+  - field: BFMS_ORGANIZATION_ID
+    classification: ''
+- source: application_status_lu.csv
+  fields:
+  - field: application_status_lu_DESCRIPTION
+    classification: ''
+- source: oper_level_lu.csv
+  fields:
+  - field: oper_level_lu_DESCRIPTION
+    classification: ''
+- source: risk_urgency_lu.csv
+  fields:
+  - field: risk_urgency_lu_DESCRIPTION
+    classification: ''
+- source: waiver_risk_lu.csv
+  fields:
+  - field: waiver_risk_lu_DESCRIPTION
+    classification: ''
+- source: auth_method_lu.csv
+  fields:
+  - field: auth_method_lu_DESCRIPTION
+    classification: ''
+- source: who_administers_lu.csv
+  fields:
+  - field: who_administers_lu_DESCRIPTION
+    classification: ''
+- source: who_maintains_lu.csv
+  fields:
+  - field: who_maintains_lu_DESCRIPTION
+    classification: ''
+- source: application_types_lu.csv
+  fields:
+  - field: application_types_lu_DESCRIPTION
+    classification: ''
+- source: business_category_lu.csv
+  fields:
+  - field: business_category_lu_DESCRIPTION
+    classification: ''
+- source: tlp_lu.csv
+  fields:
+  - field: TLP
+    classification: ''
+- source: ps_development_lu.csv
+  fields:
+  - field: ps_development_lu_DESCRIPTION
+    classification: ''
+- source: bfms_organizations.csv
+  fields:
+  - field: DEPARTMENT_NUMBER
+    classification: ''
+  - field: DEPARTMENT_NAME
+    classification: ''
+  - field: BUREAU_NAME
+    classification: ''
+  - field: ORGANIZATION
+    classification: ''
+  - field: DEPARTMENT_ACRONYM
+    classification: ''
+  - field: BUREAU_ACRONYM
+    classification: ''
+  - field: ORGANIZATION_ACRONYM
+    classification: ''
+- source: tools_x_applications.csv
+  fields:
+  - field: TOOL_VERSION_BRICK_ID
+    classification: ''
+  - field: TOOL_REP
+    classification: ''
+  - field: tools_x_applications_LAST_UPDATED_BY
+    classification: ''
+  - field: tools_x_applications_LAST_UPDATED_DATE
+    classification: ''
+  - field: COMMENTS
+    classification: ''
+- source: waivers_x_applications.csv
+  fields:
+  - field: WAIVER_ID
+    classification: ''
+  - field: waivers_x_applications_LAST_UPDATED_BY
+    classification: ''
+  - field: waivers_x_applications_LAST_UPDATED_DATE
+    classification: ''
+- source: waivers.csv
+  fields:
+  - field: CATEGORY_CODE
+    classification: ''
+  - field: CREATE_DATE
+    classification: ''
+  - field: EXPIRE_DATE
+    classification: ''
+  - field: waivers_LAST_UPDATED_BY
+    classification: ''
+  - field: waivers_LAST_UPDATED_DATE
+    classification: ''
+  - field: WAIVER_NAME
+    classification: ''
+  - field: REPORTING_PERIOD
+    classification: ''
+  - field: OLD_REQID
+    classification: ''
+  - field: STATUS_CODE
+    classification: ''
+  - field: STATUS_DATE
+    classification: ''
+  - field: REQUEST_DESCRIPTION
+    classification: ''
+  - field: CONDITION_REQUIRE_PROV
+    classification: ''
+  - field: RISK_CODE
+    classification: ''
+  - field: QUESTION_5_1_1
+    classification: ''
+  - field: QUESTION_5_1_2
+    classification: ''
+  - field: QUESTION_5_1_3
+    classification: ''
+  - field: QUESTION_5_1_4
+    classification: ''
+  - field: QUESTION_5_1_5
+    classification: ''
+  - field: QUESTION_5_1_6
+    classification: ''
+  - field: QUESTION_5_1_7
+    classification: ''
+  - field: DELETE_WAIVER
+    classification: ''
+  - field: OLD_MGRID
+    classification: ''
+  - field: OLD_OWNRID
+    classification: ''
+  - field: JUSTIFICATION
+    classification: ''
+  - field: RISKS
+    classification: ''
+  - field: WAIVER_DURATION
+    classification: ''
+  - field: RESOLUTION_STRATEGY
+    classification: ''
+  - field: VULNERABILITY_TICKET
+    classification: ''
+  - field: INTERNAL_EXTERNAL_USERS
+    classification: ''
+  - field: APPROVAL_DATE
+    classification: ''
+  - field: REJECTION_DATE
+    classification: ''
+  - field: EMAIL_SENT
+    classification: ''
+  - field: POLICIES_AFFECTED
+    classification: ''
+- source: application_x_database.csv
+  fields:
+  - field: DATABASE_ID
+    classification: ''
+  - field: application_x_database_LAST_UPDATED_DATE
+    classification: ''
+  - field: application_x_database_LAST_UPDATED_BY
+    classification: ''
+- source: databases.csv
+  fields:
+  - field: NAME
+    classification: ''
+  - field: INSTANCE
+    classification: ''
+  - field: DISPLAY_NAME
+    classification: ''
+  - field: ENVIRONMENT
+    classification: ''
+  - field: USAGE
+    classification: ''
+  - field: DB_VERSION
+    classification: ''
+  - field: TYPE
+    classification: ''
+  - field: CREATION_DATE
+    classification: ''
+  - field: DECOMMISSION_DATE
+    classification: ''
+  - field: DECOMMISSIONED
+    classification: ''
+  - field: CONTACT
+    classification: ''
+  - field: databases_LAST_UPDATED_DATE
+    classification: ''
+  - field: databases_LAST_UPDATED_BY
+    classification: ''
+- source: database_x_server.csv
+  fields:
+  - field: SERVER_ID
+    classification: ''
+  - field: database_x_server_LAST_UPDATED_DATE
+    classification: ''
+  - field: database_x_server_LAST_UPDATED_BY
+    classification: ''
+- source: ''
+  fields:
+  - field: LAST_UPDATED_BY
+    classification: ''
+  - field: LAST_UPDATED_DATE
+    classification: ''
+- source: waiver_statuses_lu.csv
+  fields:
+  - field: waiver_statuses_lu_DESCRIPTION
+    classification: ''
+- source: waiver_categories_lu.csv
+  fields:
+  - field: waiver_categories_lu_DESCRIPTION
+    classification: ''

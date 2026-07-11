@@ -1,0 +1,548 @@
+backbone_jobs:
+#- id: Autogen - tag_engine - tag_engine
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/tag_engine.py
+#  args: --job "tag_engine"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/tag_engine.yaml
+#  - usr/config/default/tag_engine.yaml
+#  outputs:
+#  - var/metadata/tags_application.csv
+#- id: Autogen - visual_program_attribute_mapping - consolidated_server_and_application_mapping_visual
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+#  args: --job "consolidated_server_and_application_mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.csv
+#  config_inputs:
+#  - usr/config/run/visual_program_attribute_mapping_vtx.yaml
+#  - usr/config/default/visual_program_attribute_mapping_vtx.yaml
+#  outputs:
+#  - var/analysis/consolidated_server_and_application_mapping.html
+#- id: Autogen - visual_program_attribute_mapping - Archer to AIS Field Mapping_visual
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+#  args: --job "Archer to AIS Field Mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/analysis/archer_consolidated_server_and_application_mapping.csv
+#  config_inputs:
+#  - usr/config/run/visual_program_attribute_mapping_vtx.yaml
+#  - usr/config/default/visual_program_attribute_mapping_vtx.yaml
+#  outputs:
+#  - var/analysis/archer_program_attributes.html
+#- id: Autogen - file_distribution_engine - consolidated_applications_base_update
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/file_distribution_engine.py
+#  args: --job "consolidated_applications_base_update"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/migrations_consolidated_application_view.csv
+#  - var/tables/views/consolidated_application_view.csv
+#  - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+#  config_inputs:
+#  - usr/config/run/file_distribution_engine.yaml
+#  - usr/config/custom/file_distribution_engine.yaml
+#  outputs:
+#  - var/interactive/application_views.xlsx
+#- id: Autogen - file_distribution_engine - consolidated_server_interactive_update
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/file_distribution_engine.py
+#  args: --job "consolidated_server_interactive_update"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/interactive/server_view.xlsx
+#  config_inputs:
+#  - usr/config/run/file_distribution_engine.yaml
+#  - usr/config/custom/file_distribution_engine.yaml
+#  outputs:
+#  - var/interactive/data
+#- id: Autogen - file_distribution_engine - psdo_consolidated_apps_base_062302026
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/file_distribution_engine.py
+#  args: --job "psdo_consolidated_apps_base_062302026"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+#  config_inputs:
+#  - usr/config/run/file_distribution_engine.yaml
+#  - usr/config/custom/file_distribution_engine.yaml
+#  outputs:
+#  - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+#- id: Autogen - file_distribution_engine - psdo_consolidated_applications_interactive_06302026
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/file_distribution_engine.py
+#  args: --job "psdo_consolidated_applications_interactive_06302026"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+#  config_inputs:
+#  - usr/config/run/file_distribution_engine.yaml
+#  - usr/config/custom/file_distribution_engine.yaml
+#  outputs:
+#  - var/interactive/data
+#- id: Autogen - file_distribution_engine - consolidated_applications_interactive_update_v2
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/file_distribution_engine.py
+#  args: --job "consolidated_applications_interactive_update_v2"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/interactive/application_views_v2.xlsx
+#  config_inputs:
+#  - usr/config/run/file_distribution_engine.yaml
+#  - usr/config/custom/file_distribution_engine.yaml
+#  outputs:
+#  - var/interactive/data/application_views_v2
+#- id: Autogen - master_table_builder_vtx - build_master_applications
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_table_builder_vtx.py
+#  args: --job "build_master_applications"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/raw_application_table.parquet
+#  - var/masterdata/application_approximation.parquet
+#  - var/masterdata/raw_server_table.parquet
+#  - bin/ui/inferred_decision_engine_v2.csv
+#  config_inputs:
+#  - usr/config/run/master_table_builder_vtx.yaml
+#  - usr/config/custom/master_table_builder_vtx.yaml
+#  outputs:
+#  - var/masterdata/master_applications.csv
+#  - var/masterdata/master_applications.parquet
+#- id: Autogen - master_table_builder_vtx - build_master_servers
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_table_builder_vtx.py
+#  args: --job "build_master_servers"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/raw_server_table.parquet
+#  - var/masterdata/raw_application_table.parquet
+#  - bin/ui/inferred_decision_engine_v2.csv
+#  config_inputs:
+#  - usr/config/run/master_table_builder_vtx.yaml
+#  - usr/config/custom/master_table_builder_vtx.yaml
+#  outputs:
+#  - var/masterdata/master_servers.csv
+#  - var/masterdata/master_servers.parquet
+#- id: Autogen - master_table_builder_vtx - build_billing_app_to_server
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_table_builder_vtx.py
+#  args: --job "build_billing_app_to_server"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/billing_application_to_server_view.csv
+#  - var/tables/billing2026.csv
+#  config_inputs:
+#  - usr/config/run/master_table_builder_vtx.yaml
+#  - usr/config/custom/master_table_builder_vtx.yaml
+#  outputs:
+#  - var/masterdata/billing_servers.csv
+#  - var/masterdata/billing_servers.parquet
+#- id: Autogen - master_table_builder_vtx - build_billing_server_only
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_table_builder_vtx.py
+#  args: --job "build_billing_server_only"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_servers.csv
+#  - var/tables/billing2026.csv
+#  config_inputs:
+#  - usr/config/run/master_table_builder_vtx.yaml
+#  - usr/config/custom/master_table_builder_vtx.yaml
+#  outputs:
+#  - var/masterdata/billing_servers_only.csv
+#  - var/masterdata/billing_servers_only.parquet
+#- id: Autogen - master_table_builder_vtx - build_billing_app_to_db
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_table_builder_vtx.py
+#  args: --job "build_billing_app_to_db"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/billing_application_to_db_view.csv
+#  - var/tables/billing2026.csv
+#  config_inputs:
+#  - usr/config/run/master_table_builder_vtx.yaml
+#  - usr/config/custom/master_table_builder_vtx.yaml
+#  outputs:
+#  - var/masterdata/billing_app_to_db.csv
+#  - var/masterdata/billing_app_to_db.parquet
+#- id: Autogen - master_view_builder_vtx - consolidated_application_view_collapsed_to_env
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "consolidated_application_view_collapsed_to_env"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/consolidated_application_collapsed_to_environment.csv
+#- id: Autogen - master_view_builder_vtx - consolidated_application_view
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "consolidated_application_view"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/consolidated_application_view.csv
+#- id: Autogen - master_view_builder_vtx - migrations_consolidated_application_view
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "migrations_consolidated_application_view"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/migrations_consolidated_application_view.csv
+#- id: Autogen - master_view_builder_vtx - migrations_consolidated_application_view_collapsed_to_environment
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "migrations_consolidated_application_view_collapsed_to_environment"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+#- id: Autogen - master_view_builder_vtx - migrations_consolidated_server_view
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "migrations_consolidated_server_view"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_servers.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/migrations_consolidated_servers_view.csv
+#- id: Autogen - master_view_builder_vtx - billing_application_to_server
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "billing_application_to_server"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/billing_application_to_server_view.csv
+#- id: Autogen - master_view_builder_vtx - billing_application_to_db
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/master_view_builder_vtx.py
+#  args: --job "billing_application_to_db"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/master_view_builder_vtx.yaml
+#  - usr/config/custom/master_view_builder_vtx.yaml
+#  outputs:
+#  - var/tables/views/billing_application_to_db_view.csv
+#- id: Autogen - table_aggregator - consolidated_application_view_auto
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/application_raw_table_builder.py
+#  args: --job "consolidated_application_view_auto"
+#  settle_seconds: 30
+#  debounce_seconds: 5
+#  rule: downstream_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  downstream_jobs:
+#  - Run Intake Processor
+#  mode: all
+#  require_downstream_markers: true
+#  outputs:
+#  - var/masterdata/raw_application_table_auto.parquet
+#  - usr/config/manifests/raw_application_table_manifest_auto.yaml
+#- id: Autogen - table_aggregator - raw_application_table
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/application_raw_table_builder.py
+#  args: --job "raw_application_table"
+#  settle_seconds: 30
+#  debounce_seconds: 5
+#  rule: downstream_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  downstream_jobs:
+#  - Run Intake Processor
+#  mode: all
+#  require_downstream_markers: true
+#  outputs:
+#  - var/masterdata/raw_application_table.parquet
+#  - usr/config/manifests/raw_application_table_manifest.yaml
+#- id: Stretch - count_change_dashboards__app_inventory_changes - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "count_change_dashboards__app_inventory_changes"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/application_inventory_changes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#- id: Stretch - count_change_dashboards__server_inv_changes - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "count_change_dashboards__server_inv_changes"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/server_inventory_changes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#- id: Stretch - visual_program_attribute_mapping__consolidated_server_and_application_mapping_visual - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_program_attribute_mapping__consolidated_server_and_application_mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.html
+#  marker_match: any
+#  require_inputs_exist: false
+#- id: Stretch - visual_program_attribute_mapping__Archer to AIS Field Mapping_visual - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_program_attribute_mapping__Archer to AIS Field Mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/analysis/archer_program_attributes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#cron_jobs:
+#- id: Autogen - count_change_dashboards - app_inventory_changes
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/count_change_dashboard.py
+#  args: --job "app_inventory_changes"
+#  schedule:
+#    cron: 30 22 * * *
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  outputs:
+#  - var/reporting/application_inventory_changes.html
+#- id: Autogen - count_change_dashboards - server_inv_changes
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/count_change_dashboard.py
+#  args: --job "server_inv_changes"
+#  schedule:
+#    cron: 30 22 * * *
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  outputs:
+#  - var/reporting/server_inventory_changes.html
+#

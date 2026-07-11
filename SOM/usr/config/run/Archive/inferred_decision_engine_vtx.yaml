@@ -1,0 +1,799 @@
+_vtx:
+  schema: v1
+  kind: config
+  id: inferred_decision_engine_vtx
+  title: Inferred Decision Engine (table-driven)
+  version: 1.0.0
+  owner: default
+  tags:
+  - inference
+  - table_driven
+  - dashboard
+  consumers:
+  - usr/scripts/default/inferred_decision_engine_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_vtx.yaml
+config:
+  jobs: &id001
+  - id: Inferred Decisions - applications.csv
+    enabled: true
+    key_field: ID
+    primary_source: var/tables/applications.csv
+    inputs:
+    - var/tables/applications.csv
+    sources:
+    - var/tables/applications.csv
+    infer:
+    - field: Inferred Scope
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: ACTIVE
+            op: ==
+            value: N
+        set: Out of Scope
+  - id: Inferred Decisions - consolidated_application_view*.parquet
+    enabled: true
+    key_field: ID
+    primary_source: var/masterdata/consolidated_application_view*.parquet
+    inputs:
+    - var/masterdata/consolidated_application_view*.parquet
+    sources:
+    - var/masterdata/consolidated_application_view*.parquet
+    infer:
+    - field: Inferred Hosting Type
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC
+        set: OnPrem
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC
+        set: OnPrem
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure
+        set: Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;SSDC
+        set: OnPrem Multisite
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: OnPrem Multisite
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: Hybrid Cloud
+    - field: Inferred Hosting Location
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC
+        set: CMCC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC
+        set: SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure
+        set: Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;SSDC
+        set: CMCC/SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: CMCC/SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: CMCC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure;CMCC
+        set: CMCC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: SSDC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: SSDC/Azure
+  - id: Inferred Decisions - consolidated_application_view_expanded*.parquet
+    enabled: true
+    key_field: ID
+    primary_source: var/masterdata/consolidated_application_view_expanded*.parquet
+    inputs:
+    - var/masterdata/consolidated_application_view_expanded*.parquet
+    sources:
+    - var/masterdata/consolidated_application_view_expanded*.parquet
+    infer:
+    - field: Inferred Hosting Type
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC
+        set: OnPrem
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC
+        set: OnPrem
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure
+        set: Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;SSDC
+        set: OnPrem Multisite
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: OnPrem Multisite
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: Hybrid Cloud
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: Hybrid Cloud
+    - field: Inferred Hosting Location
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC
+        set: CMCC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC
+        set: SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure
+        set: Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;SSDC
+        set: CMCC/SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: CMCC/SSDC
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: CMCC;Azure
+        set: CMCC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: Azure;CMCC
+        set: CMCC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;Azure
+        set: SSDC/Azure
+      - when:
+          all:
+          - field: Inferred Server Location
+            op: ==
+            value: SSDC;CMCC
+        set: SSDC/Azure
+  - id: Inferred Decisions - presence_hostname_matrix.csv
+    enabled: true
+    key_field: RECORDID
+    primary_source: var/detailedreporting/presence_hostname_matrix.csv
+    inputs:
+    - var/detailedreporting/presence_hostname_matrix.csv
+    sources:
+    - var/detailedreporting/presence_hostname_matrix.csv
+    infer:
+    - field: Inferred Location
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.110\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.210\.
+        set: SSDC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.114\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.112\.32\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.212\.40\.
+        set: SSDC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.214\.
+        set: SSDC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.228\.33\.
+        set: Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.215\.7\.
+        set: SSDC (Greenlake)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.115\.7\.
+        set: CMCC (Greenlake)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.19\.6\.
+        set: Public Safety Server (no location)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.215\.17\.
+        set: SSDC (Delenia)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.215\.254\.
+        set: SSDC (Network Mgmt)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.115\.17\.
+        set: CMCC (Delenia)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.115\.254\.
+        set: CMCC (Network Mgmt)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.115\.25\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.228\.35\.
+        set: Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.19\.100\.
+        set: DPS Network Transit (no location)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.40\.186\.
+        set: Depot Workstation Imaging Network (no location)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.231\.3\.
+        set: Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.115\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.215\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.112\.40\.
+        set: CMCC
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.167\.18\.
+        set: Boothbay
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.225\.2\.
+        set: OCI
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.225\.3\.
+        set: OCI
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.228\.2\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.228\.3\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.229\.4\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.229\.130\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^10\.232\.56\.
+        set: OCI
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.17\.163\.
+        set: DMZ
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\17\.191\.
+        set: Orcal Legacy Cloud (Not OCI)
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.20\.39\.
+        set: Legacy Azure GoveCloud MRS?
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.8\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.9\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.10\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.11\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.12\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.13\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.14\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^172\.29\.15\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IP Address
+            op: regex
+            value: ^192\.168\.4\.
+        set: VPN Peer NAT
+  - id: Inferred Decisions - serverinventories.csv
+    enabled: true
+    key_field: RECORDID
+    primary_source: var/tables/serverinventories.csv
+    inputs:
+    - var/tables/serverinventories.csv
+    sources:
+    - var/tables/serverinventories.csv
+    infer:
+    - field: Inferred Server Location
+      default: ''
+      rules:
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.110\.
+        set: CMCC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.210\.
+        set: SSDC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.114\.
+        set: CMCC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.214\.
+        set: SSDC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.228\.33\.
+        set: Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.215\.7\.
+        set: SSDC (Greenlake)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.115\.7\.
+        set: CMCC (Greenlake)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.19\.6\.
+        set: Public Safety Server (no location)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.215\.17\.
+        set: SSDC (Delenia)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.215\.254\.
+        set: SSDC (Network Mgmt)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.115\.17\.
+        set: CMCC (Delenia)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.115\.254\.
+        set: CMCC (Network Mgmt)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.115\.25\.
+        set: CMCC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.228\.35\.
+        set: Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.19\.100\.
+        set: DPS Network Transit (no location)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.40\.186\.
+        set: Depot Workstation Imaging Network (no location)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.231\.3\.
+        set: Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.112\.40\.
+        set: CMCC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.167\.18\.
+        set: Boothbay
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.225\.2\.
+        set: OCI
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.225\.3\.
+        set: OCI
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.228\.2\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.228\.3\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.229\.4\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.229\.130\.
+        set: Azure - US East
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.232\.56\.
+        set: OCI
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.17\.163\.
+        set: DMZ
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\17\.191\.
+        set: Orcal Legacy Cloud (Not OCI)
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.20\.39\.
+        set: Legacy Azure GoveCloud MRS?
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.8\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.9\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.10\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.11\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.12\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.13\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.14\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^172\.29\.15\.
+        set: Legacy Azure
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^192\.168\.4\.
+        set: VPN Peer NAT
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.115\.
+        set: CMCC
+      - when:
+          all:
+          - field: IPADDRESS
+            op: regex
+            value: ^10\.215\.
+        set: CMCC
+  payload:
+    jobs: *id001
+  _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_vtx.yaml

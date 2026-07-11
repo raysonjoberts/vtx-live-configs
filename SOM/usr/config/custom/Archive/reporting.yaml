@@ -1,0 +1,70 @@
+reports:
+  - report_name: CMCC_rvtools_v_serverinventory
+    source: 
+      file: C:\BTDM_7.1\var\tables\cmcc-rvtools_vinfo_server_audit.csv
+      filter:
+        - field: Powerstate
+          operator: ==
+          value: poweredOn
+      key: Server
+    target:
+      file: C:\BTDM_7.1\var\tables\serverinventories_sds.csv
+      key: Server
+    comparison:
+      type: difference
+      direction: source_only
+    output:
+      format: csv
+      destination: C:\BTDM_7.1\var\reporting\cmcc_rvtools_vs_inventory_diff.csv
+      include_row_data: true
+      include_count_summary: true
+
+  - report_name: Applications_missing_servers
+    source:
+      file: C:\BTDM_7.1\var\tables\ccoe_consolidated_application_view.csv
+      filter:
+        - field: Server
+          operator: isnull
+      key: Server
+    target: null
+    comparison:
+      type: filter_only
+    output:
+      format: csv
+      destination: C:\BTDM_7.1\var\reporting\wsid_003_appsmissingservers.csv
+      include_row_data: true
+      include_count_summary: true
+
+  - report_name: count_with_application
+    source:
+      file: C:\BTDM_7.1\var\tables\ccoe_consolidated_application_view.csv
+      filter:
+        - field: Application
+          operator: notnull
+    comparison:
+      type: count
+      count_type: total  # options: total, distinct
+      count_field: Applicatoin  # required if count_type is distinct
+    output:
+      format: html  # options: csv, json, html
+      destination: C:\BTDM_7.1\var\reporting\apps_missing_servers.html
+      include_count_summary: true
+      include_row_data: false
+
+  - report_name: Applications_missing_Updaters
+    source:
+      file: C:\BTDM_7.1\var\tables\consolidated_application_view.csv
+      filter:
+        - field: ACTIVE
+          operator: ==
+          value: Y
+        - field: Application Inventory Updater
+          operator: isnull
+    comparison:
+      type: count
+      count_type: total  # options: total, distinct
+      count_field: Application  # required if count_type is distinct
+    output:
+      format: html  # options: csv, json, html
+      destination: C:\BTDM_7.1\var\reporting\apps_missing_updaters.html
+      include_row_data: false

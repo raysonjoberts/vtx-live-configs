@@ -1,0 +1,131 @@
+reports:
+  - report_name: Applications_missing_Updaters
+    source:
+      file: C:\BTDM_7.1\var\tables\views\consolidated_application_view.csv
+      filter:
+        - field: ACTIVE
+          operator: ==
+          value: Y
+        - field: Application Inventory Updater
+          operator: isnull
+    comparison:
+      type: count
+      count_type: total  # options: total, distinct
+      count_field: Application  # required if count_type is distinct
+    output:
+      format: html  # options: csv, json, html
+      destination: C:\BTDM_7.1\var\detailedreporting\apps_missing_updaters.html
+      include_row_data: false
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Attribute Reporting - {report_name}"
+        script: usr/scripts/default/attribute_reporting_processor.py
+        args: []
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{source.file}"]      # wildcard gather
+        outputs: ["{output.destination}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{output.destination}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting
+        csv_xlsx_convert: false
+
+  - report_name: Windows_Servers_without_Applications
+    source:
+      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+      filter:
+        - field: Application
+          operator: isnull
+        - field: TYPEOS
+          operator: ==
+          value: Windows
+      key: SERVERNAME
+    comparison:
+      type: filter_only
+    output:
+      format: csv
+      destination: C:\BTDM_7.1\var\detailedreporting\windows_servers_without_apps.csv
+      include_row_data: true
+      include_count_summary: true
+      fields: [SERVERNAME, TYPEOS, ENVIRONMENT, IPADDRESS, APPLICATION_perSI]
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Attribute Reporting - {report_name}"
+        script: usr/scripts/default/attribute_reporting_processor.py
+        args: []
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{source.file}"]      # wildcard gather
+        outputs: ["{output.destination}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{output.destination}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting
+        csv_xlsx_convert: false
+
+  - report_name: Linux_Servers_without_Applications
+    source:
+      file: C:\BTDM_7.1\var\tables\views\consolidated_server_view.csv
+      filter:
+        - field: Application
+          operator: isnull
+        - field: TYPEOS
+          operator: ==
+          value: Linux
+      key: SERVERNAME
+    comparison:
+      type: filter_only
+    output:
+      format: csv
+      destination: C:\BTDM_7.1\var\detailedreporting\linux_servers_without_apps.csv
+      include_row_data: true
+      include_count_summary: true
+      fields: [SERVERNAME, TYPEOS, ENVIRONMENT, IPADDRESS, APPLICATION_perSI]
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Attribute Reporting - {report_name}"
+        script: usr/scripts/default/attribute_reporting_processor.py
+        args: []
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{source.file}"]      # wildcard gather
+        outputs: ["{output.destination}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{output.destination}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting
+        csv_xlsx_convert: false

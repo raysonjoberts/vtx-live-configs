@@ -1,0 +1,102 @@
+scheduler:
+  max_workers: 4
+
+  # Global throttle for backbone checks (checks/sec).
+  # With 1.0, you check ~1 backbone job per second (smoothly).
+  backbone_check_hz: 1.0
+
+# ------------------------------------------------------------
+# Cron / ad-hoc jobs (schedule-driven)
+# ------------------------------------------------------------
+cron_jobs:
+#  - id: Daily RAID Snapshot
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source "var/tables/reporting/raid.html"
+#      --dest "var/dailysnapshot"
+#      --mode move
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "0 20 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+
+
+# ------------------------------------------------------------
+# Backbone jobs (orchestrated, freshness-driven)
+# - inputs/outputs defined here so orchestrator can check mtimes directly
+# - scripts can be gradually refactored to become minimalist + per-artifact
+# ------------------------------------------------------------
+backbone_jobs:
+  - id:  file_distribution_engine - psdo_consolidated_apps_base_062302026
+    enabled: true
+    role: server
+    script: usr/scripts/default/file_distribution_engine.py
+    args: --job "psdo_consolidated_apps_base_062302026"
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_input_newer_than_last_success_marker
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+    marker_match: any
+    inputs:
+    - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+    config_inputs:
+    - usr/config/run/file_distribution_engine.yaml
+    - usr/config/custom/file_distribution_engine.yaml
+    outputs:
+    - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+  - id: file_distribution_engine - psdo_consolidated_applications_interactive_06302026
+    enabled: true
+    role: server
+    script: usr/scripts/default/file_distribution_engine.py
+    args: --job "psdo_consolidated_applications_interactive_06302026"
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_input_newer_than_last_success_marker
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+    marker_match: any
+    inputs:
+    - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+    config_inputs:
+    - usr/config/run/file_distribution_engine.yaml
+    - usr/config/custom/file_distribution_engine.yaml
+    outputs:
+    - var/interactive/data/migrations_app_view.csv
+
+  - id: Copy consolidated application view to Archer
+    enabled: true
+    role: client
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/tables/views/consolidated_application_view.csv"
+      --dest   "C:\Users\Jayson.Roberts\State of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory"
+      --mode   copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-unchanged no
+    #check_every_seconds: 60
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_any_input_newer_than_any_output
+    require_inputs_exist: true
+    inputs:
+      - "var/tables/views/consolidated_application_view.csv"
+    outputs:
+      # choose the exact output file path if stable, otherwise use a marker file approach later
+      - "C:\\Users\\Jayson.Roberts\\State of Maine\\MaineIT OPTIV Project - Dataset\\ConsolidatedInventory\\consolidated_application_view.csv"
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0

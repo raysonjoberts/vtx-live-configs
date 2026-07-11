@@ -1,0 +1,43 @@
+# VTX_ROOT/usr/config/run/tasks_autogen.yaml
+
+# Where the main tasks and log tables live
+tasks:
+  tasks_csv: "VTX_ROOT/var/interactive/views/tasks.csv"
+  tasks_log_csv: "VTX_ROOT/var/tables/tasks_log.csv"
+
+# Definitions for auto-generated tasks
+sources:
+  - name: program_attribute_utilization
+    # Stats table from your existing analysis
+    stats_table: "VTX_ROOT/var/analysis/consolidated_server_and_application_mapping.csv"
+
+    # Column in the stats table that holds utilization
+    # Example: 0–100 (percent). If you use 0–1, just set threshold_lt accordingly.
+    utilization_column: "Used %"
+
+    # Column that identifies the program attribute (e.g. "Business Owner")
+    attribute_column: "Program Attribute"
+    priority_column: "Priority"
+    phase_column: "Phase"
+
+    # Create a task whenever utilization < threshold_lt
+    threshold_lt: 100.0
+
+    # How to build fields for auto tasks
+    task_label_template: "{attribute} values missing"
+    auto_key_template: "PROGRAM_ATTRIBUTE:{attribute}"
+
+    # Default status when a new auto task is created
+    default_status: "Backlog"
+
+    # Which fields the script is allowed to overwrite for auto tasks
+    # Everything else is user-controlled.
+    auto_controlled_fields:
+      - task_label
+      - progress
+      - priority
+      - phase
+
+# NEW: optional behavior for NULL utilization
+    # If set, when utilization is NULL, we create a special task.
+    null_task_label_template: "{attribute} program attribute not mapped"

@@ -1,0 +1,140 @@
+# _vtx:
+#   schema: v1
+#   kind: transform
+#   id: tag_engine
+#   title: Tag Engine
+#   description: Rule-driven tagging for application entities
+#   owner: default
+#   version: 1.0.0
+#   tags:
+#     - core
+#   consumers:
+#     - usr/scripts/default/tag_engine.py
+#
+# config:
+#   payload:
+#     jobs:
+#       - id: tag_engine
+#         enabled: true
+#         inputs:
+#           - var/masterdata/master_applications.parquet
+#         outputs:
+#           - var/metadata/tags_application.csv
+#         anchor_field: ID
+#         entity_type: application
+#         key_delimiter: ";"
+#         tags:
+#           - id: application_active
+#             tag_column: active
+#             source: rule
+#             key_fields: []
+#             condition_logic: all
+#             first_match_only: true
+#             rules:
+#               - id: active_applications
+#                 tag_value: true
+#                 conditions:
+#                   - field: ACTIVE
+#                     operator: "=="
+#                     value: Y
+#           - id: department_dafs
+#             tag_column: department_tag
+#             source: rule
+#             key_fields: []
+#             condition_logic: all
+#             first_match_only: true
+#             rules:
+#               - id: department_dafs
+#                 tag_value: DAFS
+#                 conditions:
+#                   - field: DEPARTMENT_ACRONYM
+#                     operator: "=="
+#                     value: DAFS
+#           - id: compatible_windows_prod
+#             tag_column: compatible
+#             match_columns:
+#               - Environment
+#             source: rule
+#             key_fields: []
+#             condition_logic: all
+#             first_match_only: true
+#             rules:
+#               - id: compatible_windows_prod
+#                 tag_value: windows_prod
+#                 conditions:
+#                   - field: ACTIVE
+#                     operator: "=="
+#                     value: Y
+#                   - field: OS
+#                     operator: contains
+#                     value: Windows
+#                   - field: Environment
+#                     operator: "=="
+#                     value: PROD
+#           - id: compatible_windows_doc_prod
+#             tag_column: compatible
+#             match_columns:
+#               - Environment
+#               - DEPARTMENT_ACRONYM
+#             source: rule
+#             key_fields: []
+#             condition_logic: all
+#             first_match_only: false
+#             rules:
+#               - id: compatible_windows_doc_prod
+#                 tag_value: windows_doc_prod
+#                 conditions:
+#                   - field: ACTIVE
+#                     operator: "=="
+#                     value: Y
+#                   - field: OS
+#                     operator: contains
+#                     value: Windows
+#                   - field: Environment
+#                     operator: "=="
+#                     value: PROD
+#                   - field: DEPARTMENT_ACRONYM
+#                     operator: "=="
+#                     value: DOC
+#               - id: compatible_doc_context
+#                 tag_value: doc_context
+#                 conditions:
+#                   - field: Environment
+#                     operator: "=="
+#                     value: PROD
+#                   - field: DEPARTMENT_ACRONYM
+#                     operator: "=="
+#                     value: DOC
+#           - id: department_context_doc
+#             tag_column: department_scope
+#             match_columns:
+#               - DEPARTMENT_ACRONYM
+#             source: rule
+#             key_fields: []
+#             condition_logic: all
+#             first_match_only: true
+#             rules:
+#               - id: department_scope_doc
+#                 tag_value: doc
+#                 conditions:
+#                   - field: DEPARTMENT_ACRONYM
+#                     operator: "=="
+#                     value: DOC
+#         derived_tags:
+#           - id: compatibility_summary
+#             tag_column: compatibility_summary
+#             source: rule
+#             scope: anchor
+#             include_anchor_tags: false
+#             condition_logic: any
+#             first_match_only: false
+#             rules:
+#               - id: prod_doc_summary
+#                 tag_value: prod_doc_candidate
+#                 conditions:
+#                   - field: tag_column
+#                     operator: "=="
+#                     value: compatible
+#                   - field: tag_value
+#                     operator: "=="
+#                     value: windows_doc_prod

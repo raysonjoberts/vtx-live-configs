@@ -1,0 +1,51 @@
+_vtx:
+  schema: v1
+  kind: analysis
+  id: auto_server_profile_tables
+  title: Auto Server Profile Tables
+  description: Profile var/tables CSVs and generate the server profile YAML.
+  owner: default
+  version: 1.0.0
+  tags:
+  - analysis
+  - autogen
+  - server
+  consumers:
+  - usr/scripts/default/auto_server_profile_tables.py
+config:
+  io:
+    inputs:
+    - usr/config/default/data_source_analysis.yaml
+    - var/tables/*.csv
+    outputs:
+    - usr/config/auto_v2/server_profile_tables.yaml
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: auto_server_profile_tables
+      enabled: true
+      inputs:
+      - usr/config/default/data_source_analysis.yaml
+      - var/tables/*.csv
+      outputs:
+      - usr/config/auto_v2/server_profile_tables.yaml
+    dictionary:
+      path: usr/config/default/data_source_analysis.yaml
+    profiling:
+      sample_rows: 400
+      sample_unique_values: 400
+      uniqueness_sample_rows: 2000
+    classification:
+      min_confidence_gap: 1
+    outputs:
+      server_profile_yaml: usr/config/auto_v2/server_profile_tables.yaml
+      server_raw_parquet_output: var/masterdata/raw_server_table_auto.parquet
+      hostname_presence_output: var/analysis/presence_hostname_matrix_auto.csv
+      hostname_presence_html_output: var/analysis/presence_hostname_matrix_auto.html
+      inventory_rankings_output: var/analysis/server_inventory_field_rankings.csv

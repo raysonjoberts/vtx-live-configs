@@ -1,0 +1,11 @@
+log_noise_dashboard:
+  enabled: true
+  window_minutes: 5
+  tail_bytes: 2000000
+  last_days: 7
+  weekday_n: 20
+  z_thresh: 2.0
+  log_dir: var/logs
+  baseline_dir: var/metrics/log_hourly_baselines
+  out_html: var/reporting/log_noise_dashboard.html
+  _vtx_origin: DEFAULT:usr/config/default/log_noise_dashboard.yaml

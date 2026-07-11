@@ -1,0 +1,56 @@
+reports:
+#  - name: consolidated_server_and_application_mapping
+#    input_csv1: /var/tables/views/consolidated_application_view.csv
+#    input_csv1_filters: ACTIVE = Y
+#    input_csv2: /var/tables/consolidated_server_view.csv
+#    dictionary_yaml: VTX_ROOT/usr/config/run/data_source_analysis.yaml
+#    output_csv: onsolidated_server_and_application_mapping
+#
+#    # Program Attribute Mapping:
+#    #   key   = Program Attribute name (as you use it in the program)
+#    #   value = Field Name from the data_source_analysis CSV
+#    program_attribute_mapping:
+#      Hostname: SERVERNAME
+#      Application Name: TITLE_NAME
+#      Application ID: ID
+#      Business Owner: Business Contact - Primary
+#      Technical Owner: Technical Lead
+#      CPU: VMPROCESSORS
+#      Memory: VMMEMORY
+#      Cost Center: COSTCENTER
+#      Virtual / Physical: VIRTUALSERVERYN
+#      Environment: ENVIRONMENT
+#      Databases Used:
+#      Hosting Location:
+#      Change Frequency:
+#      Configuration Files / Paths:
+#      Data Sensitivity / Classification:
+#      Firewall Rules:
+#      Licenses:
+#      Operating System: TYPEOS
+#      Application Components:
+#      Business Function:
+#      Dependencies:
+#      OS/Platform Dependencies:
+#      RPO:
+#      RTO:
+#      Uptime Requirements:
+#      Agent Tools (Encryption, AV, etc):
+#      Infrastructure Dependencies:
+#      IP Address: IPADDRESS
+#      Patch Level:
+#      Architecture Tier/Model:
+#      Business Continuity Plan:
+#      DR Plan:
+#      Interface Mechanisms:
+#      Language / Framework:
+#      Monitoring Tools:
+#      Authentication Method:
+#      Hypervisor:
+#      IOPS Throughput:
+#      Network Bandwidth:
+#      Performance Over Time (CPU/Memory/Storage):
+#      Server Business Unit:
+#      Application Deployment Certification:
+#      TLP Data Clasfification: TLP_ID
+#      Application Updater: Application Inventory Updater

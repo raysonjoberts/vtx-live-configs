@@ -1,0 +1,44 @@
+_vtx:
+#  schema: v1
+#  kind: analysis
+#  id: data_source_analysis_reporting_vtx
+#  title: Data Source Analysis Reporting
+#  description: Generate data source analysis CSV and HTML outputs from CSV/Parquet sources.
+#  owner: run
+#  version: 1.0.0
+#  tags:
+#  - analysis
+#  - reporting
+#  - view_builder
+#  consumers:
+#  - usr/scripts/default/data_source_analysis_vtx.py
+#
+#config:
+#  io:
+#    inputs: []
+#    outputs: []
+#  run:
+#    enabled: true
+#    role: server
+#    log_level: INFO
+#    dry_run: false
+#    fail_fast: false
+#    cwd: ""
+#  payload:
+#    jobs:
+#    - id: consolidated_application_parquet_profile
+#      enabled: true
+#      title: Data Source Analysis - Consolidated Application (Parquet Set)
+#      subtitle: Combined long/wide parquet analysis for consolidated application view.
+#      dictionary_yaml: usr/config/run/data_source_analysis.yaml
+#      inputs:
+#      - var/masterdata/consolidated_application_view_auto*.parquet
+#      outputs:
+#      - var/analysis/consolidated_application_parquet_profile.csv
+#      - var/analysis/consolidated_application_parquet_profile.html
+#      sources:
+#        paths:
+#        - var/masterdata/consolidated_application_view_auto*.parquet
+#        filters: [ACTIVE = Y]
+#      output_csv: var/analysis/consolidated_application_parquet_profile.csv
+#      output_html: var/analysis/consolidated_application_parquet_profile.html

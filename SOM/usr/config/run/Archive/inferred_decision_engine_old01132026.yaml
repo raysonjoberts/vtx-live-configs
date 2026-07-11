@@ -1,0 +1,77 @@
+decision_sets:
+- name: inferred_application_attributes
+  output_name: inferred_application_attributes.csv
+  key:
+    source: app
+    field: ID
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  sources:
+  - alias: app
+    file: applications.csv
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  infer:
+  - field: Inferred Disposition
+    default: null
+    rules:
+    - when:
+        all:
+        - source: app
+          field: ACTIVE
+          op: ==
+          value: Y
+          _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+        _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+      set: Cloud Migration Candidate
+      _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  - field: Inferred Scope
+    default: null
+    rules:
+    - when:
+        all:
+        - source: app
+          field: ACTIVE
+          op: ==
+          value: N
+          _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+        _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+      set: Out-of-Scope
+      _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+- name: inferred_server_attributes
+  output_name: inferred_server_attributes.csv
+  key:
+    source: srv
+    field: RECORDID
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  sources:
+  - alias: srv
+    file: views\consolidated_server_view.csv
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  infer:
+  - field: Inferred Location
+    default: null
+    rules:
+    - when:
+        all:
+        - source: srv
+          field: IPADDRESS
+          op: regex
+          value: ^10\.110\.
+          _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+        _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+      set: CMCC
+      _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+    - when:
+        all:
+        - source: srv
+          field: IPADDRESS
+          op: regex
+          value: ^10\.210\.
+          _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+        _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+      set: SSDC
+      _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+    _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml
+  _vtx_origin: DEFAULT:usr/config/default/inferred_decision_engine_old01132026.yaml

@@ -1,0 +1,46 @@
+version: 1
+jobs:
+- id: Migration Program Attributes Dictionary
+  enabled: true
+  title: Migration Program Attribute Dictionary
+  subtitle: Migration Program Attribute Framework.
+  sources:
+  - usr/config/run/data_source_analysis.yaml
+  list_key: criteria
+  output_html: var/dictionaries/Migration_program_attribute_dictionary.html
+  fields:
+  - key: blocks
+    label: Phase
+  - key: priority_level
+    label: Attribute Priority
+  - key: recommended source
+    label: Recommended Source
+  - key: description
+    label: Description
+  - key: how used
+    label: How Used
+  sort:
+  - key: blocks
+    order: asc
+    custom_order:
+    - Discover
+    - Program Strategy
+    - Rationalize
+    - Migration Planning
+    - Migration Execution
+  - key: priority_level
+    order: asc
+  - key: type
+    custom_order:
+    - application
+    - server
+  - key: attribute
+    order: asc
+  include:
+    phases: []
+    priorities: []
+    types: []
+  exclude:
+    types:
+    - general
+  _vtx_origin: DEFAULT:usr/config/default/publish_dictionaries.yaml

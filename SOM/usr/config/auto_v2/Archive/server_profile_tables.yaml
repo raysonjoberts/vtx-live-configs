@@ -1,0 +1,262 @@
+_vtx:
+  schema: v1
+  kind: report
+  id: server_profile_tables
+  title: Server Profile Tables
+  description: Auto-generated server profile YAML for raw server coalescing and downstream
+    matrix analysis.
+  owner: default
+  version: 1.0.0
+  tags:
+  - server
+  - masterdata
+  - auto
+  consumers:
+  - usr/scripts/default/server_raw_table_builder.py
+  - usr/scripts/analysis/server_inventory_matrix_vtx.py
+config:
+  io:
+    inputs:
+    - var/tables/ssdc-rvtools_vinfo_server_audit.csv
+    - var/tables/cmcc-rvtools_vinfo_server_audit.csv
+    - var/tables/serverinventories.csv
+    - var/tables/servers.csv
+    - var/tables/splunk.csv
+    - var/tables/flexera.csv
+    - var/tables/insightvm.csv
+    outputs:
+    - var/masterdata/raw_server_table_auto.parquet
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    globals:
+      vtx_root: ''
+      default_normalization:
+        hostname:
+          casefold: true
+          fqdn_to_shortname: true
+          strip: true
+        ip_address:
+          strip: true
+    inventories:
+    - id: Server_Profile_Tables_Autodiscovered
+      enabled: true
+      primary_source: ssdc-rvtools_vinfo_server_audit
+      attributes:
+      - Hostname
+      - IP Address
+      - OS
+      - Environment
+      - CPU
+      - Memory
+      - Storage
+      match:
+        condition: any
+        keys:
+        - name: Hostname
+          type: hostname
+        - name: IP Address
+          type: ip_address
+      trust_ranking:
+        Hostname:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+        IP Address:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+        OS:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+        Environment:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - flexera
+        - insightvm
+        - splunk
+        CPU:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+        Memory:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+        Storage:
+        - ssdc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vinfo_server_audit
+        - serverinventories
+        - servers
+        - splunk
+        - flexera
+        - insightvm
+      sources:
+      - id: ssdc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 1
+        path: var/tables/ssdc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Primary IP Address
+          OS: OS according to the VMware Tools
+          Environment: Environment
+          CPU: CPUs
+          Memory: Memory
+          Storage: Total disk capacity MiB
+        filters: []
+      - id: cmcc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 2
+        path: var/tables/cmcc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Primary IP Address
+          OS: OS according to the VMware Tools
+          Environment: Environment
+          CPU: CPUs
+          Memory: Memory
+          Storage: Total disk capacity MiB
+        filters: []
+      - id: serverinventories
+        enabled: true
+        priority: 3
+        path: var/tables/serverinventories.csv
+        format: csv
+        map:
+          Hostname: SERVERNAME
+          IP Address: IPADDRESS
+          OS: TYPEOS
+          Environment: ENVIRONMENT
+          CPU: VMPROCESSORS
+          Memory: VMMEMORY
+          Storage: VMSTORAGE
+        filters: []
+      - id: servers
+        enabled: true
+        priority: 4
+        path: var/tables/servers.csv
+        format: csv
+        map:
+          Hostname: SERVERNAME
+          IP Address: IPADDRESS
+          OS: TYPEOS
+          Environment: ENVIRONMENT
+          CPU: VMPROCESSORS
+          Memory: VMMEMORY
+          Storage: VMSTORAGE
+        filters: []
+      - id: splunk
+        enabled: true
+        priority: 5
+        path: var/tables/splunk.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: sourceIp
+          OS: os
+          Environment: null
+          CPU: sourceIp
+          Memory: sourceIp
+          Storage: sourceIp
+        filters: []
+      - id: flexera
+        enabled: true
+        priority: 6
+        path: var/tables/flexera.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: IP Address
+          OS: Host Name
+          Environment: Last Attempt
+          CPU: CPU
+          Memory: Memory Tooltip
+          Storage: diskutil_tooltip
+        filters: []
+      - id: insightvm
+        enabled: true
+        priority: 7
+        path: var/tables/insightvm.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Asset IP Address
+          OS: Asset OS Name
+          Environment: Asset Names
+          CPU: Asset Names
+          Memory: Asset Names
+          Storage: Asset Names
+        filters: []
+    jobs:
+    - id: server_raw_table_auto
+      enabled: true
+      inventory_id: Server_Profile_Tables_Autodiscovered
+      outputs:
+        inventory_table:
+          path: var/masterdata/raw_server_table_auto.parquet
+          include_presence_flags: false
+          include_value_provenance: false
+          include_ranked_values: false
+          ranked_values_delimiter: ;
+          fields:
+          - Hostname
+          - IP Address
+          - OS
+          - Environment
+          - CPU
+          - Memory
+          - Storage
+        inventory_rankings:
+          path: var/analysis/server_inventory_field_rankings.csv
+          include_presence_flags: false
+          include_value_provenance: false
+          include_ranked_values: false
+          ranked_values_delimiter: ;
+          fields:
+          - Hostname
+          - IP Address
+          - OS
+          - Environment
+          - CPU
+          - Memory
+          - Storage
+        presence_matrix_reports:
+        - id: hostname_presence
+          attribute: Hostname
+          normalize_as: hostname
+          source_of_truth: ssdc-rvtools_vinfo_server_audit
+          display_attributes:
+          - IP Address
+          path: var/analysis/presence_hostname_matrix_auto.csv
+          html_path: var/analysis/presence_hostname_matrix_auto.html

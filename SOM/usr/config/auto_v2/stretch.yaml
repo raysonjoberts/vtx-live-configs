@@ -1,0 +1,37 @@
+stretches:
+- name: count_change_dashboards__app_inventory_changes
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: var/reporting/application_inventory_changes.html
+  external_file: C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_data/Reports/Dashboards/application_inventory_changes.html
+  sheet_name: Sheet1
+  key_columns: []
+  xlsx_truncate_extra_rows: true
+  xlsx_truncate_extra_cols: false
+- name: count_change_dashboards__server_inv_changes
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: var/reporting/server_inventory_changes.html
+  external_file: C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_data/Reports/Dashboards/server_inventory_changes.html
+  sheet_name: Sheet1
+  key_columns: []
+  xlsx_truncate_extra_rows: true
+  xlsx_truncate_extra_cols: false
+- name: visual_program_attribute_mapping__consolidated_server_and_application_mapping_visual
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: var/analysis/consolidated_server_and_application_mapping.html
+  external_file: C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_data/Reports/Dashboards/consolidated_server_and_application_mapping.html
+  sheet_name: Sheet1
+  key_columns: []
+  xlsx_truncate_extra_rows: true
+  xlsx_truncate_extra_cols: false
+- name: visual_program_attribute_mapping__Archer to AIS Field Mapping_visual
+  sync_type: internal_to_external
+  csv_xlsx_convert: false
+  internal_file: var/analysis/archer_program_attributes.html
+  external_file: C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_data/Reports/Dashboards/archer_program_attributes.html
+  sheet_name: Sheet1
+  key_columns: []
+  xlsx_truncate_extra_rows: true
+  xlsx_truncate_extra_cols: false

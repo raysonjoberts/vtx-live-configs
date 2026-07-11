@@ -1,0 +1,581 @@
+scheduler:
+  max_workers: 4
+
+  # Global throttle for backbone checks (checks/sec).
+  # With 1.0, you check ~1 backbone job per second (smoothly).
+  backbone_check_hz: 1.0
+
+
+  # tick rate for the main loop / backbone checking
+  backbone_tick_hz: 20
+
+  # target wall-clock time spent per second on backbone freshness checks (ms)
+  backbone_target_ms_per_sec: 25
+
+  # how many stat samples to benchmark at startup (role-filtered)
+  backbone_stat_benchmark_samples: 12
+
+  # how many total stat calls to time during benchmark (higher = steadier)
+  backbone_stat_benchmark_iters: 200
+
+# ------------------------------------------------------------
+# Cron / ad-hoc jobs (schedule-driven)
+# ------------------------------------------------------------
+cron_jobs:
+
+
+#  - id: Run VTX_SYNC
+#    enabled: true
+#    role: server
+#    script: repos/vtx-dev/vtx_sync.py
+#    args:
+#    cwd: "" # default BTDM_ROOT
+#    env: { }
+#    schedule:
+#      cron: "0 6 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
+#    timeout_seconds: 1800
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 5 # random 0..5s delay before run
+#    run_on_start: true
+
+  - id: Run Snapshot Statistics
+    enabled: true
+    role: server
+    script: usr/scripts/default/snapshot_statistics.py
+    args: --mode=auto
+    cwd: "" # default BTDM_ROOT
+    env: { }
+    schedule:
+      cron: "30 22 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
+    timeout_seconds: 1800
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 5 # random 0..5s delay before run
+    run_on_start: false
+
+  - id: Run Data Source Type Profiler
+    enabled: true
+    role: server
+    script: usr/scripts/default/datasource_type_profiler.py
+    args: --mode=auto
+    cwd: "" # default BTDM_ROOT
+    env: { }
+    schedule:
+      cron: "1 12 * * 0" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
+    timeout_seconds: 1800
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 5 # random 0..5s delay before run
+    run_on_start: false
+
+
+  - id: Copy var/interactive /views to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/interactive/views/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "41 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy var/tables/views to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/tables/views/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "45 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy var/interactive to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/interactive/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "45 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy var/tables to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/tables/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "40 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+
+  - id: Move zipped logs to log archive
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/logs/*.gz"
+      --dest "var/logarchive"
+      --mode move
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "47 * * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Move zipped logs to log archive
+    enabled: true
+    role: client
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/logs/*.gz"
+      --dest "var/logarchive"
+      --mode move
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "47 * * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+#  - id: Run AWS Pricing Bulk Refresh
+#    enabled: true
+#    role: server
+#    script: usr/scripts/aws_reporting/aws_pricing_bulk_refresh.py
+#    args: >
+#      --regions us-east-1
+#    schedule:
+#      cron: "0 22 * * 5"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+#
+#  - id: Run AWS Pricing Report Builder
+#    enabled: true
+#    role: server
+#    script: usr/scripts/aws_reporting/aws_pricing_report_builder.py
+#    args: 
+#    schedule:
+#      cron: "0 23 * * 5"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+#
+#  - id: Run Orchestrator Status
+#    enabled: true
+#    role: server
+#    script: usr/scripts/ops/orchestrator_status_vtx.py
+#    args: 
+#    schedule:
+#      cron: "10 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+#
+#  - id: Run VTX Job Checker
+#    enabled: true
+#    role: server
+#    script: usr/scripts/ops/vtx_job_checker.py
+#    args: 
+#    schedule:
+#      cron: "10 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+#
+#  - id: Run Config Compiler failthrough
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/config_compiler.py
+#    args: 
+#    schedule:
+#      cron: "0 */1 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Run workflow autogen failthrough
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/workflow_autogen.py
+#    args: 
+#    schedule:
+#      cron: "0 */6 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+  - id: Publish Migration Data Dictionary
+    enabled: true
+    role: server
+    script: usr/scripts/default/publish_dictionaries.py
+    args: --job "Migration Program Attributes Dictionary"
+    cwd: "" # default BTDM_ROOT
+    env: { }
+    schedule:
+      cron: "0 */6 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
+    timeout_seconds: 1800
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 5 # random 0..5s delay before run
+    run_on_start: false
+
+# ------------------------------------------------------------
+# Backbone jobs (orchestrated, freshness-driven)
+# - inputs/outputs defined here so orchestrator can check mtimes directly
+# - scripts can be gradually refactored to become minimalist + per-artifact
+# ------------------------------------------------------------
+backbone_jobs:
+  - id: Run Intake Processor
+    enabled: true
+    role: server
+    script: usr/scripts/default/intake_processor.py
+    args: >
+      --mode=auto
+    #check_every_seconds: 60
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: any_file_in_dir
+    watch_dirs:
+      - var/customerdata
+    watch_glob:
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+  - id: Run config_compiler
+    enabled: true
+    role: server
+    script: usr/scripts/default/config_compiler.py
+    args: 
+    #check_every_seconds: 60
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_input_newer_than_last_success_marker
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    watch_dirs:
+      - usr/config/default
+      - usr/config/auto_v2
+      - usr/config/custom
+    watch_glob:
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+#  - id: Run Config Tables to Config Files
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/config_tables_to_conf.py
+#    args: >
+#      --mode=auto
+#    #check_every_seconds: 60
+#    settle_seconds: 2
+#    debounce_seconds: 5
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any
+#    require_inputs_exist: true
+#    inputs:
+#      - "bin/ui/config_table.xlsx"
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    outputs:
+#      # choose the exact output file path if stable, otherwise use a marker file approach later
+#      - "usr/config/default/monitor.conf"
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+
+  - id: Run Datasource Analysis Mapping Report
+    enabled: true
+    role: server
+    script: usr/scripts/default/data_source_analysis_mapping.py
+    args: --mode=auto
+    #check_every_seconds: 60
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any
+    require_inputs_exist: true
+    inputs:
+      - "var/tables/views/consolidated_application_view.csv"
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    outputs:
+      - var/analysis/consolidated_server_and_application_mapping.csv
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+  - id: Run Attribute Reporting Processor
+    enabled: true
+    role: server
+    script: usr/scripts/default/attribute_reporting_processor.py
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any # or all
+    inputs:
+      - var/tables/views/consolidated_application_view.csv
+      - var/tables/views/consolidated_server_view.csv
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    #watch_glob: "*.yaml"        # optional; omit to include all files
+    watch_recursive: true         # optional; default false
+    #check_every_seconds: 30
+    settle_seconds: 2
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+  - id: Run Program Timeline Report
+    enabled: true
+    role: server
+    script: usr/scripts/default/program_timeline.py
+    args: 
+    #check_every_seconds: 60
+    settle_seconds: 2
+    debounce_seconds: 5
+    rule: mtime_input_newer_than_last_success_marker
+    require_inputs_exist: true
+    inputs:
+      - "usr/config/data_source_analysis.yaml"
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+
+#  - id: Run Field Profile Report
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/field_profile_report.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - var/tables/views/consolidated_application_view.csv
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 2
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+  - id: Run Migration Program Dictionary
+    enabled: true
+    role: server
+    script: usr/scripts/default/migration_program_dictionary.py
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any # or all
+    inputs:
+      - usr/config/run/migration_program_dictionary.yaml
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    #watch_glob: "*.yaml"        # optional; omit to include all files
+    watch_recursive: true         # optional; default false
+    #check_every_seconds: 30
+    settle_seconds: 2
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+
+#  - id: Run Program Task Generator
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/tasks_generator.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - var/analysis/consolidated_server_and_application_mapping.csv
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 5
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+
+  - id: Run program attribute reporting 
+    enabled: true
+    role: server
+    script: usr/scripts/default/attribute_reporting_processor.py
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any # or all
+    inputs:
+      - var/tables/views/consolidated_application_view.csv
+      - var/tables/views/consolidated_server_view.csv
+      - usr/config/run/attribute_reporting.yaml
+      - var/tables/insightvm.csv
+      - var/tables/defender_serverinventory.csv
+      - var/tables/flexera.csv
+    config_inputs:
+      - usr/config/run/orchestrator.yaml
+    #watch_glob: "*.yaml"        # optional; omit to include all files
+    watch_recursive: true         # optional; default false
+    #check_every_seconds: 30
+    settle_seconds: 5
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+
+#  - id: Run Workflow Autogen
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/workflow_autogen.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    watch_dirs:
+#      - usr/config/run
+#    outputs:
+#      - usr/config/auto_v2/orchestrator.yaml
+#      - usr/config/auto_v2/stretch.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 5
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+#    run_on_start: true
+#
+
+#  - id: Run Server Inventory Matrix
+#    enabled: true
+#    role: server
+#    script: usr/scripts/analysis/server_inventory_matrix_vtx.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    watch_dirs:
+#      - var/tables
+#    outputs:
+#      - var/masterdata/unified_server_inventory.csv
+#      - var/analysis/presence_hostname_matrix.csv
+#      - var/analysis/presence_hostname_matrix.html
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: false         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 30
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+#  - id: Run Count Change Dashboard
+#    enabled: true
+#    role: server
+#    script: usr/scripts/dashboards/count_change_dashboard_vtx.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - var/tables/views/consolidated_application_view.csv
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 30
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+#
+#  - id: Run Program Approximation Engine
+#    enabled: true
+#    role: server
+#    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - var/masterdata/consolidated_application_view_long.parquet
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 30
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
+
+pipeline_jobs:
+- id: Data Handling Pipeline
+  enabled: true
+  role: server
+  cooldown_seconds: 60
+  trigger_markers:
+  - var/state/orchestrator_markers/Run_Intake_Processor.marker
+  - var/state/orchestrator_markers/Run_config_compiler.marker
+  stages:
+  - id: Raw Application Tables
+    script: usr/scripts/default/application_raw_table_builder.py
+  - id: Raw Server Tables
+    script: usr/scripts/default/server_raw_table_builder.py
+  - id: Master Tables
+    script: usr/scripts/default/master_table_builder_vtx.py
+  - id: Approximation Engine
+    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
+ # - id: Inferred Decisions Engine
+ #   script: usr/scripts/default/inferred_decisions_engine.py
+  - id: Tag Engine
+    script: usr/scripts/default/tag_engine.py
+  - id: Master Views
+    script: usr/scripts/default/master_view_builder_vtx.py

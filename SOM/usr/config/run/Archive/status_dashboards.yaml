@@ -1,0 +1,168 @@
+jobs:
+  - id: "app_inventory_status"
+    title: "Application Inventory"
+    # Where to write this job’s HTML
+    output:
+      dir: "var/reporting"
+      file: "application_inventory_status.html"
+
+    # Data locations for THIS job
+    sources:
+      # 1) The always-current snapshot (no date suffix)
+      current_file: "var/tables/views/consolidated_application_view.csv"
+      # 2) The historical daily snapshots (yyyyMMdd in name)
+      snapshots_dir: "var/dailysnapshot"
+      snapshots_pattern: "consolidated_application_view_%Y%m%d.csv"   # strftime-style
+      lookback_days: 30                                      # how far back to search
+
+    # How to count “applications” for denominators in this job
+    application_key: "ID"   # unique app id/column name in the CSV
+
+    # Optional: rename native columns for display only
+    column_aliases:
+      SERVERNAME: "Server"
+      TECH_CONTACT: "Technical Contact"
+      TIER: "Tier"
+
+    # Optional: job-wide row filters applied before any panel logic
+    filters:
+      - { field: "ACTIVE", op: "in", value: ["Y"] }
+
+    # Visual/theme knobs for this job (optional)
+    theme:
+      dark: true
+      gauge_thresholds:
+        - { max: 0.50, color: "red" }
+        - { max: 0.80, color: "orange" }
+        - { max: 1.00, color: "green" }
+
+    panels:
+      - key: "with_server"
+        label: "With Server"
+        field: "SERVERNAME"
+        condition: { op: "is_not_null" }
+        denominator: "unique_applications"          # or "total_rows"
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+            # Timeline reads ONLY from snapshots; fraction/gauge read from current_file
+            missing_days:
+              drop_missing_days: true               # omit absent files
+              min_count_threshold: 1                # also hide zero-numerator days
+
+      - key: "with_tier"
+        label: "With Tier"
+        field: "TIER"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+            missing_days: { drop_missing_days: true }
+
+      - key: "with_updater"
+        label: "With Application Inventory Updater"
+        field: "Application Inventory Updater"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+
+      - key: "with_business_owner"
+        label: "With Business Owner (Business Contact - Primary)"
+        field: "Business Contact - Primary"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+      
+      - key: "with_tech_owner"
+        label: "With Technical Owner (Technical Lead)"
+        field: "Technical Lead"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+
+  - id: "server_inventory_status"
+    title: "Server Inventory"
+    # Where to write this job’s HTML
+    output:
+      dir: "var/reporting"
+      file: "server_inventory_status.html"
+
+    # Data locations for THIS job
+    sources:
+      # 1) The always-current snapshot (no date suffix)
+      current_file: "var/tables/views/consolidated_server_view.csv"
+      # 2) The historical daily snapshots (yyyyMMdd in name)
+      snapshots_dir: "var/dailysnapshot"
+      snapshots_pattern: "consolidated_server_view_%Y%m%d.csv"   # strftime-style
+      lookback_days: 30                                      # how far back to search
+
+    # How to count “applications” for denominators in this job
+    application_key: "SERVERNAME"   # Anchor Field
+
+    # Optional: rename native columns for display only
+    column_aliases:
+      SERVERNAME: "Server"
+      TECH_CONTACT: "Technical Contact"
+      TIER: "Tier"
+
+    # Optional: job-wide row filters applied before any panel logic
+    #filters:
+    #  - { field: "ACTIVE", op: "in", value: ["Y"] }
+
+    # Visual/theme knobs for this job (optional)
+    theme:
+      dark: true
+      gauge_thresholds:
+        - { max: 0.50, color: "red" }
+        - { max: 0.80, color: "orange" }
+        - { max: 1.00, color: "green" }
+
+    panels:
+      - key: "with_application"
+        label: "With Application"
+        field: "Application"
+        condition: { op: "is_not_null" }
+        denominator: "unique_applications"          # or "total_rows"
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+            # Timeline reads ONLY from snapshots; fraction/gauge read from current_file
+            missing_days:
+              drop_missing_days: true               # omit absent files
+              min_count_threshold: 1                # also hide zero-numerator days
+
+      - key: "with_environment"
+        label: "With Environment"
+        field: "ENVIRONMENT"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true
+            missing_days: { drop_missing_days: true }
+
+      - key: "with_location"
+        label: "With Location"
+        field: "Inferred Location"
+        condition: { op: "is_not_null" }
+        visuals:
+          fraction: { show: true }
+          gauge: { show: true }
+          timeline:
+            show: true

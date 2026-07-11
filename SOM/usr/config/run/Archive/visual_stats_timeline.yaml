@@ -1,0 +1,57 @@
+reports:
+- name: consolidated_application_view_stats
+  input_table: var/statistics/consolidated_application_view_stats.csv
+  output_html: var/reporting/consolidated_application_view_stats_timeline.html
+  program_attribute_mapping_yaml: usr/config/run/data_source_analysis_mapping.yaml
+  _autogen:
+    orchestrator:
+      id: Visual Stats Timeline - {name}
+      job_type: backbone
+      role: server
+      rule: mtime_input_newer_than_last_success_marker
+      marker_match: any
+      script: usr/scripts/default/visual_data_source_analysis.py
+      args: []
+      inputs:
+      - '{input_table}'
+      watch_recursive: true
+      settle_seconds: 2
+      timeout_seconds: 120
+      retries: 1
+      backoff_seconds: 10
+      jitter_seconds: 0
+    stretch:
+      sync_type: internal_to_external
+      internal_file: '{output_html}'
+      external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data
+        Dog\Correlated_Data\Reports\Dashboards
+      csv_xlsx_convert: false
+  _vtx_origin: DEFAULT:usr/config/default/visual_stats_timeline.yaml
+- name: consolidated_server_view_stats
+  input_table: var/statistics/consolidated_server_view_stats.csv
+  output_html: var/reporting/consolidated_server_view_stats_timeline.html
+  program_attribute_mapping_yaml: usr/config/run/data_source_analysis_mapping.yaml
+  _autogen:
+    orchestrator:
+      id: Visual Stats Timeline - {name}
+      job_type: backbone
+      role: server
+      rule: mtime_input_newer_than_last_success_marker
+      marker_match: any
+      script: usr/scripts/default/visual_data_source_analysis.py
+      args: []
+      inputs:
+      - '{input_table}'
+      watch_recursive: true
+      settle_seconds: 2
+      timeout_seconds: 120
+      retries: 1
+      backoff_seconds: 10
+      jitter_seconds: 0
+    stretch:
+      sync_type: internal_to_external
+      internal_file: '{output_html}'
+      external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data
+        Dog\Correlated_Data\Reports\Dashboards
+      csv_xlsx_convert: false
+  _vtx_origin: DEFAULT:usr/config/default/visual_stats_timeline.yaml

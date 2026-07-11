@@ -1,0 +1,52 @@
+# -----------------------------------------------------------------------------------
+# Scheduled Tasks Configuration
+#
+# Each task should be defined under the `tasks:` section as a list item.
+# Fields:
+#   - name:        Unique identifier for the task
+#   - script:      Absolute path to the Python script to run
+#   - schedule:    One of the following formats:
+#                  * every <N> min       e.g., every 5 min
+#                  * every <N> hour      e.g., every 1 hour
+#                  * every <N> days      e.g., every 2 days
+#                  * daily at HH:MM      e.g., daily at 06:00 (24-hour format, zero-padded)
+#                  * once at HH:MM       e.g., once at 13:30
+#   - enabled:     true or false
+#   - platform:    Comma-separated list of target platforms. Options:
+#                  * windows
+#                  * mac
+#                  * linux
+#                  * all
+#   - silent:      (optional) If true, uses pythonw.exe instead of python.exe (Windows only)
+# -----------------------------------------------------------------------------------
+
+
+
+
+tasks:
+
+
+
+  - name: UpdateMonitor
+    script: C:\BTDM_7.1\usr\scripts\default\update_monitor.py
+    schedule: "daily at 01:00"
+    enabled: true
+    silent: true
+
+#  - name: _hourly_tasks
+#    script: C:\BTDM_7.1\usr\utils\interval_hourly.py
+#    schedule: "every 60 minutes"
+#    enabled: true
+#    silent: true
+#
+#  - name: _daily_tasks
+#    script: C:\BTDM_7.1\usr\utils\interval_daily.py
+#    schedule: "daily at 01:00"
+#    enabled: true
+#    silent: true
+#
+#  - name: _5m_tasks
+#    script: C:\BTDM_7.1\usr\utils\interval_five_m.py
+#    schedule: "every 5 minutes"
+#    enabled: true
+#    silent: true

@@ -1,0 +1,173 @@
+inventories:
+  - id: servers_core
+    enabled: true
+    output: var/tables/views/asset_inventory_servers.csv
+
+    # Canonical attributes you want in the final inventory (order matters for output)
+    attributes:
+      - Asset ID
+      - Hostname
+      - IP Address
+      - OS
+      - CPU
+      - Memory GB
+      - Storage GB
+      - Source Winner
+
+    # How we detect duplicates across sources (canonical attribute names)
+    # You can specify multiple keys; first match wins.
+    match:
+      keys:
+        - Hostname          # canonical name
+        - IP Address        # fallback
+      hostname_compare: shortname  # shortname | fqdn | exact (shortname recommended)
+
+    sources:
+      - id: ServerInventory
+        enabled: true
+        priority: 1
+        prefix: SI
+        path: var/tables/views/consolidated_server_view.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: SERVERNAME
+          IP Address: IPADDRESS
+          OS: TYPEOS
+          CPU: VMPROCESSORS
+          Memory GB: VMMEMORY
+          Storage GB: VMSTORAGE
+
+      - id: SSDC_RVTools_vinfo
+        enabled: true
+        priority: 2
+        prefix: SSDC_RVT_vinfo
+        path: var/tables/ssdc-rvtools_vinfo_server_audit.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: VM
+          IP Address: Primary IP Address
+          OS: OS according to the VMware Tools
+          CPU: CPUs
+          Memory GB: Memory
+
+      - id: CMCC_RVTools_vinfo
+        enabled: true
+        priority: 3
+        prefix: SSDC_RVT_vinfo
+        path: var/tables/cmcc-rvtools_vinfo_server_audit.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: VM
+          IP Address: Primary IP Address
+          OS: OS according to the VMware Tools
+          CPU: CPUs
+          Memory GB: Memory
+
+      - id: SSDC_RVTools_vpartition
+        enabled: true
+        priority: 4
+        prefix: SSDC_RVT_vinfo
+        path: var/tables/ssdc-rvtools_vpartition_server_audit.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: Server
+          Storage GB: used_(gb)
+
+      - id: CMCC_RVTools_vpartition
+        enabled: true
+        priority: 5
+        prefix: SSDC_RVT_vinfo
+        path: var/tables/cmcc-rvtools_vpartition_server_audit.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: Server
+          Storage GB: used_(gb)
+
+      - id: insightvm
+        enabled: true
+        priority: 6
+        prefix: R7IVM
+        path: var/tables/insightvm.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: Asset Names
+          IP Address: Asset IP Address
+          OS: Asset OS Family
+          
+      - id: flexera
+        enabled: true
+        priority: 7
+        prefix: FLX
+        path: var/tables/flexera.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: Host Name
+          IP Address: IP Address
+          OS: Device Type
+
+      - id: defender
+        enabled: true
+        priority: 7
+        prefix: DEF
+        path: var/tables/defender_serverinventory.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: DeviceName
+          IP Address:
+          OS: OSPlatform
+
+      - id: splunk
+        enabled: true
+        priority: 8
+        prefix: SPL
+        path: var/tables/splunk.csv
+        format: csv
+
+        # Which canonical attribute to use for the asset_id’s suffix
+        id_attribute: Hostname
+
+        # Map canonical attribute -> source column name
+        map:
+          Hostname: Hostname
+          IP Address: sourceIp
+          OS: os

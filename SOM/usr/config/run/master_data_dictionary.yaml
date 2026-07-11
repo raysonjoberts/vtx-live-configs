@@ -1,0 +1,779 @@
+enterprise_application_metadata_model:
+  version: 1.0
+  entity: application
+  programs_and_domains:
+  - Portfolio_Management
+  - Enterprise_Architecture
+  - ITSM_Operations
+  - Finance_FinOps
+  - Vendor_Contract_Management
+  - Security_GRC
+  - BCDR_Continuity
+  - Data_Governance_Privacy
+  - Engineering_DevOps
+  - Monitoring_Observability
+  - Migration_Transformation
+  - Audit_Compliance
+  authoritative_source_types:
+  - Application_Portfolio_System
+  - CMDB
+  - ITSM
+  - EA_Repository
+  - ERP_Finance
+  - Vendor_Contracts_Repository
+  - GRC_Risk_System
+  - BCDR_System
+  - Data_Catalog
+  - IAM_Directory
+  - Observability_Platform
+  - Code_Repo_CICD
+  - Cloud_Platform_APIs
+  domains:
+  - domain: Identity_Classification
+    attributes:
+    - attribute: Application_ID
+      definition: 'Unique, stable identifier for an application used to reconcile
+        records across tools. Should not be reused or reassigned.
+
+        '
+      authoritative_source:
+        type: Application_Portfolio_System
+        typical_systems:
+        - LeanIX
+        - Apptio_TBM_APM
+        - ServiceNow_APM
+        - Custom App Registry
+      program_usage:
+        Portfolio_Management:
+          how_used: Primary key for portfolio reporting, lifecycle tracking, rationalization.
+        Enterprise_Architecture:
+          how_used: Links architecture artifacts (diagrams, dependencies) to the app
+            entity.
+        ITSM_Operations:
+          how_used: Correlates incidents/changes/requests to the correct application
+            record.
+        Finance_FinOps:
+          how_used: Mapping key for chargeback/showback, TCO, and budgeting rollups.
+        Security_GRC:
+          how_used: Links risks, policies, exceptions, and audit evidence to the application.
+        BCDR_Continuity:
+          how_used: Links tier/RTO/RPO and DR test evidence to the application.
+        Migration_Transformation:
+          how_used: Anchor ID for wave planning, status, cutover checklists, reporting.
+    - attribute: Application_Name
+      definition: 'Human-readable name for the application. Prefer uniqueness; allow
+        aliases if needed.
+
+        '
+      authoritative_source:
+        type: Application_Portfolio_System
+        typical_systems:
+        - LeanIX
+        - ServiceNow_APM
+        - Custom App Registry
+      program_usage:
+        Portfolio_Management:
+          how_used: Executive reporting label, rationalization workshops, portfolio
+            dashboards.
+        ITSM_Operations:
+          how_used: Visible reference in tickets, service communications, outage notifications.
+        Migration_Transformation:
+          how_used: Communication artifact for waves, cutovers, stakeholder updates.
+    - attribute: Application_Description
+      definition: 'Plain-language description of business purpose and major functionality.
+
+        '
+      authoritative_source:
+        type: Application_Portfolio_System
+        typical_systems:
+        - LeanIX
+        - ServiceNow_APM
+      program_usage:
+        Portfolio_Management:
+          how_used: Helps rationalization and duplicate-app identification.
+        Audit_Compliance:
+          how_used: Scope justification and evidence context for audits.
+    - attribute: Business_Capability
+      definition: 'The business capability/value-stream the application enables (e.g.,
+        Order Management).
+
+        '
+      authoritative_source:
+        type: EA_Repository
+        typical_systems:
+        - LeanIX
+        - Ardoq
+        - EA tool
+      program_usage:
+        Strategy_Transformation:
+          how_used: Capability heatmaps, investment alignment, gap analysis.
+        Portfolio_Management:
+          how_used: Redundancy detection and app rationalization by capability.
+    - attribute: Business_Function
+      definition: 'Organizational functional area served (HR, Finance, Sales, etc.).
+        Less precise than capability.
+
+        '
+      authoritative_source:
+        type: Application_Portfolio_System
+        typical_systems:
+        - ServiceNow_APM
+        - Custom App Registry
+      program_usage:
+        Portfolio_Management:
+          how_used: High-level categorization and reporting slices.
+        Migration_Transformation:
+          how_used: Stakeholder grouping and communications planning.
+    - attribute: Lifecycle_State
+      definition: 'Current lifecycle position (e.g., Strategic/Invest/Tolerate/Migrate/Retire).
+
+        '
+      authoritative_source:
+        type: Portfolio_Governance
+        typical_systems:
+        - APM governance workflow
+        - Steering committee decisions
+      program_usage:
+        Portfolio_Management:
+          how_used: Roadmaps, funding decisions, and application rationalization outcomes.
+        Finance_FinOps:
+          how_used: Opex/Capex planning and cost optimization focus.
+        Migration_Transformation:
+          how_used: Prioritization and sequencing.
+    - attribute: Environment_Scope
+      definition: 'Which environments exist for the app (Prod/NonProd) and naming
+        conventions.
+
+        '
+      authoritative_source:
+        type: CMDB
+        typical_systems:
+        - ServiceNow_CMDB
+      program_usage:
+        ITSM_Operations:
+          how_used: Change planning and incident routing (prod vs non-prod impacts).
+        Security_GRC:
+          how_used: Control requirements and access policies differ by environment.
+        Migration_Transformation:
+          how_used: Non-prod first patterns, UAT planning, cutover sequencing.
+  - domain: Ownership_Accountability
+    attributes:
+    - attribute: Business_Owner
+      definition: 'Single accountable individual for business outcomes, budget sponsorship,
+        and lifecycle decisions.
+
+        '
+      authoritative_source:
+        type: CMDB
+        typical_systems:
+        - ServiceNow_CMDB
+        - ServiceNow_APM
+      program_usage:
+        ITSM_Operations:
+          how_used: Informed for major incidents; consulted/approver for high-risk
+            changes.
+        Finance_FinOps:
+          how_used: Accountable stakeholder for budget forecasting and spend approvals.
+        Migration_Transformation:
+          how_used: Approves migration participation, downtime windows, and communications.
+        BCDR_Continuity:
+          how_used: Approves tiering, RTO/RPO targets, and DR strategy acceptance.
+        Audit_Compliance:
+          how_used: Executive attestation and evidence sign-off where required.
+    - attribute: Technical_Owner
+      definition: 'Accountable technical SME for how the application runs and how
+        changes affect it.
+
+        '
+      authoritative_source:
+        type: CMDB
+        typical_systems:
+        - ServiceNow_CMDB
+      program_usage:
+        ITSM_Operations:
+          how_used: Escalation point and accountable party for remediation decisions.
+        Enterprise_Architecture:
+          how_used: Consulted for runtime, integrations, and constraints.
+        Migration_Transformation:
+          how_used: Leads technical readiness, UAT validation, and cutover procedures.
+    - attribute: Support_Group
+      definition: 'Operational team responsible for day-to-day support (assignment
+        group).
+
+        '
+      authoritative_source:
+        type: ITSM
+        typical_systems:
+        - ServiceNow_ITSM
+      program_usage:
+        ITSM_Operations:
+          how_used: Primary routing for incidents/requests/changes.
+        Migration_Transformation:
+          how_used: Scheduling, runbook ownership, post-cutover hypercare.
+    - attribute: Executive_Sponsor
+      definition: 'Senior leader sponsoring strategic investment or transformation
+        for the application.
+
+        '
+      authoritative_source:
+        type: Portfolio_Governance
+        typical_systems:
+        - Steering committee records
+        - APM governance workflow
+      program_usage:
+        Strategy_Transformation:
+          how_used: Decision escalation, funding advocacy, priority arbitration.
+    - attribute: Owning_Department
+      definition: 'The organizational unit primarily accountable for the business
+        outcome of the app.
+
+        '
+      authoritative_source:
+        type: ERP_Finance
+        typical_systems:
+        - SAP
+        - Oracle
+        - Workday_Finance
+      program_usage:
+        Finance_FinOps:
+          how_used: Rollups for budget/actuals and cost allocations.
+        Portfolio_Management:
+          how_used: Ownership reporting, rationalization accountability.
+  - domain: Financial_Commercial
+    attributes:
+    - attribute: Cost_Center
+      definition: 'Financial allocation code used for chargeback/showback and budgeting.
+
+        '
+      authoritative_source:
+        type: ERP_Finance
+        typical_systems:
+        - SAP
+        - Oracle
+        - Workday_Finance
+      program_usage:
+        Finance_FinOps:
+          how_used: Chargeback/showback, budget planning, variance analysis.
+        Portfolio_Management:
+          how_used: TCO views and investment allocation.
+    - attribute: Budget_Owner
+      definition: 'Person accountable for approving spend associated with the application
+        (may match Business Owner).
+
+        '
+      authoritative_source:
+        type: ERP_Finance
+        typical_systems:
+        - SAP
+        - Oracle
+        - Workday_Finance
+      program_usage:
+        Finance_FinOps:
+          how_used: Approvals, forecasting, budgeting workflows.
+        Migration_Transformation:
+          how_used: Approves funding for migration/modernization activities.
+    - attribute: Annual_Run_Cost
+      definition: 'Estimated annual operating cost (licenses + hosting + support +
+        vendors).
+
+        '
+      authoritative_source:
+        type: ERP_Finance
+        typical_systems:
+        - SAP
+        - Oracle
+        - Apptio
+      program_usage:
+        Finance_FinOps:
+          how_used: Forecasts, optimization targets, and profitability analysis.
+        Portfolio_Management:
+          how_used: Rationalization decisions and investment tradeoffs.
+    - attribute: Vendor
+      definition: 'Primary vendor(s) providing the application, hosting, or critical
+        components.
+
+        '
+      authoritative_source:
+        type: Vendor_Contracts_Repository
+        typical_systems:
+        - Contract repository
+        - Vendor management system
+      program_usage:
+        Vendor_Contract_Management:
+          how_used: Relationship ownership, vendor consolidation, renewal planning.
+        Security_GRC:
+          how_used: Third-party risk assessments and due diligence tracking.
+        Migration_Transformation:
+          how_used: Licensing/contract constraints and migration windows.
+    - attribute: Contract_Renewal_Date
+      definition: 'Next contractual renewal/termination milestone date.
+
+        '
+      authoritative_source:
+        type: Vendor_Contracts_Repository
+      program_usage:
+        Vendor_Contract_Management:
+          how_used: Renewal workflow triggers and negotiation timelines.
+        Migration_Transformation:
+          how_used: Timing migrations to avoid renewals or align with exit plans.
+        Portfolio_Management:
+          how_used: Rationalization timing and roadmap constraints.
+    - attribute: License_Model
+      definition: 'License metric/terms (user-based, core-based, subscription, BYOL,
+        etc.).
+
+        '
+      authoritative_source:
+        type: Vendor_Contracts_Repository
+      program_usage:
+        Finance_FinOps:
+          how_used: Cost modeling and true-up planning.
+        Migration_Transformation:
+          how_used: Cloud licensing strategy (BYOL vs new subscription).
+  - domain: Technical_Architecture
+    attributes:
+    - attribute: Hosting_Model
+      definition: 'Where/how the app is hosted: OnPrem, Cloud, SaaS, MSP, VendorHosted.
+
+        '
+      authoritative_source:
+        type: EA_Repository
+        typical_systems:
+        - LeanIX
+        - Ardoq
+      program_usage:
+        Enterprise_Architecture:
+          how_used: Target state modeling and standard alignment.
+        Migration_Transformation:
+          how_used: Eligibility filters and scope definitions.
+        Finance_FinOps:
+          how_used: Cost model type selection (data center vs cloud vs SaaS).
+        Security_GRC:
+          how_used: Control requirements vary by hosting model.
+    - attribute: Cloud_Account_Subscription
+      definition: 'Cloud account/subscription(s) where the app is deployed (if applicable).
+
+        '
+      authoritative_source:
+        type: Cloud_Platform_APIs
+        typical_systems:
+        - AWS_Organizations
+        - Azure_Subscriptions
+        - GCP_Projects
+      program_usage:
+        Finance_FinOps:
+          how_used: Cost attribution and tagging policy enforcement.
+        Security_GRC:
+          how_used: Control and guardrail verification by account boundary.
+        Audit_Compliance:
+          how_used: Evidence collection scoping.
+    - attribute: Regions_Locations
+      definition: 'Regions/data centers where the application runs and serves users.
+
+        '
+      authoritative_source:
+        type: Cloud_Platform_APIs
+        typical_systems:
+        - AWS_Config
+        - Azure_Resource_Graph
+        - GCP_Asset_Inventory
+      program_usage:
+        Security_GRC:
+          how_used: Data residency and regulatory constraints.
+        BCDR_Continuity:
+          how_used: Geographic resilience and DR design validation.
+        Migration_Transformation:
+          how_used: Landing zone selection and cutover strategy.
+    - attribute: Deployment_Architecture_Model
+      definition: 'Architectural pattern: Monolith, 2-tier, 3-tier, Microservices,
+        Event-driven, etc.
+
+        '
+      authoritative_source:
+        type: EA_Repository
+      program_usage:
+        Enterprise_Architecture:
+          how_used: Standard alignment and modernization planning.
+        Migration_Transformation:
+          how_used: Complexity scoring, sequencing, and testing approach.
+        Monitoring_Observability:
+          how_used: Determines monitoring strategy and coverage expectations.
+    - attribute: Application_Components
+      definition: 'Components that comprise the app (web, app, db, cache, queue, etc.).
+
+        '
+      authoritative_source:
+        type: EA_Repository
+      program_usage:
+        Migration_Transformation:
+          how_used: Ensures all components are migrated/validated; complexity planning.
+        BCDR_Continuity:
+          how_used: Defines what must be recovered for service restoration.
+        Security_GRC:
+          how_used: Determines control coverage (e.g., DB encryption, gateway hardening).
+    - attribute: Application_to_Infrastructure_Mapping
+      definition: 'Mapping from application to servers/VMs/containers/services that
+        implement it.
+
+        '
+      authoritative_source:
+        type: CMDB
+        typical_systems:
+        - ServiceNow_CMDB
+        - Discovery tooling output
+      program_usage:
+        ITSM_Operations:
+          how_used: Impact analysis during incidents/changes.
+        Migration_Transformation:
+          how_used: Primary execution unit mapping (what actually moves/changes).
+        Security_GRC:
+          how_used: Attack surface and control coverage mapping.
+    - attribute: Dependencies_Upstream_Downstream
+      definition: 'Applications/services this app depends on and those that depend
+        on it.
+
+        '
+      authoritative_source:
+        type: EA_Repository
+      program_usage:
+        Migration_Transformation:
+          how_used: Wave planning and integration testing scope.
+        BCDR_Continuity:
+          how_used: Business impact analysis and recovery order.
+        ITSM_Operations:
+          how_used: Incident correlation and blast-radius assessment.
+    - attribute: Integration_Mechanisms
+      definition: 'How the app integrates (API, MQ, file transfer, DB link, iPaaS,
+        webhook).
+
+        '
+      authoritative_source:
+        type: EA_Repository
+      program_usage:
+        Security_GRC:
+          how_used: Data flow review, segmentation, and control requirements.
+        Migration_Transformation:
+          how_used: Connectivity validation, firewall rules, cutover coordination.
+        Enterprise_Architecture:
+          how_used: Standardization and deprecation of legacy interfaces.
+    - attribute: Data_Stores_Used
+      definition: 'Databases/data stores used by the application (including managed
+        services).
+
+        '
+      authoritative_source:
+        type: EA_Repository
+      program_usage:
+        Migration_Transformation:
+          how_used: Data migration plan, replication approach, and cutover validation.
+        Security_GRC:
+          how_used: Encryption, key management, backup controls.
+        BCDR_Continuity:
+          how_used: RPO feasibility and recovery strategy design.
+    - attribute: Technology_Stack
+      definition: 'Primary languages/frameworks/platform components (runtime stack)
+        used by the app.
+
+        '
+      authoritative_source:
+        type: Code_Repo_CICD
+        typical_systems:
+        - GitHub
+        - GitLab
+        - Bitbucket
+        - SBOM tooling
+      program_usage:
+        Security_GRC:
+          how_used: Vulnerability management context and SBOM controls.
+        Enterprise_Architecture:
+          how_used: Standard alignment and modernization candidate identification.
+        Migration_Transformation:
+          how_used: Compatibility constraints and target platform selection.
+  - domain: Security_Risk_DataGovernance
+    attributes:
+    - attribute: Data_Classification
+      definition: 'Sensitivity level of data processed/stored (Public/Internal/Confidential/Regulated).
+
+        '
+      authoritative_source:
+        type: Data_Catalog
+        typical_systems:
+        - Data catalog
+        - Privacy program registry
+      program_usage:
+        Security_GRC:
+          how_used: Control selection, encryption requirements, segmentation.
+        Data_Governance_Privacy:
+          how_used: Data handling rules, retention, and access controls.
+        BCDR_Continuity:
+          how_used: Informs tiering and recovery priorities.
+        Migration_Transformation:
+          how_used: Landing zone constraints and security baselines.
+    - attribute: Regulatory_Scope
+      definition: 'Applicable compliance regimes (PCI, HIPAA, SOX, GDPR, ITAR, etc.).
+
+        '
+      authoritative_source:
+        type: GRC_Risk_System
+        typical_systems:
+        - Archer
+        - ServiceNow_GRC
+      program_usage:
+        Audit_Compliance:
+          how_used: Audit scope definition and evidence requirements.
+        Security_GRC:
+          how_used: Control mapping and compliance reporting.
+        Migration_Transformation:
+          how_used: Non-negotiable constraints on target architecture and data movement.
+    - attribute: Internet_Exposed
+      definition: 'Whether the application has externally reachable endpoints.
+
+        '
+      authoritative_source:
+        type: Security_Tooling
+        typical_systems:
+        - ASM
+        - WAF inventory
+        - external scan platform
+      program_usage:
+        Security_GRC:
+          how_used: Attack surface prioritization and required protections (WAF, DDoS,
+            etc.).
+        Audit_Compliance:
+          how_used: Evidence for boundary protections and monitoring.
+        Migration_Transformation:
+          how_used: Cutover risk, DNS/edge changes, validation scope.
+    - attribute: Authentication_Authorization_Model
+      definition: 'Identity model used (SSO/SAML/OIDC, local auth, service accounts,
+        etc.).
+
+        '
+      authoritative_source:
+        type: EA_Repository
+        typical_systems:
+        - Architecture repo
+        - IAM reference architecture
+      program_usage:
+        Security_GRC:
+          how_used: Access control policy and MFA/SSO requirements.
+        ITSM_Operations:
+          how_used: Troubleshooting and access requests routing.
+        Migration_Transformation:
+          how_used: Ensures auth integration works post-cutover.
+    - attribute: Risk_Rating
+      definition: 'Current risk rating for the application based on assessments (inherent/residual).
+
+        '
+      authoritative_source:
+        type: GRC_Risk_System
+      program_usage:
+        Security_GRC:
+          how_used: Remediation prioritization and exception workflows.
+        Portfolio_Management:
+          how_used: Risk-informed rationalization and investment decisions.
+        Migration_Transformation:
+          how_used: Risk balancing across waves and control readiness gates.
+    - attribute: Security_Exceptions
+      definition: 'Approved exceptions/waivers to standard controls, with expiration
+        dates.
+
+        '
+      authoritative_source:
+        type: GRC_Risk_System
+      program_usage:
+        Security_GRC:
+          how_used: Exception governance and re-approval tracking.
+        Audit_Compliance:
+          how_used: Evidence of risk acceptance.
+        Migration_Transformation:
+          how_used: Ensures exceptions are either preserved appropriately or closed.
+  - domain: Resilience_Continuity
+    attributes:
+    - attribute: Criticality_Tier
+      definition: 'Business criticality tier (e.g., Tier 1–4) aligned to enterprise
+        resiliency standards.
+
+        '
+      authoritative_source:
+        type: BCDR_System
+        typical_systems:
+        - BCDR platform
+        - Resilience registry
+      program_usage:
+        BCDR_Continuity:
+          how_used: Determines required recovery strategy and test frequency.
+        Security_GRC:
+          how_used: Drives control rigor and monitoring expectations.
+        Migration_Transformation:
+          how_used: Wave risk balancing and cutover governance.
+    - attribute: RTO
+      definition: 'Recovery Time Objective: maximum acceptable downtime.
+
+        '
+      authoritative_source:
+        type: BCDR_System
+      program_usage:
+        BCDR_Continuity:
+          how_used: Sets recovery architecture requirements and validation criteria.
+        Migration_Transformation:
+          how_used: Drives target design (HA/DR), cutover window constraints.
+    - attribute: RPO
+      definition: 'Recovery Point Objective: maximum acceptable data loss.
+
+        '
+      authoritative_source:
+        type: BCDR_System
+      program_usage:
+        BCDR_Continuity:
+          how_used: Determines replication/backup strategy and recovery procedures.
+        Migration_Transformation:
+          how_used: Data replication approach and cutover sequencing.
+    - attribute: DR_Strategy
+      definition: 'Recovery strategy (active-active, active-passive, backup/restore,
+        pilot-light, etc.).
+
+        '
+      authoritative_source:
+        type: BCDR_System
+      program_usage:
+        BCDR_Continuity:
+          how_used: Implementation blueprint and test planning.
+        Audit_Compliance:
+          how_used: Evidence of resilience posture aligned to tier requirements.
+    - attribute: DR_Test_Status
+      definition: 'Last DR test date, outcome, and gaps.
+
+        '
+      authoritative_source:
+        type: BCDR_System
+      program_usage:
+        BCDR_Continuity:
+          how_used: Compliance to testing cadence and remediation backlog.
+        Portfolio_Management:
+          how_used: Risk exposure reporting.
+        Migration_Transformation:
+          how_used: Readiness gating for critical apps.
+  - domain: Operations_Observability
+    attributes:
+    - attribute: SLA_or_SLO_Target
+      definition: 'Availability target (e.g., 99.9%) expressed as SLA or SLO.
+
+        '
+      authoritative_source:
+        type: Service_Level_Management
+        typical_systems:
+        - SLO platform
+        - Service management reporting
+      program_usage:
+        ITSM_Operations:
+          how_used: Drives incident priority, escalation, and reporting expectations.
+        Monitoring_Observability:
+          how_used: Measurement objectives for alerting and error budgets.
+        Migration_Transformation:
+          how_used: Change control rigor and downtime window constraints.
+    - attribute: Support_Hours
+      definition: 'Business hours vs 24x7 support expectations and coverage model.
+
+        '
+      authoritative_source:
+        type: ITSM
+      program_usage:
+        ITSM_Operations:
+          how_used: On-call routing and escalation policies.
+        Migration_Transformation:
+          how_used: Cutover scheduling and hypercare coverage planning.
+    - attribute: Monitoring_Coverage
+      definition: 'What is monitored (synthetic, APM, infra, logs), and coverage completeness.
+
+        '
+      authoritative_source:
+        type: Observability_Platform
+        typical_systems:
+        - Datadog
+        - Dynatrace
+        - NewRelic
+        - Splunk
+        - Prometheus
+      program_usage:
+        Monitoring_Observability:
+          how_used: Ensures detection coverage meets tier/SLO requirements.
+        Audit_Compliance:
+          how_used: Evidence for monitoring controls and operational effectiveness.
+        Migration_Transformation:
+          how_used: Validation that monitoring is in place post-move.
+    - attribute: Incident_History_Summary
+      definition: 'Historical incident patterns (volume, severity, recurring causes).
+
+        '
+      authoritative_source:
+        type: ITSM
+      program_usage:
+        ITSM_Operations:
+          how_used: Problem management and reliability improvement targeting.
+        Portfolio_Management:
+          how_used: Risk signals for rationalization and investment prioritization.
+        Migration_Transformation:
+          how_used: Risk scoring and hypercare planning.
+    - attribute: Change_Frequency
+      definition: 'How often the application changes (release cadence / change volume).
+
+        '
+      authoritative_source:
+        type: Code_Repo_CICD
+        typical_systems:
+        - CI/CD metrics
+        - Release management records
+      program_usage:
+        ITSM_Operations:
+          how_used: Change governance and scheduling constraints.
+        Security_GRC:
+          how_used: Control design for high-change environments.
+        Migration_Transformation:
+          how_used: Cutover approach and freeze window planning.
+  - domain: Transformation_Planning
+    attributes:
+    - attribute: Planned_Disposition
+      definition: 'Agreed future-state treatment (rehost/replatform/repurchase/refactor/retire/retain/etc.).
+
+        '
+      authoritative_source:
+        type: Portfolio_Governance
+      program_usage:
+        Migration_Transformation:
+          how_used: Backlog creation, workstream planning, and execution tracking.
+        Finance_FinOps:
+          how_used: Funding strategy and ROI modeling.
+        Enterprise_Architecture:
+          how_used: Target state alignment and modernization roadmaps.
+    - attribute: Target_Timeline
+      definition: 'Target window/date for major change (migration/modernization/retirement).
+
+        '
+      authoritative_source:
+        type: Portfolio_Governance
+      program_usage:
+        Migration_Transformation:
+          how_used: Wave/sprint scheduling and resource planning.
+        Vendor_Contract_Management:
+          how_used: Aligns contract exits/renewals with transformation timing.
+        ITSM_Operations:
+          how_used: Change calendar planning for high-risk activities.
+    - attribute: Readiness_Status
+      definition: 'Readiness gate status (data collected, testing complete, approvals,
+        controls met).
+
+        '
+      authoritative_source:
+        type: Migration_Transformation_System
+        typical_systems:
+        - Transformation PMO tool
+        - VTX (future)
+      program_usage:
+        Migration_Transformation:
+          how_used: Go/no-go gates and reporting.
+        Security_GRC:
+          how_used: Verifies required controls before go-live.
+        BCDR_Continuity:
+          how_used: Confirms DR posture meets tier requirements before production
+            cutover.
+  _vtx_origin: DEFAULT:usr/config/default/master_data_dictionary.yaml

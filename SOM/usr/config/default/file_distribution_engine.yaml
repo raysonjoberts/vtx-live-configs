@@ -1,0 +1,41 @@
+#_vtx:
+#  schema: v1
+#  kind: transform
+#  id: file_distribution_engine
+#  title: File Distribution Engine
+#  description: Base + Overlay distribution for interactive Excel files.
+#  owner: default
+#  version: 1.0.0
+#  tags: [interactive, overlay, distribution]
+#  consumers:
+#    - usr/scripts/default/file_distribution_engine.py
+
+#config:
+#  payload:
+#    jobs:
+#      - id: file_distribution_engine_base_update
+#        enabled: true
+#        mode: base
+#        inputs:
+#          - var/tables/views/consolidated_application_view_test.csv
+#          - var/tables/views/consolidated_application_collapsed_to_environment.csv
+#        outputs:
+#          - var/interactive/consolidated_application_view_test.xlsx
+#        tabs:
+#          - consolidated_application_view_test
+#          - consolidated_application_collapsed_to_environment
+#        sanitize_tabs: true
+#        anchor_column: first
+#        file_format: xlsx
+#      - id: file_distribution_engine_interactive_update
+#        enabled: true
+#        mode: interactive
+#        inputs:
+#          - var/interactive/consolidated_application_view_test.xlsx
+#        outputs:
+#          - var/interactive/data
+#        tabs:
+#          - consolidated_application_view_test
+#          - consolidated_application_collapsed_to_environment
+#        sanitize_tabs: true
+#        file_format: xlsx

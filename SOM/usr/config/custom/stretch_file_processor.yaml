@@ -1,0 +1,116 @@
+stretch_files:
+  ccoe_consolidated_application_view:
+    enabled: true
+    source_path: var/tables/views/consolidated_application_view.csv
+    output_path: var/interactive/ccoe_consolidated_application_view.csv
+
+    # VTX-owned columns (customer can add anything else, untouched)
+    owned_columns:
+      - ID
+      - ACTIVE
+      - TITLE_NAME
+#      - ENVIRONMENT
+      - ACRONYM
+      - APPLICATION_TYPE_ID
+      - SERVERNAME
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - RISK_URGENCY_ID
+      - APPLICATION_STATUS_ID
+      - IMPORTANCE
+      - WHO_ADMINISTERS
+      - WHO_MAINTAINS
+      - DatabaseName
+      - Business Contact - Primary
+      - Technical Lead
+      - Inferred Scope
+      - Assumed Disposition
+#      - Inferred Hosting Type
+#      - Inferred Hosting Location
+
+    # Anchor field used to assign/persist IDs
+    anchor_field: ID
+
+    # ID behavior
+    id_field: program_id
+    auto_id_prefix: "auto-"
+
+    # Where VTX stores its anchor->id map for this stretch file
+    id_map_path: var/metadata/stretch_maps/ccoe_applications_stretch_id_map.csv
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Stretch File Processor - ccoe_consolidated_application_view"
+        script: usr/scripts/default/stretch_file_processor.py
+        args: [--all]
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{source_path}"]      # wildcard gather
+        outputs: ["{output_path}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+      stretch:
+        sync_type: two_way_sync
+        internal_file: "{output_path}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current
+        csv_xlsx_convert: true
+
+
+  ccoe_consolidated_server_view:
+    enabled: true
+    source_path: var/tables/views/consolidated_server_view.csv
+    output_path: var/interactive/ccoe_consolidated_server_view.csv
+
+    # VTX-owned columns (customer can add anything else, untouched)
+    owned_columns:
+      - RECORDID
+      - SERVERNAME
+      - IPADDRESS
+      - VMPROCESSORS
+      - VMMEMORY
+      - VMSTORAGE
+      - Inferred Server Location
+
+
+    # Anchor field used to assign/persist IDs
+    anchor_field: RECORDID
+    # ID behavior
+    id_field: program_id
+    auto_id_prefix: "auto-"
+
+    # Where VTX stores its anchor->id map for this stretch file
+    id_map_path: var/metadata/stretch_maps/ccoe_servers_stretch_id_map.csv
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Stretch File Processor - ccoe_consolidated_server_view"
+        script: usr/scripts/default/stretch_file_processor.py
+        args: []
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{source_path}"]      # wildcard gather
+        outputs: ["{output_path}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+      stretch:
+        sync_type: two_way_sync
+        internal_file: "{output_path}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current
+        csv_xlsx_convert: true

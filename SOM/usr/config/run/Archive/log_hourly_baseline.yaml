@@ -1,0 +1,19 @@
+log_hourly_baseline:
+  enabled: true
+  logs_dir: var/logs
+  include_glob: '*.log'
+  recurse: false
+  out_dir: var/metrics/log_hourly_baselines
+  tail_scan_bytes: 5242880
+  orchestrator: null
+  id: Run Hourly Log Baseline
+  job_type: cron_job
+  role: server
+  script: usr/utils/log_hourly_baseline.py
+  args: null
+  schedule:
+    cron: 5 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/log_hourly_baseline.yaml

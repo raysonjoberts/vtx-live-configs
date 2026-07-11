@@ -1,0 +1,479 @@
+jobs:
+#  - id: Copy Server Inventory View to share for ADM
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source "var/tables/views/server_inventory_view.csv"
+#      --dest   "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports"
+#      --mode   copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-unchanged yes
+#    schedule:
+#      #daily: "01:05"      # 01:05 UTC daily
+#      cron: "* * * * *"
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 3
+
+#  - id: Copy var/tables/views to Splunk Lookups
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/views/consolidated*.csv"
+#      --dest "C:/Program Files/Splunk/etc/apps/search/lookups"
+#      --mode copy
+#      --append-date no
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "*/10 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy var/interactive/views to dailysnapshot
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/interactive/views/*.csv"
+#      --dest "var/dailysnapshot"
+#      --mode copy
+#      --append-date yes
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "41 21 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy var/tables/views to dailysnapshot
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/views/consolidated*.csv"
+#      --dest "var/dailysnapshot"
+#      --mode copy
+#      --append-date yes
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "13 22 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+
+#  - id: Weekly Status Snapshots
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/reporting/kanban_report.html"
+#      --dest "var/weeklysnapshot"
+#      --mode copy
+#      --append-date yes
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "0 17 * * 5"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Weekly RAID Snapshots
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/reporting/raid.html"
+#      --dest "var/weeklysnapshot"
+#      --mode copy
+#      --append-date yes
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "0 17 * * 5"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy var/tables to Splunk Lookups
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/*.csv"
+#      --dest "C:/Program Files/Splunk/etc/apps/search/lookups"
+#      --mode copy
+#      --append-date no
+#      --skip-missing yes
+#    schedule:
+#      cron: "30 22 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy var/tables to dailysnapshot
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source "var/tables/*.csv"
+#      --dest "var/dailysnapshot"
+#      --mode copy
+#      --append-date yes
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "40 18 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Move zipped logs to log archive
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source "var/logs/*.gz"
+#      --dest "var/logarchive"
+#      --mode move
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "47 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy Consolidated Views to Archer
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/views/consolidated*.csv"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory"
+#      --mode copy
+#      --append-date no
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *" #"31 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+  - id: Ingest CCoE_CI.xlsx to var/customerdata
+    enabled: true
+    role: client
+    script: usr/utils/file_move.py
+    args: >
+      --source-glob "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\ccoe_ci.xlsx"
+      --dest "var/customerdata"
+      --mode copy
+      --append-date no
+      --skip-missing yes
+      --skip-unchanged yes
+      --is-intake-data yes
+    schedule:
+      cron: "* * * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+
+#  - id: Copy application_report_cards.html to Correlated_Data\Dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/application_report_cards.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy application_inventory_changes.html do Correlated_Data\Dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/application_inventory_changes.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy server_inventory_changes.html do Correlated_Data\Dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/server_inventory_changes.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+
+#  - id: Copy consolidated_application_view_stats_timeline.html to correlated_data\dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/consolidated_application_view_stats_timeline.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy consolidated_server_view_stats_timeline.html to correlated_data\dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/consolidated_server_view_stats_timeline.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy Index to correlated_data\dashboards
+#    enabled: true
+#    role: server
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/index.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#      #daily: "12:16" 
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy RAID to correlated_data\dashboards
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/raid.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "*/10 * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy tasks dashboard to correlated_data\dashboards
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/reporting/tasks.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Ingest Kanban from Correlated_Data\ProgramManagement
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\data_kanban.csv"
+#      --dest "var/projectmanagement"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "50 22 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Ingest RAID from correlated_data\ProgramManagement
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\raid.csv"
+#      --dest "var/projectmanagement"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#    schedule:
+#      cron: "48 22 * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+#
+#  - id: Copy CCoE App Base to Share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/views/ccoe_application_base.csv"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy CCoE Server Base to Share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "var/tables/views/ccoe_server_base.csv"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy Archer Program Attribute Analysis to Share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\VTX\var\analysis\archer_program_attributes.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy CCoE Program Attribute Analysis to Share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\VTX\var\analysis\consolidated_server_and_application_mapping.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy AIS Raw Fields Analysis to Share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\VTX\var\analysis\consolidated_server_and_application_report_visual.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10
+
+#  - id: Copy Tasks.html to share
+#    enabled: true
+#    role: client
+#    script: usr/utils/file_move.py
+#    args: >
+#      --source-glob "C:\VTX\var\reporting\tasks.html"
+#      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+#      --mode copy
+#      --append-date no
+#      --date-format %Y%m%d
+#      --skip-missing yes
+#      --skip-unchanged yes
+#    schedule:
+#      cron: "* * * * *"
+#    timeout_seconds: 180
+#    retries: 1
+#    backoff_seconds: 10

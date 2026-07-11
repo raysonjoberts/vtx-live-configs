@@ -1,0 +1,277 @@
+scheduler:
+  max_workers: 4
+  backbone_check_hz: 1.0
+  backbone_tick_hz: 20
+  backbone_target_ms_per_sec: 25
+  backbone_stat_benchmark_samples: 12
+  backbone_stat_benchmark_iters: 200
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+cron_jobs:
+- id: Run Snapshot Statistics
+  enabled: true
+  role: server
+  script: usr/scripts/default/snapshot_statistics.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Data Source Type Profiler
+  enabled: true
+  role: server
+  script: usr/scripts/default/datasource_type_profiler.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 1 12 * * 0
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive /views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/views/*.csv" --dest "var/dailysnapshot" --mode
+    copy --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 41 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables/views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/views/*.csv" --dest "var/dailysnapshot" --mode copy
+    --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 40 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run AWS Pricing Bulk Refresh
+  enabled: true
+  role: server
+  script: usr/scripts/aws_reporting/aws_pricing_bulk_refresh.py
+  args: '--regions us-east-1
+
+    '
+  schedule:
+    cron: 0 22 * * 5
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run AWS Pricing Report Builder
+  enabled: true
+  role: server
+  script: usr/scripts/aws_reporting/aws_pricing_report_builder.py
+  args: null
+  schedule:
+    cron: 0 23 * * 5
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Orchestrator Status
+  enabled: true
+  role: server
+  script: usr/scripts/ops/orchestrator_status_vtx.py
+  args: null
+  schedule:
+    cron: 10 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run VTX Job Checker
+  enabled: true
+  role: server
+  script: usr/scripts/ops/vtx_job_checker.py
+  args: null
+  schedule:
+    cron: 10 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Config Compiler failthrough
+  enabled: true
+  role: server
+  script: usr/scripts/default/config_compiler.py
+  args: null
+  schedule:
+    cron: 0 */1 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run workflow autogen failthrough
+  enabled: true
+  role: server
+  script: usr/scripts/default/workflow_autogen.py
+  args: null
+  schedule:
+    cron: 0 */6 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Publish Migration Data Dictionary
+  enabled: true
+  role: server
+  script: usr/scripts/default/publish_dictionaries.py
+  args: --job "Migration Program Attributes Dictionary"
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 0 */6 * * *
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: true
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Autogen - count_change_dashboards - app_inventory_changes
+  enabled: true
+  role: server
+  script: usr/scripts/dashboards/count_change_dashboard.py
+  args: --job "app_inventory_changes"
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  outputs:
+  - var/reporting/application_inventory_changes.html
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+- id: Autogen - count_change_dashboards - server_inv_changes
+  enabled: true
+  role: server
+  script: usr/scripts/dashboards/count_change_dashboard.py
+  args: --job "server_inv_changes"
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  outputs:
+  - var/reporting/server_inventory_changes.html
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+backbone_jobs:
+- id: Run Intake Processor
+  enabled: true
+  role: server
+  script: usr/scripts/default/intake_processor.py
+  args: '--mode=auto
+
+    '
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: any_file_in_dir
+  watch_dirs:
+  - var/customerdata
+  watch_glob: null
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator_vtx.yaml
+pipeline_jobs:
+- id: Data Handling Pipeline
+  enabled: true
+  role: server
+  cooldown_seconds: 60
+  trigger_markers:
+  - var/state/orchestrator_markers/Run_Intake_Processor.marker
+  - var/state/orchestrator_markers/Run_config_compiler.marker
+  stages:
+  - id: Raw Application Tables
+    script: usr/scripts/default/application_raw_table_builder.py
+  - id: Raw Server Tables
+    script: usr/scripts/default/server_raw_table_builder.py
+  - id: Master Tables
+    script: usr/scripts/default/master_table_builder_vtx.py
+  - id: Approximation Engine
+    script: usr/scripts/default/approximation_engine.py
+  - id: Inferred Decisions Engine
+    script: usr/scripts/default/inferred_decisions_engine.py
+  - id: Tag Engine
+    script: usr/scripts/default/tag_engine.py
+  - id: Master Views
+    script: usr/scripts/default/master_view_builder_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator_vtx.yaml

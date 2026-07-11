@@ -1,0 +1,199 @@
+_generated_by: build_autogen_registry.py
+_generated_at: '2026-01-18T12:51:08'
+sources:
+- pattern: C:\BTDM_7.1\var\customerdata\cmcc-rvtools.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: VM
+  apply_transforms:
+  - reformat_default_sds
+  - reformat_rvtools
+  tabs:
+  - vInfo
+  - vPartition
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\Defender_ServerInventory.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: DeviceName
+  apply_transforms:
+  - reformat_default_sds
+  output_name: defender_serverinventory.csv
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\InsightVM_ServerInventory.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: Asset Names
+  apply_transforms:
+  - reformat_default_sds
+  output_name: insightvm.csv
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\risc-table*.csv
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: Host Name
+  apply_transforms:
+  - reformat_default_sds
+  output_name: flexera.csv
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\server_inventory*.csv
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: SERVERNAME
+  apply_transforms:
+  - reformat_default_sds
+  rename_fields:
+    APPLICATION: APPLICATION_perSI
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  output_name: serverinventories.csv
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\server_inventory*.csv
+  config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+  type: SDS
+  server_field: SERVERNAME
+  apply_transforms:
+  - reformat_default_sds
+  rename_fields:
+    APPLICATION: APPLICATION_perSI
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  output_name: serverinventories.csv
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\server_inventory*.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: SERVERNAME
+  apply_transforms:
+  - reformat_default_sds
+  rename_fields:
+    APPLICATION: APPLICATION_perSI
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  output_name: serverinventories.csv
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\server_inventory*.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+  type: SDS
+  server_field: SERVERNAME
+  apply_transforms:
+  - reformat_default_sds
+  rename_fields:
+    APPLICATION: APPLICATION_perSI
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+  output_name: serverinventories.csv
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\SERVERS.csv
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: SERVERNAME
+  apply_transforms:
+  - reformat_default_sds
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\splunk_hostname.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: host
+  apply_transforms:
+  - reformat_default_sds
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: C:\BTDM_7.1\var\customerdata\ssdc-rvtools.xlsx
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  type: SDS
+  server_field: VM
+  apply_transforms:
+  - reformat_default_sds
+  - reformat_rvtools
+  tabs:
+  - vInfo
+  - vPartition
+  extra:
+    config_file: C:\BTDM_7.1\usr\config\auto\autogen_registry_v2.yaml
+    extra:
+      config_file: C:\BTDM_7.1\usr\config\run\monitor.conf
+      _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\monitor.conf
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml
+- pattern: usr/config/run/attribute_reporting.yaml
+  config_file: C:\BTDM_7.1\usr\config\run\autogen_registry.yaml
+  type: yaml
+  extra:
+    name: attribute_reporting
+    items_path: reports
+    job:
+      id: 'Attribute Report: {item.report_name}'
+      script: usr/scripts/default/attribute_reporting_processor.py
+      inputs:
+      - '{source.path}'
+      - '{item.source.file}'
+      - '{item.target.file}'
+      _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+    publish:
+      enabled: true
+      internal_files:
+      - '{item.output.destination}'
+      external_file_template: '{basename}'
+      _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+    _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+    _also_seen_in:
+    - C:\BTDM_7.1\usr\config\run\autogen_registry_v2.yaml
+  _vtx_origin: AUTO:usr/config/auto/autogen_registry_v2.yaml

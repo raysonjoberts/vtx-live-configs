@@ -1,0 +1,238 @@
+_vtx:
+  schema: v1
+  kind: report
+  id: server_inventory_matrix_vtx
+  title: Server Inventory Matrix (VTX)
+  description: Auto-generated server inventory matrix (VTX format).
+  owner: default
+  version: 1.0.0
+  tags:
+  - detailedreporting
+  - auto
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/analysis/server_inventory_matrix_vtx.py
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    globals:
+      vtx_root: ''
+      default_normalization:
+        hostname:
+          casefold: true
+          fqdn_to_shortname: true
+          strip: true
+        ip_address:
+          strip: true
+    inventories:
+    - id: Server_Inventory_matrix_Autodiscovered
+      enabled: true
+      attributes:
+      - Hostname
+      - IP Address
+      - OS
+      - Environment
+      - CPU
+      - Memory
+      - Storage
+      match:
+        condition: any
+        keys:
+        - name: Hostname
+          type: hostname
+        - name: IP Address
+          type: ip_address
+      trust_ranking:
+        Hostname:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        IP Address:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        OS:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        Environment:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        CPU:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        Memory:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+        Storage:
+        - cmcc-rvtools_vinfo_server_audit
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - ssdc-rvtools_vinfo_server_audit
+      sources:
+      - id: cmcc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 1
+        path: var/tables/cmcc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Primary IP Address
+          OS: Server
+          Environment: Environment
+          CPU: CPUs
+          Memory: Video Ram KiB
+          Storage: null
+        filters: []
+      - id: flexera
+        enabled: true
+        priority: 2
+        path: var/tables/flexera.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: IP Address
+          OS: Server
+          Environment: null
+          CPU: null
+          Memory: null
+          Storage: null
+        filters: []
+      - id: insightvm
+        enabled: true
+        priority: 3
+        path: var/tables/insightvm.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Asset IP Address
+          OS: Server
+          Environment: null
+          CPU: null
+          Memory: null
+          Storage: null
+        filters: []
+      - id: serverinventories
+        enabled: true
+        priority: 4
+        path: var/tables/serverinventories.csv
+        format: csv
+        map:
+          Hostname: VIRTUALSERVERHOSTOS
+          IP Address: IPADDRESS2
+          OS: VIRTUALSERVERHOSTOS
+          Environment: ENVIRONMENT
+          CPU: null
+          Memory: VMMEMORY
+          Storage: null
+        filters: []
+      - id: servers
+        enabled: true
+        priority: 5
+        path: var/tables/servers.csv
+        format: csv
+        map:
+          Hostname: VIRTUAL_SERVER_HOST_OS
+          IP Address: IPADDRESS
+          OS: VIRTUAL_SERVER_HOST_OS
+          Environment: ENVIRONMENT
+          CPU: null
+          Memory: VMMEMORY
+          Storage: VMMEMORY
+        filters: []
+      - id: splunk
+        enabled: true
+        priority: 6
+        path: var/tables/splunk.csv
+        format: csv
+        map:
+          Hostname: Hostname
+          IP Address: sourceIp
+          OS: Hostname
+          Environment: null
+          CPU: null
+          Memory: null
+          Storage: null
+        filters: []
+      - id: ssdc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 7
+        path: var/tables/ssdc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Primary IP Address
+          OS: Server
+          Environment: Environment
+          CPU: CPUs
+          Memory: Video Ram KiB
+          Storage: null
+        filters: []
+    jobs:
+    - id: server_inventory_matrix_autodiscovered
+      enabled: true
+      inventory_id: Server_Inventory_matrix_Autodiscovered
+      outputs:
+        inventory_table:
+          path: var/masterdata/unified_server_inventory.csv
+          include_presence_flags: false
+          include_value_provenance: false
+          include_ranked_values: false
+          ranked_values_delimiter: ;
+          fields:
+          - Hostname
+          - IP Address
+          - OS
+          - Environment
+          - CPU
+          - Memory
+          - Storage
+        presence_matrix_reports:
+        - id: hostname_presence
+          attribute: Hostname
+          normalize_as: hostname
+          source_of_truth: consolidated_server_view
+          display_attributes:
+          - IP Address
+          path: var/analysis/presence_hostname_matrix.csv
+          html_path: var/analysis/presence_hostname_matrix.html

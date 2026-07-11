@@ -1,0 +1,384 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: table_aggregator
+  title: Table Aggregator (VTX)
+  description: Aggregate and enrich tables via lookup transactions.
+  owner: default
+  version: 1.0.0
+  tags:
+  - aggregation
+  - transform
+  - masterdata
+  - auto
+  - aggregation
+  - transform
+  - masterdata
+  - auto
+  - aggregation
+  consumers:
+  - usr/scripts/default/application_raw_table_builder.py
+  - usr/scripts/default/application_raw_table_builder.py
+  - usr/scripts/default/application_raw_table_builder.py
+  _vtx_origin: CUSTOM:usr/config/custom/table_aggregator_vtx.yaml
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: consolidated_application_view_auto
+      enabled: true
+      outputs:
+        parquet: var/masterdata/raw_application_table_auto.parquet
+        manifest_yaml: usr/config/manifests/raw_application_table_manifest_auto.yaml
+      seed: var/tables/applications.csv
+      transactions:
+      - type: lookup_replace
+        lookup_table: var/tables/application_status_lu.csv
+        key: ID
+        seed_field: APPLICATION_STATUS_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/oper_level_lu.csv
+        key: ID
+        seed_field: OPER_LEVEL
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/risk_urgency_lu.csv
+        key: ID
+        seed_field: RISK_URGENCY_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_risk_lu.csv
+        key: CODE
+        seed_field: RISK_URGENCY_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/auth_method_lu.csv
+        key: ID
+        seed_field: AUTHENTICATION_METHOD
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/who_administers_lu.csv
+        key: ID
+        seed_field: WHO_ADMINISTERS
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/who_maintains_lu.csv
+        key: ID
+        seed_field: WHO_MAINTAINS
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/application_types_lu.csv
+        key: ID
+        seed_field: APPLICATION_TYPE_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/business_category_lu.csv
+        key: ID
+        seed_field: BUSINESS_CATEGORY
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/tlp_lu.csv
+        key: ID
+        seed_field: TLP_RATING
+        lookup_field: TLP
+        output_field: TLP
+      - type: lookup_replace
+        lookup_table: var/tables/ps_development_lu.csv
+        key: ID
+        seed_field: PS_DEVELOPMENT_CODE
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: simple_lookup
+        lookup_table: var/tables/application_x_database.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/databases.csv
+        key: ID
+        seed_field: DATABASE_ID
+      - type: simple_lookup
+        lookup_table: var/tables/waivers_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/bfms_organizations.csv
+        key: ID
+        seed_field: ORGANIZATION_ID
+      - type: simple_lookup
+        lookup_table: var/tables/waivers.csv
+        key: ID
+        seed_field: WAIVER_ID
+      - type: simple_lookup
+        lookup_table: var/tables/tools_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_categories_lu.csv
+        key: CODE
+        seed_field: WAIVER_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_statuses_lu.csv
+        key: CODE
+        seed_field: WAIVER_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: simple_lookup
+        lookup_table: var/tables/database_x_server.csv
+        key: DATABASE_ID
+        seed_field: DATABASE_ID
+    - id: consolidated_application_view_auto
+      enabled: true
+      outputs:
+        parquet: var/masterdata/raw_application_table_auto.parquet
+        manifest_yaml: usr/config/manifests/raw_application_table_manifest_auto.yaml
+      seed: var/tables/applications.csv
+      transactions:
+      - type: lookup_replace
+        lookup_table: var/tables/application_status_lu.csv
+        key: ID
+        seed_field: APPLICATION_STATUS_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/oper_level_lu.csv
+        key: ID
+        seed_field: OPER_LEVEL
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/risk_urgency_lu.csv
+        key: ID
+        seed_field: RISK_URGENCY_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_risk_lu.csv
+        key: CODE
+        seed_field: RISK_URGENCY_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/auth_method_lu.csv
+        key: ID
+        seed_field: AUTHENTICATION_METHOD
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/who_administers_lu.csv
+        key: ID
+        seed_field: WHO_ADMINISTERS
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/who_maintains_lu.csv
+        key: ID
+        seed_field: WHO_MAINTAINS
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/application_types_lu.csv
+        key: ID
+        seed_field: APPLICATION_TYPE_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/business_category_lu.csv
+        key: ID
+        seed_field: BUSINESS_CATEGORY
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/tlp_lu.csv
+        key: ID
+        seed_field: TLP_RATING
+        lookup_field: TLP
+        output_field: TLP
+      - type: lookup_replace
+        lookup_table: var/tables/ps_development_lu.csv
+        key: ID
+        seed_field: PS_DEVELOPMENT_CODE
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: simple_lookup
+        lookup_table: var/tables/application_x_database.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/databases.csv
+        key: ID
+        seed_field: DATABASE_ID
+      - type: simple_lookup
+        lookup_table: var/tables/waivers_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/bfms_organizations.csv
+        key: ID
+        seed_field: ORGANIZATION_ID
+      - type: simple_lookup
+        lookup_table: var/tables/waivers.csv
+        key: ID
+        seed_field: WAIVER_ID
+      - type: simple_lookup
+        lookup_table: var/tables/tools_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_categories_lu.csv
+        key: CODE
+        seed_field: WAIVER_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: lookup_replace
+        lookup_table: var/tables/waiver_statuses_lu.csv
+        key: CODE
+        seed_field: WAIVER_ID
+        lookup_field: DESCRIPTION
+        output_field: DESCRIPTION
+      - type: simple_lookup
+        lookup_table: var/tables/database_x_server.csv
+        key: DATABASE_ID
+        seed_field: DATABASE_ID
+    - id: raw_application_table
+      enabled: true
+      outputs:
+        parquet: var/masterdata/raw_application_table.parquet
+        manifest_yaml: usr/config/manifests/raw_application_table_manifest.yaml
+      seed: var/tables/applications.csv
+      preprocess_tidy:
+      - id: application_staff_roles
+        source_table: var/tables/staff_x_applications.csv
+        output_path: usr/data/intermediate/application_staff_roles.parquet
+        anchor_field: APP_ID
+        column_field: STAFF_ROLE_ID
+        value_field: STAFF_ID
+        column_lookup_table: var/tables/staff_roles_lu.csv
+        column_lookup_key: ID
+        column_lookup_value_field: DESCRIPTION
+        value_lookup_table: var/tables/staff.csv
+        value_lookup_key: ID
+        value_lookup_value_field: STAFF_NAME
+      transactions:
+      - type: simple_lookup
+        lookup_table: var/tables/application_x_database.csv
+        key: APP_ID
+        seed_field: ID
+      - type: lookup_replace
+        lookup_table: var/tables/application_types_lu.csv
+        key: ID
+        seed_field: APPLICATION_TYPE_ID
+        lookup_field: DESCRIPTION
+        output_field: APPLICATION_TYPE_ID
+      - type: lookup_replace
+        lookup_table: var/tables/application_status_lu.csv
+        key: ID
+        seed_field: APPLICATION_STATUS_ID
+        lookup_field: DESCRIPTION
+        output_field: APPLICATION_STATUS_ID
+      - type: lookup_replace
+        lookup_table: var/tables/business_category_lu.csv
+        key: ID
+        seed_field: BUSINESS_CATEGORY
+        lookup_field: DESCRIPTION
+        output_field: BUSINESS_CATEGORY
+      - type: lookup_replace
+        lookup_table: var/tables/risk_urgency_lu.csv
+        key: ID
+        seed_field: RISK_URGENCY_ID
+        lookup_field: DESCRIPTION
+        output_field: RISK_URGENCY_ID
+      - type: simple_lookup
+        lookup_table: var/tables/ps_development_lu.csv
+        key: ID
+        seed_field: PS_DEVELOPMENT_CODE
+      - type: simple_lookup
+        lookup_table: var/tables/bfms_hierarchy.csv
+        key: ID
+        seed_field: ORGANIZATION_ID
+      - type: simple_lookup
+        lookup_table: var/tables/ps_development_lu.csv
+        key: ID
+        seed_field: PS_DEVELOPMENT_CODE
+      - type: lookup_replace
+        lookup_table: var/tables/who_administers_lu.csv
+        key: ID
+        seed_field: WHO_ADMINISTERS
+        lookup_field: DESCRIPTION
+        output_field: WHO_ADMINISTERS
+      - type: simple_lookup
+        lookup_table: var/tables/databases.csv
+        key: ID
+        seed_field: DATABASE_ID
+      - type: lookup_replace
+        lookup_table: var/tables/who_maintains_lu.csv
+        key: ID
+        seed_field: WHO_MAINTAINS
+        lookup_field: DESCRIPTION
+        output_field: WHO_MAINTAINS
+      - type: lookup_replace
+        lookup_table: var/tables/auth_method_lu.csv
+        key: ID
+        seed_field: AUTHENTICATION_METHOD
+        lookup_field: DESCRIPTION
+        output_field: AUTHENTICATION_METHOD
+      - type: simple_lookup
+        lookup_table: var/tables/app_x_tools.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: var/tables/third_party_tools.csv
+        seed_field: THIRD_PARTY_TOOL_ID
+        key: ID
+        include_fields:
+        - VENDOR
+        - PRODUCT_NAME
+        - PRODUCT_MAJOR_VERSION
+        - PRODUCT_MINOR_VERSION
+      - type: lookup_replace
+        lookup_table: var/tables/importance_lu.csv
+        key: ID
+        seed_field: IMPORTANCE
+        lookup_field: DESCRIPTION
+        output_field: IMPORTANCE
+      - type: lookup_replace
+        lookup_table: var/tables/database_type_lu.csv
+        key: ID
+        seed_field: DBType
+        lookup_field: DESCRIPTION
+        output_field: DBType
+      - type: simple_lookup
+        lookup_table: var/tables/servers_x_applications.csv
+        key: APP_ID
+        seed_field: ID
+      - type: simple_lookup
+        lookup_table: usr/data/intermediate/application_staff_roles.parquet
+        key: APP_ID
+        seed_field: ID
+      - type: lookup_replace
+        lookup_table: var/tables/tlp_lu.csv
+        key: ID
+        seed_field: TLP_RATING
+        lookup_field: TLP
+        output_field: TLP_RATING
+  _vtx_origin: CUSTOM:usr/config/custom/table_aggregator_vtx.yaml

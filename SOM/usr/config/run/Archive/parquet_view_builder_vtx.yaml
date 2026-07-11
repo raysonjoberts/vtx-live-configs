@@ -1,0 +1,335 @@
+_vtx:
+  schema: v1
+  kind: report
+  id: parquet_view_builder_vtx
+  title: Parquet View Builder (VTX)
+  description: Build CSV views from Parquet masterdata outputs.
+  owner: default
+  version: 1.0.0
+  tags:
+  - view_builder
+  - parquet
+  - test
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/parquet_view_builder_vtx.py
+  _vtx_origin: CUSTOM:usr/config/custom/parquet_view_builder_vtx.yaml
+config:
+  io:
+    inputs:
+    - var/masterdata/consolidated_application_view_auto__applications_wide.parquet
+    - var/masterdata/consolidated_application_view_auto__applications_long.parquet
+    outputs:
+    - var/tables/views/test_consolidated_application_view.csv
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: consolidated_application_view
+      enabled: true
+      inputs:
+      - var/masterdata/consolidated_application_view_wide.parquet
+      - var/masterdata/consolidated_application_view_long.parquet
+      outputs:
+      - var/tables/views/consolidated_application_view.csv
+      fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - TOTAL_USERS
+      - DESCRIPTION
+      - REMARKS
+      - HYPERLINK
+      - VENDOR
+      - ORGANIZATION_ID
+      - APPLICATION_TYPE_ID
+      - RISK_URGENCY_ID
+      - LAST_UPDATED_BY
+      - LAST_UPDATED_DATE
+      - APPLICATION_STATUS_ID
+      - IMPORTANCE
+      - AGENCY_RESPONSIBLE
+      - HOSTING_ARRANGEMENT
+      - HOSTING_LOCATION
+      - EXTERNAL_APP
+      - DISPOSITION
+      - DEPT_ID
+      - END_PT_TEST
+      - TLP_RATING
+      - APP_REVIEWED
+      - BUSINESS_CATEGORY
+      - PS_DEVELOPMENT_CODE
+      - RFC_PROD
+      - RFC_DECOMM
+      - EMAIL_DIST_LIST
+      - NON_SOM_NETWORK
+      - NON_SOM_NETWORK_DESC
+      - VPN_REQUIRED
+      - VPN_DESC
+      - UTILIZES_LOAD_BALANCER
+      - LOAD_BALANCER_URL
+      - UTILIZES_GATEWAYS
+      - GATEWAY_URL
+      - UTILIZES_ARR
+      - ARR_URL
+      - WHO_ADMINISTERS
+      - WHO_MAINTAINS
+      - HOSTING_DETAILS
+      - DESKTOP_DEPENDENCIES
+      - AUTHENTICATION_METHOD
+      - ITBA_BUDGET_EXISTS
+      - ITBA_BUDGET_NAME
+      - OPER_OUTSIDE_BUS_HOURS
+      - OPER_LEVEL
+      - JAVA_ON_SERVER
+      - SERVER_JAVA_VERSION
+      - JAVA_ON_CLIENT
+      - CLIENT_JAVA_VERSION
+      - DATABASE_ID
+      - DevelopmentSource
+      - TOOL_VERSION_BRICK_ID
+      - Tools
+      - TOOL_VENDOR_ID
+      - DEPARTMENT_NUMBER
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - DEPARTMENT_ACRONYM
+      - BUREAU_ACRONYM
+      - ORGANIZATION_ACRONYM
+      - PS_DEVELOPMENT_CODE_NAMETmp
+      - DatabaseName
+      - DatabaseInstance
+      - DatabaseEnvironment
+      - DatabaseContact
+      - DBType
+      - THIRD_PARTY_TOOL_ID
+      - ThirdPartyToolVendor
+      - ThirdPartyTool
+      - RECORDID
+      - SERVERNAME
+      - ENVIRONMENT
+      - Application Inventory Updater
+      - Applications Director
+      - Business Contact - Primary
+      - Business Contact - Secondary
+      - Executive Business Sponsor
+      - IT Manager
+      - Product Manager
+      - Project Manager
+      - Security Administrator (System)
+      - Security Approver
+      - Technical Business Consultant
+      - Technical Lead
+      - Inferred Scope
+      - Assumed Disposition
+      - Inferred Server Location
+      - Inferred Hosting Type
+      - Inferred Hosting Location
+      anchor: ID
+      order_field: __row_order__
+    - id: consolidated_server_view
+      enabled: true
+      inputs:
+      - var/masterdata/consolidated_server_view_wide.parquet
+      - var/masterdata/consolidated_server_view_long.parquet
+      outputs:
+      - var/tables/views/consolidated_server_view.csv
+      fields:
+      - RECORDID
+      - MANAGEDEPT
+      - SERVERNAME
+      - IPADDRESS
+      - FQDN
+      - COMMENTS
+      - MAKE
+      - MODEL
+      - OPERATINGSYSTEM
+      - APPLICATION_perSI
+      - WARRANTYEXPIRATIONDATE
+      - MAINTENANCEEXPIRATIONDATE
+      - LOCATION
+      - BUILDINGACCESS
+      - BUILDINGACCESSCONTACT
+      - BUILDINGACCESSPHONE
+      - ADDEDDATE
+      - ADDEDBY
+      - MODIFIEDDATE
+      - MODIFIEDBY
+      - TAGNUMBER
+      - MACADDRESS
+      - PURCHASEDATE
+      - SURPLUS
+      - PURCHASEDFROM
+      - RETIRED
+      - ACCOUNTCODE
+      - PURCHPRICE
+      - ILOIPADDRESS
+      - WARRANTYCONTACT
+      - BILLINGCONTACT
+      - BILLINGCODE
+      - BILLINGCOMMENTS
+      - TYPEOS
+      - PROCUREDBY
+      - IPADDRESS2
+      - IPADDRESS3
+      - APPLICATIONSERVERYN
+      - FILESERVERYN
+      - COSTCENTER
+      - DATABASESERVERYNTYPE
+      - PRODUCTS
+      - ACCOUNTCODE2
+      - WEBSERVERYN
+      - VIRTUALSERVERYN
+      - VIRTUALSERVERHOST
+      - ASSETVALUE
+      - LOCATIONCODE
+      - DELETEDYN
+      - DELETEDDATE
+      - VMMEMORY
+      - VMSTORAGE
+      - VMPROCESSORS
+      - BACKUPNETWORKINUSEYN
+      - ILOMACADDRESS
+      - ENDOFLIFEDATE
+      - ENDOFSUPPORTDATE
+      - WHICHEMCSAN
+      - POWERPATHVERSION
+      - APPSERVERSPACEUSED
+      - OS_VERSION
+      - OS_BITS
+      - OS_SERVICEPACK
+      - OS_RELEASELEVEL
+      - MODELNUMBER
+      - VM_CLUSTER
+      - SELFASSURANCE
+      - SURPLUSDATE
+      - RETIREDDATE
+      - SELFASSURANCEDATE
+      - VIRTUALSERVERHOSTOS
+      - PATCHADMIN
+      - APPID
+      - BILLINGRATECODE
+      - ASSOCIATEDSERVICERATE
+      - ENVIRONMENT
+      - PATCHING_SCHEDULE
+      - AGENCYNAME
+      - Server
+      - APP_ID
+      - Application
+      - Inferred Server Location
+      anchor: RECORDID
+      order_field: __row_order__
+    - id: consolidated_application_view_expanded
+      enabled: true
+      inputs:
+      - var/masterdata/consolidated_application_view_expanded_exp.parquet
+      - var/masterdata/consolidated_application_view_expanded_wide.parquet
+      - var/masterdata/consolidated_application_view_expanded_long.parquet
+      outputs:
+      - var/tables/views/consolidated_application_view_expanded.csv
+      fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - TOTAL_USERS
+      - DESCRIPTION
+      - REMARKS
+      - HYPERLINK
+      - VENDOR
+      - ORGANIZATION_ID
+      - APPLICATION_TYPE_ID
+      - RISK_URGENCY_ID
+      - LAST_UPDATED_BY
+      - LAST_UPDATED_DATE
+      - APPLICATION_STATUS_ID
+      - IMPORTANCE
+      - AGENCY_RESPONSIBLE
+      - HOSTING_ARRANGEMENT
+      - HOSTING_LOCATION
+      - EXTERNAL_APP
+      - DISPOSITION
+      - DEPT_ID
+      - END_PT_TEST
+      - TLP_RATING
+      - APP_REVIEWED
+      - BUSINESS_CATEGORY
+      - PS_DEVELOPMENT_CODE
+      - RFC_PROD
+      - RFC_DECOMM
+      - EMAIL_DIST_LIST
+      - NON_SOM_NETWORK
+      - NON_SOM_NETWORK_DESC
+      - VPN_REQUIRED
+      - VPN_DESC
+      - UTILIZES_LOAD_BALANCER
+      - LOAD_BALANCER_URL
+      - UTILIZES_GATEWAYS
+      - GATEWAY_URL
+      - UTILIZES_ARR
+      - ARR_URL
+      - WHO_ADMINISTERS
+      - WHO_MAINTAINS
+      - HOSTING_DETAILS
+      - DESKTOP_DEPENDENCIES
+      - AUTHENTICATION_METHOD
+      - ITBA_BUDGET_EXISTS
+      - ITBA_BUDGET_NAME
+      - OPER_OUTSIDE_BUS_HOURS
+      - OPER_LEVEL
+      - JAVA_ON_SERVER
+      - SERVER_JAVA_VERSION
+      - JAVA_ON_CLIENT
+      - CLIENT_JAVA_VERSION
+      - DATABASE_ID
+      - DevelopmentSource
+      - TOOL_VERSION_BRICK_ID
+      - Tools
+      - TOOL_VENDOR_ID
+      - DEPARTMENT_NUMBER
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - DEPARTMENT_ACRONYM
+      - BUREAU_ACRONYM
+      - ORGANIZATION_ACRONYM
+      - PS_DEVELOPMENT_CODE_NAMETmp
+      - DatabaseName
+      - DatabaseInstance
+      - DatabaseEnvironment
+      - DatabaseContact
+      - DBType
+      - THIRD_PARTY_TOOL_ID
+      - ThirdPartyToolVendor
+      - ThirdPartyTool
+      - RECORDID
+      - SERVERNAME
+      - ENVIRONMENT
+      - Application Inventory Updater
+      - Applications Director
+      - Business Contact - Primary
+      - Business Contact - Secondary
+      - Executive Business Sponsor
+      - IT Manager
+      - Product Manager
+      - Project Manager
+      - Security Administrator (System)
+      - Security Approver
+      - Technical Business Consultant
+      - Technical Lead
+      - Inferred Scope
+      - Assumed Disposition
+      - Inferred Server Location
+      - Inferred Hosting Type
+      - Inferred Hosting Location
+      anchor: ID
+      order_field: __row_order__
+  _vtx_origin: CUSTOM:usr/config/custom/parquet_view_builder_vtx.yaml

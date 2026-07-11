@@ -1,0 +1,804 @@
+scheduler:
+  max_workers: 4
+  backbone_check_hz: 1.0
+  backbone_tick_hz: 20
+  backbone_target_ms_per_sec: 25
+  backbone_stat_benchmark_samples: 12
+  backbone_stat_benchmark_iters: 200
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+cron_jobs:
+- id: Run Snapshot Statistics
+  enabled: true
+  role: server
+  script: usr/scripts/default/snapshot_statistics.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Data Source Type Profiler
+  enabled: true
+  role: server
+  script: usr/scripts/default/datasource_type_profiler.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 1 12 * * 0
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive /views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/views/*.csv" --dest "var/dailysnapshot" --mode
+    copy --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 41 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables/views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/views/*.csv" --dest "var/dailysnapshot" --mode copy
+    --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 40 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run AWS Pricing Bulk Refresh
+  enabled: true
+  role: server
+  script: usr/scripts/aws_reporting/aws_pricing_bulk_refresh.py
+  args: '--regions us-east-1
+
+    '
+  schedule:
+    cron: 0 22 * * 5
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run AWS Pricing Report Builder
+  enabled: true
+  role: server
+  script: usr/scripts/aws_reporting/aws_pricing_report_builder.py
+  args: null
+  schedule:
+    cron: 0 23 * * 5
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Orchestrator Status
+  enabled: true
+  role: server
+  script: usr/scripts/ops/orchestrator_status_vtx.py
+  args: null
+  schedule:
+    cron: 10 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run VTX Job Checker
+  enabled: true
+  role: server
+  script: usr/scripts/ops/vtx_job_checker.py
+  args: null
+  schedule:
+    cron: 10 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Config Compiler failthrough
+  enabled: true
+  role: server
+  script: usr/scripts/default/config_compiler.py
+  args: null
+  schedule:
+    cron: 0 */1 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run workflow autogen failthrough
+  enabled: true
+  role: server
+  script: usr/scripts/default/workflow_autogen.py
+  args: null
+  schedule:
+    cron: 0 */6 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Publish Migration Data Dictionary
+  enabled: true
+  role: server
+  script: usr/scripts/default/publish_dictionaries.py
+  args: --job "Migration Program Attributes Dictionary"
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 0 */6 * * *
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: true
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Autogen - count_change_dashboards - app_inventory_changes
+  enabled: true
+  role: server
+  script: usr/scripts/dashboards/count_change_dashboard.py
+  args: --job "app_inventory_changes"
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  outputs:
+  - var/reporting/application_inventory_changes.html
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+- id: Autogen - count_change_dashboards - server_inv_changes
+  enabled: true
+  role: server
+  script: usr/scripts/dashboards/count_change_dashboard.py
+  args: --job "server_inv_changes"
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  outputs:
+  - var/reporting/server_inventory_changes.html
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+backbone_jobs:
+- id: Run Intake Processor
+  enabled: true
+  role: server
+  script: usr/scripts/default/intake_processor.py
+  args: '--mode=auto
+
+    '
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: any_file_in_dir
+  watch_dirs:
+  - var/customerdata
+  watch_glob: null
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+#- id: Run config_compiler
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/config_compiler.py
+#  args: null
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_dirs:
+#  - usr/config/default
+#  - usr/config/auto_v2
+#  - usr/config/custom
+#  watch_glob: null
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Config Tables to Config Files
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/config_tables_to_conf.py
+#  args: '--mode=auto
+#
+#    '
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  require_inputs_exist: true
+#  inputs:
+#  - bin/ui/config_table.xlsx
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  outputs:
+#  - usr/config/default/monitor.conf
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Datasource Analysis Mapping Report
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/data_source_analysis_mapping.py
+#  args: --mode=auto
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  require_inputs_exist: true
+#  inputs:
+#  - var/tables/views/consolidated_application_view.csv
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  outputs:
+#  - var/analysis/consolidated_server_and_application_mapping.csv
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Attribute Reporting Processor
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/attribute_reporting_processor.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/consolidated_application_view.csv
+#  - var/tables/views/consolidated_server_view.csv
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_recursive: true
+#  settle_seconds: 2
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Program Timeline Report
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/program_timeline.py
+#  args: null
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  require_inputs_exist: true
+#  inputs:
+#  - usr/config/data_source_analysis.yaml
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Field Profile Report
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/field_profile_report.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/consolidated_application_view.csv
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_recursive: true
+#  settle_seconds: 2
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Migration Program Dictionary
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/migration_program_dictionary.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  inputs:
+#  - usr/config/run/migration_program_dictionary.yaml
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_recursive: true
+#  settle_seconds: 2
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Program Task Generator
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/tasks_generator.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.csv
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_recursive: true
+#  settle_seconds: 5
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run program attribute reporting
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/attribute_reporting_processor.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  inputs:
+#  - var/tables/views/consolidated_application_view.csv
+#  - var/tables/views/consolidated_server_view.csv
+#  - usr/config/run/attribute_reporting.yaml
+#  - var/tables/insightvm.csv
+#  - var/tables/defender_serverinventory.csv
+#  - var/tables/flexera.csv
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_recursive: true
+#  settle_seconds: 5
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Run Workflow Autogen
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/workflow_autogen.py
+#  rule: mtime_input_newer_than_last_success_marker
+#  marker_match: any
+#  config_inputs:
+#  - usr/config/run/orchestrator.yaml
+#  watch_dirs:
+#  - usr/config/run
+#  outputs:
+#  - usr/config/auto_v2/orchestrator.yaml
+#  - usr/config/auto_v2/stretch.yaml
+#  watch_recursive: true
+#  settle_seconds: 5
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  run_on_start: true
+#  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+#- id: Autogen - data_source_analysis_reporting_vtx - consolidated_application_parquet_profile
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/data_source_analysis_vtx.py
+#  args: --job "consolidated_application_parquet_profile"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/consolidated_application_view_auto*.parquet
+#  config_inputs:
+#  - usr/config/run/data_source_analysis_reporting.yaml
+#  - usr/config/default/data_source_analysis_reporting.yaml
+#  outputs:
+#  - var/analysis/consolidated_application_parquet_profile.csv
+#  - var/analysis/consolidated_application_parquet_profile.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - table_aggregator_v2 - raw_application_table_v2
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/application_raw_table_builder_v2.py
+#  args: --job "raw_application_table_v2"
+#  settle_seconds: 30
+#  debounce_seconds: 5
+#  rule: downstream_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  downstream_jobs:
+#  - Run Intake Processor
+#  mode: all
+#  require_downstream_markers: true
+#  outputs:
+#  - var/masterdata/raw_application_table_v2.parquet
+#  - usr/config/manifests/raw_application_table_manifest.yaml
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - table_aggregator - consolidated_application_view_auto
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/application_raw_table_builder.py
+#  args: --job "consolidated_application_view_auto"
+#  settle_seconds: 30
+#  debounce_seconds: 5
+#  rule: downstream_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  downstream_jobs:
+#  - Run Intake Processor
+#  mode: all
+#  require_downstream_markers: true
+#  outputs:
+#  - var/masterdata/raw_application_table_auto.parquet
+#  - usr/config/manifests/raw_application_table_manifest_auto.yaml
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - table_aggregator - raw_application_table
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/application_raw_table_builder.py
+#  args: --job "raw_application_table"
+#  settle_seconds: 30
+#  debounce_seconds: 5
+#  rule: downstream_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  downstream_jobs:
+#  - Run Intake Processor
+#  mode: all
+#  require_downstream_markers: true
+#  outputs:
+#  - var/masterdata/raw_application_table.parquet
+#  - usr/config/manifests/raw_application_table_manifest.yaml
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - tag_engine - tag_engine
+#  enabled: true
+#  role: server
+#  script: usr/scripts/default/tag_engine.py
+#  args: --job "tag_engine"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/masterdata/master_applications.parquet
+#  config_inputs:
+#  - usr/config/run/tag_engine.yaml
+#  - usr/config/default/tag_engine.yaml
+#  outputs:
+#  - var/metadata/tags_application.csv
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - visual_program_attribute_mapping - consolidated_server_and_application_mapping_visual
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+#  args: --job "consolidated_server_and_application_mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.csv
+#  config_inputs:
+#  - usr/config/run/visual_program_attribute_mapping_vtx.yaml
+#  - usr/config/default/visual_program_attribute_mapping_vtx.yaml
+#  outputs:
+#  - var/analysis/consolidated_server_and_application_mapping.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - visual_program_attribute_mapping - Archer to AIS Field Mapping_visual
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+#  args: --job "Archer to AIS Field Mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/analysis/archer_consolidated_server_and_application_mapping.csv
+#  config_inputs:
+#  - usr/config/run/visual_program_attribute_mapping_vtx.yaml
+#  - usr/config/default/visual_program_attribute_mapping_vtx.yaml
+#  outputs:
+#  - var/analysis/archer_program_attributes.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - visual_stats_timeline - consolidated_application_view_stats
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_stats_timeline_vtx.py
+#  args: --job "consolidated_application_view_stats"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/statistics/consolidated_application_view_stats.csv
+#  - usr/config/run/data_source_analysis_mapping.yaml
+#  config_inputs:
+#  - usr/config/run/visual_stats_timeline._vtx.yaml
+#  - usr/config/default/visual_stats_timeline._vtx.yaml
+#  outputs:
+#  - var/reporting/consolidated_application_view_stats_timeline.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - visual_stats_timeline - consolidated_server_view_stats
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_stats_timeline_vtx.py
+#  args: --job "consolidated_server_view_stats"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/statistics/consolidated_server_view_stats.csv
+#  - usr/config/run/data_source_analysis_mapping.yaml
+#  config_inputs:
+#  - usr/config/run/visual_stats_timeline._vtx.yaml
+#  - usr/config/default/visual_stats_timeline._vtx.yaml
+#  outputs:
+#  - var/reporting/consolidated_server_view_stats_timeline.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Autogen - visual_tasks_dashboard - tasks
+#  enabled: true
+#  role: server
+#  script: usr/scripts/dashboards/visual_tasks_dashboard_vtx.py
+#  args: --job "tasks"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 120
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  marker_match: any
+#  inputs:
+#  - var/interactive/views/tasks.csv
+#  - var/tables/tasks_log.csv
+#  config_inputs:
+#  - usr/config/run/visual_tasks_dashboard_vtx.yaml
+#  - usr/config/default/visual_tasks_dashboard_vtx.yaml
+#  outputs:
+#  - var/reporting/tasks.html
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - count_change_dashboards__app_inventory_changes - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "count_change_dashboards__app_inventory_changes"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/application_inventory_changes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - count_change_dashboards__server_inv_changes - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "count_change_dashboards__server_inv_changes"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/server_inventory_changes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - visual_program_attribute_mapping__consolidated_server_and_application_mapping_visual
+#    - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_program_attribute_mapping__consolidated_server_and_application_mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/analysis/consolidated_server_and_application_mapping.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - visual_program_attribute_mapping__Archer to AIS Field Mapping_visual
+#    - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_program_attribute_mapping__Archer to AIS Field Mapping_visual"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/analysis/archer_program_attributes.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - visual_stats_timeline__consolidated_application_view_stats - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_stats_timeline__consolidated_application_view_stats"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/consolidated_application_view_stats_timeline.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - visual_stats_timeline__consolidated_server_view_stats - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_stats_timeline__consolidated_server_view_stats"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/consolidated_server_view_stats_timeline.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+#- id: Stretch - visual_tasks_dashboard__tasks - internal
+#  enabled: true
+#  role: client
+#  script: usr/scripts/default/stretch_sync.py
+#  args: --name "visual_tasks_dashboard__tasks"
+#  settle_seconds: 2
+#  debounce_seconds: 5
+#  rule: mtime_input_newer_than_last_success_marker
+#  timeout_seconds: 300
+#  retries: 1
+#  backoff_seconds: 10
+#  jitter_seconds: 0
+#  inputs:
+#  - var/reporting/tasks.html
+#  marker_match: any
+#  require_inputs_exist: false
+#  _vtx_origin: AUTO_V2:usr/config/auto_v2/orchestrator.yaml
+pipeline_jobs:
+- id: Data Handling Pipeline
+  enabled: true
+  role: server
+  cooldown_seconds: 60
+  trigger_markers:
+  - var/state/orchestrator_markers/Run_Intake_Processor.marker
+  - var/state/orchestrator_markers/Run_config_compiler.marker
+  stages:
+  - id: Raw Application Tables
+    script: usr/scripts/default/application_raw_table_builder.py
+  - id: Raw Server Tables
+    script: usr/scripts/default/server_raw_table_builder.py
+  - id: Master Tables
+    script: usr/scripts/default/master_table_builder_vtx.py
+  - id: Approximation Engine
+    script: usr/scripts/default/approximation_engine.py
+  - id: Inferred Decisions Engine
+    script: usr/scripts/default/inferred_decisions_engine.py
+  - id: Tag Engine
+    script: usr/scripts/default/tag_engine.py
+  - id: Master Views
+    script: usr/scripts/default/master_view_builder_vtx.py

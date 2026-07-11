@@ -1,0 +1,44 @@
+version: 1
+defaults:
+  orchestrator:
+    enabled: true
+    role: server
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any
+    watch_recursive: true
+    settle_seconds: 5
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+    _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+  stretch:
+    default_publish_dir: var/interactive
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    sheet_name: Sheet1
+    key_columns: []
+    xlsx_truncate_extra_rows: true
+    xlsx_truncate_extra_columns: false
+    _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+  _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+sources:
+- name: attribute_reporting
+  type: yaml
+  path: usr/config/run/attribute_reporting.yaml
+  items_path: reports
+  job:
+    id: 'Attribute Report: {item.report_name}'
+    script: usr/scripts/default/attribute_reporting_processor.py
+    inputs:
+    - '{source.path}'
+    - '{item.source.file}'
+    - '{item.target.file}'
+    _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+  publish:
+    enabled: true
+    internal_files:
+    - '{item.output.destination}'
+    external_file_template: '{basename}'
+    _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml
+  _vtx_origin: DEFAULT:usr/config/default/autogen_registry.yaml

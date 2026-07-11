@@ -1,0 +1,124 @@
+
+# inferred_decision_engine.yaml
+#
+# You can define multiple decision sets. Each set merges any number of source CSVs
+# (by a common key), evaluates ordered rules, and writes a new output table.
+#
+# Notes
+# - Source CSVs default to BTDM_ROOT/var/tables/<file>, unless you give an absolute path.
+# - On merge: each source gets an 'alias'. All columns (except the join key) are prefixed
+#   with '<alias>__' to avoid collisions (e.g., app__STATUS, srv__PLATFORM).
+# - First-match-wins for rules under each inferred field.
+# - Predicates support nested logic with 'all' (AND), 'any' (OR), 'not' and atomic tests:
+#   { source, field, op, value, parse_as? }. Supported ops:
+#     ==, !=, >, <, >=, <=, contains, not_contains, in, not_in, regex
+#   parse_as: int, float, bool, date, lower, upper, string
+#
+decision_sets:
+  - name: "inferred_application_attributes"
+    output_name: "inferred_application_attributes.csv"
+
+    # The key (ID) that will be included in the output to correlate with other datasets
+    key:
+      source: "app"           # must match a 'sources.alias' below
+      field: "ID" # column name in that source used as the key
+
+    # All source tables to use (these are typically produced into var/tables by VTX)
+    sources:
+      - alias: "app"
+        file: "applications.csv"
+        #join_key:    # if omitted, defaults to key.field
+
+    #  - alias: "srv"
+    #    file: "serverinventories_sds.csv"
+    #    join_key: "APPLICATION_ID"
+
+    # Define one-or-more inferred fields; each has ordered rules (first match wins)
+    infer:
+      - field: "Inferred Disposition"
+        default: 
+        rules:
+          - when:
+              all:
+                - { source: "app", field: "ACTIVE", op: "==", value: "Y" }
+    #            - { source: "app", field: "DECOMMISSION_DATE", op: "==", value: "" }
+            set: "Cloud Migration Candidate"
+
+      - field: "Inferred Scope"
+        default: 
+        rules:
+          - when:
+              all:
+                - { source: "app", field: "ACTIVE", op: "==", value: 'N' }
+    #            - { source: "app", field: "DECOMMISSION_DATE", op: "==", value: "" }
+            set: "Out-of-Scope"
+    #      - when:
+    #          any:
+    #            - { source: "app", field: "STATUS", op: "==", value: "Inactive" }
+    #            - { source: "app", field: "DECOMMISSION_DATE", op: "<", value: "2025-01-01", parse_as: "date" }
+    #        set: "Cloud Migration Candidate"
+
+    #  - field: "Is_Cloud_Migrated"
+    #    default: "N"
+    #    rules:
+    #      - when:
+    #          all:
+    #            - { source: "srv", field: "PLATFORM", op: "contains", value: "AWS" }
+    #        set: "Y"
+#
+    #  - field: "Migration_Readiness"
+    #    default: "Unknown"
+    #    rules:
+    #      - when:
+    #          all:
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Discover" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Program Strategy" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Rationalize" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Migration Planning" }
+    #        set: "Migration Planning Ready"
+#
+    #      - when:
+    #          all:
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Discover" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Program Strategy" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Rationalize" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Migration Planning" }
+    #            - { source: "app", field: "BLOCKS", op: "contains", value: "Migration Execution" }
+    #        set: "Migration Execution Ready"
+  - name: "inferred_server_attributes"
+    output_name: "inferred_server_attributes.csv"
+
+    # The key (ID) that will be included in the output to correlate with other datasets
+    key:
+      source: "srv"           # must match a 'sources.alias' below
+      field: "RECORDID" # column name in that source used as the key
+
+    # All source tables to use (these are typically produced into var/tables by VTX)
+    sources:
+      - alias: "srv"
+        file: "views\\consolidated_server_view.csv"
+        #join_key:    # if omitted, defaults to key.field
+
+    #  - alias: "srv"
+    #    file: "serverinventories_sds.csv"
+    #    join_key: "APPLICATION_ID"
+
+    # Define one-or-more inferred fields; each has ordered rules (first match wins)
+    infer:
+      - field: "Inferred Location"
+        default: 
+        rules:
+          - when:
+              all:
+                - { source: "srv", field: "IPADDRESS", op: "regex", value: '^10\.110\.' }
+    #            - { source: "app", field: "DECOMMISSION_DATE", op: "==", value: "" }
+            set: "CMCC"
+          - when:
+              all:
+                - { source: "srv", field: "IPADDRESS", op: "regex", value: '^10\.210\.' }
+    #            - { source: "app", field: "DECOMMISSION_DATE", op: "==", value: "" }
+            set: "SSDC"
+
+
+      
+          

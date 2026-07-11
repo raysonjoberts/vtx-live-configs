@@ -1,0 +1,23 @@
+stretches:
+#  - name: tasks
+#    internal_csv: "VTX_ROOT/var/interactive/views/tasks.csv"
+#    external_csv: "C:/VTX_Share/tasks.csv"
+#
+#    key_columns: ["task_id"]
+#
+#    vtx_columns:
+#      - origin
+#      - auto_key
+#      - source_table
+#      - task_label
+#      - progress
+#      - priority
+#      - created_at
+#      - updated_at
+#      - last_update
+ # NEW: which external rows should be treated as canonical?
+#    # Here: any row where origin != "auto"
+#    ext_canonical_rows:
+#      - column: origin
+#        op: "!="
+#        value: "auto"

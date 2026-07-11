@@ -1,0 +1,52 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: application_raw_table_builder
+  title: Application Raw Table Builder
+  description: Build canonical expanded raw application table.
+  owner: default
+  version: 1.0.0
+  tags:
+  - inventory
+  - masterdata
+  - canonical
+  consumers:
+  - usr/scripts/default/application_raw_table_builder.py
+  _vtx_origin: DEFAULT:usr/config/default/application_raw_table_builder.yaml
+config:
+  payload:
+    schema_contracts:
+      raw_application_table:
+        path: var/masterdata/raw_application_table.parquet
+        anchor_field: ID
+        row_key_field: __row_key__
+        notes: Expanded canonical app rows, no semicolon collapse.
+      raw_server_table:
+        path: var/masterdata/raw_server_table.parquet
+        anchor_field: Hostname
+        row_key_field: __row_key__
+      application_approximation:
+        path: var/masterdata/application_approximation.parquet
+        anchor_field: ID
+      master_applications:
+        path: var/masterdata/master_applications.parquet
+        anchor_field: ID
+      master_servers:
+        path: var/masterdata/master_servers.parquet
+        anchor_field: Hostname
+    jobs:
+    - id: build_raw_application_table
+      enabled: true
+      source: var/masterdata/consolidated_application_view_auto__applications_wide.parquet
+      anchor_field: TITLE_NAME
+      row_key_field: __row_key__
+      expand_rows:
+        delimiter: ;
+        linked_field_groups:
+        - - RECORDID
+          - SERVERNAME
+          - ENVIRONMENT
+      outputs:
+        parquet: var/masterdata/raw_application_table.parquet
+        csv: var/masterdata/raw_application_table.csv
+  _vtx_origin: DEFAULT:usr/config/default/application_raw_table_builder.yaml

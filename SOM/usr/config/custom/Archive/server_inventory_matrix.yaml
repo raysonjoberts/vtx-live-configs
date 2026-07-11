@@ -1,0 +1,264 @@
+version: 1
+
+globals:
+  vtx_root: ""   # optional; if blank, script auto-detects from its location / env
+  default_normalization:
+    hostname:
+      casefold: true
+      fqdn_to_shortname: true
+      strip: true
+    ip_address:
+      strip: true
+
+inventories:
+  - id: Server_Inventory_Matrix
+    enabled: true
+
+    # Canonical attributes you care about (these become the “program attributes”)
+    attributes:
+      - Hostname
+      - IP Address
+      - OS
+      - Environment
+      - CPU
+      - Memory
+      - Storage
+
+
+    # How to decide that two rows from two sources represent the same server
+    match:
+      condition: any            # any | all
+      keys:
+        - name: Hostname
+          type: hostname        # hostname triggers hostname normalization rules
+        - name: IP Address
+          type: ip_address      # optional normalization hook
+      # If condition=all, a match requires ALL keys to be present and equal (after normalization).
+
+    # Trust ranking PER ATTRIBUTE (highest trust listed first).
+    # Any attribute not listed here falls back to source.priority order (lowest number = most trusted).
+    trust_ranking:
+      Hostname: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory, splunk]
+      IP Address: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory, splunk]
+      OS: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory, splunk]
+      Environment: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory]
+      CPU: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory]
+      Memory: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory]
+      Storage: [consolidated_server_view, cmcc_rvtools_vinfo, ssdc_rvtools_vinfo, cmcc_rvtools_vpartition, ssdc_rvtools_vpartition, insightvm, flexera, defender_serverinvnetory]
+
+    # Define as many sources as you want
+    sources:
+      - id: consolidated_server_view
+        enabled: true
+        priority: 1
+        path: var/tables/views/consolidated_server_view.csv
+        format: csv
+        map:
+          Hostname: SERVERNAME
+          IP Address: IPADDRESS
+          OS: TYPEOS
+          Environment: ENVIRONMENT
+          CPU: VMPROCESSORS
+          Memory: VMMEMORY
+          Storage: VMSTORAGE
+        # Optional: omit rows you don’t want to consider from this source.
+        # Multiple filters are AND’ed together by default.
+        # Operators: =, !=, >, <, >=, <=, isnull, isnotnull, regex
+        # For regex, provide `regex:`. For other operators, provide `value:`.
+        # Example:
+        # filters:
+        #   - field: TYPEOS
+        #     operator: regex
+        #     regex: "(?i)windows|linux"
+        #   - field: SERVERNAME
+        #     operator: isnotnull
+
+
+      - id: cmcc_rvtools_vinfo
+        enabled: true
+        priority: 2
+        path: var/tables/cmcc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: VM
+          IP Address: Primary IP Address
+          OS: OS According to the VMware Tools
+          Environment: 
+          CPU: CPUs
+          Memory: Memory
+          Storage:
+        filters:
+          - field: VM
+            operator: regex
+            regex: "(?i)^(?!(?:vcls-|tmp-)).*"
+
+      - id: ssdc_rvtools_vinfo
+        enabled: true
+        priority: 3
+        path: var/tables/ssdc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: VM
+          IP Address: Primary IP Address
+          OS: OS According to the VMware Tools
+          Environment: 
+          CPU: CPUs
+          Memory: Memory
+          Storage:
+        filters:
+          - field: VM
+            operator: regex
+            regex: "(?i)^(?!(?:vcls-|tmp-)).*"
+
+      - id: cmcc_rvtools_vpartition
+        enabled: true
+        priority: 4
+        path: var/tables/cmcc-rvtools_vpartition_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: 
+          OS:
+          Environment: 
+          CPU: 
+          Memory:
+          Storage: used_(gb)
+        filters:
+          - field: VM
+            operator: regex
+            regex: "(?i)^(?!(?:vcls-|tmp-)).*"
+
+      - id: ssdc_rvtools_vpartition
+        enabled: true
+        priority: 5
+        path: var/tables/ssdc-rvtools_vpartition_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: 
+          OS:
+          Environment: 
+          CPU: 
+          Memory:
+          Storage: used_(gb)
+        filters:
+          - field: VM
+            operator: regex
+            regex: "(?i)^(?!(?:vcls-|tmp-)).*"
+
+      - id: flexera
+        enabled: true
+        priority: 6
+        path: var/tables/flexera.csv
+        format: csv
+        map:
+          Hostname: Host Name
+          IP Address: IP Address
+          OS:
+          Environment: 
+          CPU: 
+          Memory:
+          Storage:
+        filters: []
+  
+      - id: insightvm
+        enabled: true
+        priority: 7
+        path: var/tables/insightvm.csv
+        format: csv
+        map:
+          Hostname: Asset Names
+          IP Address: Asset IP Address
+          OS: Asset OS Name
+          Environment: 
+          CPU: 
+          Memory:
+          Storage:
+        filters: []
+
+      - id: defender_serverinventory
+        enabled: true
+        priority: 7
+        path: var/tables/defender_serverinventory.csv
+        format: csv
+        map:
+          Hostname: DeviceName
+          IP Address:
+          OS: OSPlatform
+          Environment: 
+          CPU: 
+          Memory:
+          Storage:
+        filters: []
+
+      - id: splunk
+        enabled: true
+        priority: 7
+        path: var/tables/splunk.csv
+        format: csv
+        map:
+          Hostname: Hostname
+          IP Address: sourceIp
+          OS: os
+          Environment: 
+          CPU: 
+          Memory:
+          Storage:
+        filters: []
+
+    outputs:
+      # Output 1: Unified inventory table
+      inventory_table:
+        path: C:\BTDM_7.1\var\tables\views\unified_server_inventory.csv
+
+        # If true: include one boolean column per source like present__cmdb, present__defender, ...
+        include_presence_flags: true
+
+        # If true: include “where did this value come from?” columns like Hostname__source
+        include_value_provenance: true
+
+        # If true: include alternate ranked values in a single field like Hostname__ranked = "x;y;z"
+        include_ranked_values: true
+        ranked_values_delimiter: ";"
+
+        # If you prefer separate columns instead of a delimited list, turn on:
+        # include_ranked_columns: true
+        # max_ranked_columns: 4
+
+        fields: "*"   # "*" or explicit list like [Hostname, IP Address, OS, ...]
+
+      # Output 2: One or more presence matrix reports
+      presence_matrix_reports:
+        - id: hostname_presence
+          attribute: Hostname
+          normalize_as: hostname
+          source_of_truth: consolidated_server_view
+          display_attributes: ["IP Address"]
+          path: C:\BTDM_7.1\var\detailedreporting\presence_hostname_matrix.csv
+
+        #- id: ip_presence
+        #  attribute: IP Address
+        #  normalize_as: ip_address
+        #  source_of_truth: defender
+        #  path: C:\BTDM_7.1\var\detailedreporting\presence_ip_matrix.csv
+    _autogen:
+      orchestrator:        
+        id: "Server Inventory Mat{id}"
+        job_type: backbone
+        role: server
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any
+        script: usr/scripts/default/server_inventory_matrix.py
+        args: [--job "CCoE Program Attributes Dictionary"]                       # optional list (or string)
+        inputs: ["{sources.*.path}"]      # wildcard gather   
+        watch_recursive: true
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{outputs.inventory_table.path}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards
+        csv_xlsx_convert: false

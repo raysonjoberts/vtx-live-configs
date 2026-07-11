@@ -1,0 +1,90 @@
+_vtx:
+  schema: v1
+  kind: processor
+  id: aws_server_pricing_shortlist_builder_vtx
+  title: AWS Server Pricing Shortlist Builder VTX
+  description: Builds contextual server-to-SKU shortlist tables per AWS region.
+  owner: default
+  version: 1.0.0
+  tags:
+  - aws
+  - pricing
+  - shortlist
+  consumers:
+  - usr/scripts/default/aws_server_pricing_shortlist_builder_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/aws_server_pricing_shortlist_builder_vtx.yaml
+config:
+  payload:
+    regions:
+      include:
+      - us-east-1
+      us_only_guardrail: true
+    input:
+      servers_path: var/masterdata/servers.parquet
+      pricing_catalog_dir: var/masterdata/aws_regional_pricing
+      pricing_catalog_filename_template: pricing_catalog_{region}.parquet
+    servers:
+      id_field: Hostname
+      cpu_field: CPU
+      memory_field: Memory
+      os_field: OS
+      passthrough_fields:
+      - RECORDID
+      - Environment
+      - Final Environment
+      - Server_Scope
+      - Server_Disposition
+      - Final Server Disposition
+    matching:
+      top_n_per_server: 0
+      memory_threshold_mb: 512
+      os_translation_map:
+        Windows: Windows
+        Windows Server: Windows
+        Linux: Linux
+        RHEL: RHEL
+        Red Hat: RHEL
+        SUSE: SUSE
+        Ubuntu: Linux
+      base_filters:
+        record_type: ec2_instance
+        storage: EBS only
+        tenancy_include:
+        - Shared
+        - Dedicated
+        term_type_include:
+        - OnDemand
+        - Reserved
+        license_model_include:
+        - No License required
+        - Bring your own license
+        - License Included - Infrastructure
+        preinstalled_sw_include:
+        - NA
+        purchase_option_include_for_reserved:
+        - No Upfront
+        lease_length_include_for_reserved:
+        - 1yr
+        - 3yr
+        usage_type_include_regex: ''
+        usage_type_exclude_regex: ''
+        usage_family_include:
+        - BoxUsage
+        - Reservation
+        - DedicatedUsage
+        - DedicatedRes
+        usage_family_dedupe_map:
+          UnusedBox: BoxUsage
+          UnusedDed: DedicatedUsage
+        instance_family_include_regex: ^(?:m|t)\d
+        network_performance_include_regex: (?i)(?:up to|low|moderate)
+        max_vcpu_multiplier: 3
+        max_memory_multiplier: 3
+        max_price_factor_vs_lowest: 6
+        disallow_instance_type_patterns:
+        - '*.metal'
+    output:
+      directory: var/masterdata/aws_customer_contextural_pricing
+      filename_template: server_pricing_shortlist_{region}.parquet
+      also_write_csv: true
+  _vtx_origin: DEFAULT:usr/config/default/aws_server_pricing_shortlist_builder_vtx.yaml

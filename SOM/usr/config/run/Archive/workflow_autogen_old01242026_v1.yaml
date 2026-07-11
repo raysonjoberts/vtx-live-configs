@@ -1,0 +1,112 @@
+_vtx:
+  schema: v1
+  kind: autogen_policy
+  id: autogen_policy_v2
+  title: Autogen Policy (Orchestrator + Stretch + Backup)
+  owner: default
+  version: 1.0.0
+  tags:
+  - autogen
+  consumers:
+  - usr/scripts/default/autogen_policy_jobs_v2.py
+  _vtx_origin: DEFAULT:usr/config/default/workflow_autogen_old01242026_v1.yaml
+config:
+  payload:
+    defaults:
+      orchestrator:
+        producer:
+          enabled: true
+          role: server
+          job_type: backbone
+          rule: mtime_input_newer_than_last_success_marker
+          marker_match: any
+          settle_seconds: 2
+          debounce_seconds: 5
+          require_inputs_exist: true
+          timeout_seconds: 120
+          retries: 1
+          backoff_seconds: 10
+          jitter_seconds: 0
+        stretch_trigger:
+          enabled: true
+          role: client
+          job_type: backbone
+          rule: mtime_input_newer_than_last_success_marker
+          marker_match: any
+          settle_seconds: 2
+          debounce_seconds: 5
+          require_inputs_exist: false
+          timeout_seconds: 300
+          retries: 1
+          backoff_seconds: 10
+          jitter_seconds: 0
+        backup:
+          enabled: true
+          role: server
+          job_type: cron
+          schedule_cron: 30 18 * * *
+          timeout_seconds: 180
+          retries: 1
+          backoff_seconds: 10
+      stretch:
+        enabled: false
+        sync_type: internal_to_external
+        csv_xlsx_convert: false
+        sheet_name: Sheet1
+        xlsx_truncate_extra_rows: true
+        xlsx_truncate_extra_cols: false
+        external_base_dir: ''
+      backup:
+        enabled: false
+        file_move_script: usr/utils/file_move.py
+        dest_dir: var/dailysnapshot
+        append_date: true
+        date_format: '%Y%m%d'
+        skip_missing: true
+    mappings:
+      producer_script_from:
+        type: vtx_consumers_first
+      producer_args_template: --job "{job_id}"
+      producer_output_path_from:
+        type: payload_jobs_output_dir_file
+      snapshot_watch_glob_from_pattern:
+        replace:
+          '%Y%m%d': '*'
+      stretch_name_template: '{vtx_id}__{job_id}'
+      stretch_internal_file_from_output: true
+      stretch_external_file_template: '{external_base_dir}/{output_file}'
+      backup_source_from_output: true
+    policies:
+    - name: dashboard_count_changes
+      match:
+        all:
+        - source_vtx_id: count_change_dashboards
+      apply:
+        orchestrator:
+          producer:
+            job_type: cron
+            schedule_cron: 30 22 * * *
+        stretch:
+          enabled: true
+          sync_type: internal_to_external
+          external_base_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE
+            - Data Dog\Correlated_data\Reports\Dashboards
+        backup:
+          enabled: false
+    - name: dashboards_default
+      match:
+        any:
+        - source_tags_any:
+          - dashboard
+      apply:
+        orchestrator:
+          producer:
+            job_type: backbone
+        stretch:
+          enabled: true
+          sync_type: internal_to_external
+          external_base_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE
+            - Data Dog\Correlated_data\Reports\Dashboards
+        backup:
+          enabled: false
+  _vtx_origin: DEFAULT:usr/config/default/workflow_autogen_old01242026_v1.yaml

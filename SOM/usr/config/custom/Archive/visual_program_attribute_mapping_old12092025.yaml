@@ -1,0 +1,134 @@
+reports:
+  - name: consolidated_server_and_application_mapping
+    input_csv: C:\BTDM_7.1\var\analysis\consolidated_server_and_application_report.csv
+    output_html: C:\BTDM_7.1\var\analysis\consolidated_server_and_application_mapping.html
+    title: "Program Attribute Mapping — Consolidated Server & Application"
+    subtitle: "Coverage and quality for mapped fields"
+    attribute_yaml: VTX_ROOT/usr/config/run/data_source_analysis.yaml
+
+    # Program Attribute Mapping:
+    #   key   = Program Attribute name (as you use it in the program)
+    #   value = Field Name from the data_source_analysis CSV
+    program_attribute_mapping:
+      Hostname: SERVERNAME
+      Application Name: TITLE_NAME
+      Application ID: ID
+      Business Owner: Business Contact - Primary
+      Technical Owner: Technical Lead
+      CPU: VMPROCESSORS
+      Memory: VMMEMORY
+      Cost Center: COSTCENTER
+      Virtual / Physical: VIRTUALSERVERYN
+      Environment: ENVIRONMENT
+      Databases Used:
+      Hosting Location:
+      Change Frequency:
+      Configuration Files / Paths:
+      Data Sensitivity / Classification:
+      Firewall Rules:
+      Licenses:
+      Operating System: TYPEOS
+      Application Components:
+      Business Function:
+      Dependencies:
+      OS/Platform Dependencies:
+      RPO:
+      RTO:
+      Uptime Requirements:
+      Agent Tools (Encryption, AV, etc):
+      Infrastructure Dependencies:
+      IP Address: IPADDRESS
+      Patch Level:
+      Architecture Tier/Model:
+      Business Continuity Plan:
+      DR Plan:
+      Interface Mechanisms:
+      Language / Framework:
+      Monitoring Tools:
+      Authentication Method:
+      Hypervisor:
+      IOPS Throughput:
+      Network Bandwidth:
+      Performance Over Time (CPU/Memory/Storage):
+      Server Business Unit:
+      Application Deployment Certification:
+      TLP Data Clasfification: TLP_ID
+      Application Updater: Application Inventory Updater
+
+  - name: Archer to AIS Field Mapping
+    input_csv: C:\BTDM_7.1\var\analysis\archer_consolidated_report.csv
+    output_html: C:\BTDM_7.1\var\analysis\archer_program_attributes.html
+    title: "Program Attribute Mapping — Archer to AIS Data Mapping"
+    subtitle: "Coverage and quality for mapped fields"
+    attribute_yaml: VTX_ROOT/usr/config/run/archer_data_source_analysis.yaml
+
+    # Program Attribute Mapping:
+    #   key   = Program Attribute name (as you use it in the program)
+    #   value = Field Name from the data_source_analysis CSV
+    program_attribute_mapping:
+      Applicaiton Type: APPLICATION_TYPE_ID
+      Authentication Type: AUTHENTICATION_METHOD
+      Devices:
+      License Model:
+      Manufacturer: MAKE
+      Platform: OPERATINGSYSTEM
+      Version: OS_VERSION
+      MFA Authentication:
+      Vendor:
+      Agency Vendor: WHO_ADMINISTERS
+      Data Impact: RISK_URGENCY_ID
+      Application Importance: IMPORTANCE
+      Number of Users: TOTAL_USERS
+      Host Location: HOSTING_LOCATION
+      VM HOST:
+      Backup Host:
+      Telephony Application:
+      Telephony Technology:
+      Federal Auditing Agencies:
+      Deployment Model:
+      Mobile Access:
+      Data Sensitivity:
+      Application Name: TITLE_NAME
+      Application ID: ID
+      Application Owner: Business Contact - Primary
+      Application Support: Technical Lead
+      Applicatoin Description: Description
+      Acronym: ACRONYM
+      Agency Vendor Relationship: AGENCY_RESPONSIBLE
+      TLP Rating: TLP_RATING
+      Application Status: APPLICATION_STATUS_ID
+      Applications:
+      Device Description:
+      Device ID: RECORDID
+      Device Manager: IT Manager
+      Device Owner:
+      Device State:
+      Environment: ENVIRONMENT
+      Manufacturer:
+      Operating System: TYPEOS
+      Serial Number:
+      Service Tag Number:
+      Status:
+      Storage Devices:
+      Device Type:
+      Internet Protocol:
+      Internet Protocol Version:
+      Hosting Cloud:
+      Device Name: SERVERNAME
+      Make: Make
+      Model: Model
+      Operating System Version: OS_VERSION
+      Software Release Number: OS_RELEASELEVEL
+
+
+
+
+
+
+
+
+
+      # Add more like:
+      # "Application Name": APP_NAME
+      # "Environment": ENVIRONMENT
+      # etc.

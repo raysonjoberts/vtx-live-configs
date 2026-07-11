@@ -1,0 +1,82 @@
+_vtx:
+  schema: v1
+  kind: dictionary
+  id: aws_pricing_policies
+  title: AWS Pricing Policies
+  description: Tag-driven pricing filters for EC2 matching
+  owner: default
+  version: 1.0.0
+  tags: []
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/aws_pricing_report_builder.py
+  _vtx_origin: DEFAULT:usr/config/default/aws_pricing_policies.yaml
+config:
+  pricing_tables:
+    us-east-1: VTX/var/masterdata/aws_pricing_useast1.parquet
+    us-east-2: VTX/var/masterdata/aws_pricing_useast2.parquet
+  matching:
+    os_translation_map:
+      Windows: Windows
+      Windows Server: Windows
+      Linux: Linux
+      RHEL: RHEL
+      Red Hat: RHEL
+      SUSE: SUSE
+      Ubuntu: Linux
+      Ubuntu Pro: Linux
+    license_model_translation_map:
+      included: No License required
+      bring_your_own: Bring your own license
+      byol: Bring your own license
+  match_fields:
+  - operating_system
+  - vcpu
+  - memory_gib
+  filter_fields:
+    region:
+    - us-east-1
+    - us-east-2
+  jobs:
+  - id: aws_pricing_report_us-east-1
+    enabled: true
+    inputs:
+    - VTX/var/masterdata/unified_server_inventory.csv
+    outputs:
+    - VTX/var/costmodeling/aws_pricing_report_us-east-1.csv
+    base_tags:
+      region: us-east-1
+      term: ondemand
+      tenancy: shared
+      license_model: no license required
+      preinstalled_sw: NA
+    preferences:
+      generation_policy: latest
+      cpu_vendor_preference: amd
+    groups:
+    - id: reserved_shared_test
+      enabled: true
+      match_any:
+      - field: Hostname
+        op: regex
+        value: ^w-
+      tags:
+        term: reserved
+        ri_years: 1yr
+        payment: noupfront
+        tenancy: shared
+    - id: dedicated_prod
+      enabled: true
+      match_all:
+      - field: Environment
+        op: in
+        value:
+        - Prod
+        - Production
+      tags:
+        tenancy: dedicated
+        term: reserved
+        ri_years: 1yr
+        payment: noupfront
+  _vtx_origin: DEFAULT:usr/config/default/aws_pricing_policies.yaml

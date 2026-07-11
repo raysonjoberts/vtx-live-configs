@@ -1,0 +1,52 @@
+_vtx:
+  schema: v1
+  kind: dashboard
+  id: visual_program_attribute_mapping
+  title: Program Attribute Mapping - Visual Overview
+  description: Render program attribute mapping dashboards from prepared CSV sources.
+  owner: default
+  version: 1.0.0
+  tags:
+  - dashboard
+  - reporting
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/visual_program_attribute_mapping_vtx.yaml
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: consolidated_server_and_application_mapping_visual
+      enabled: true
+      name: consolidated_server_and_application_mapping_visual
+      title: Program Attribute Mapping — Consolidated Server & Application
+      subtitle: Coverage and quality for mapped fields
+      inputs:
+      - var/analysis/consolidated_server_and_application_mapping.csv
+      outputs:
+      - var/analysis/consolidated_server_and_application_mapping.html
+      input_csv: var/analysis/consolidated_server_and_application_mapping.csv
+      output_html: var/analysis/consolidated_server_and_application_mapping.html
+    - id: Archer to AIS Field Mapping_visual
+      enabled: true
+      name: Archer to AIS Field Mapping_visual
+      title: Program Attribute Mapping — Archer to AIS Data Mapping
+      subtitle: Coverage and quality for mapped fields
+      inputs:
+      - var/analysis/archer_consolidated_server_and_application_mapping.csv
+      outputs:
+      - var/analysis/archer_program_attributes.html
+      input_csv: var/analysis/archer_consolidated_server_and_application_mapping.csv
+      output_html: var/analysis/archer_program_attributes.html
+  _vtx_origin: DEFAULT:usr/config/default/visual_program_attribute_mapping_vtx.yaml

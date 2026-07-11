@@ -1,0 +1,76 @@
+_vtx:
+  schema: v1
+  kind: dashboard
+  id: count_change_dashboards
+  title: Count Change Dashboards
+  description: Generate HTML dashboards showing row count changes over time for snapshot-based tables.
+  owner: default
+  version: 1.0.0
+  tags:
+  - dashboard
+  - reporting
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/dashboards/count_change_dashboard.py
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: app_inventory_changes
+      title: "Application Inventory \u2014 Active count changes"
+      output:
+        dir: var/reporting
+        file: application_inventory_changes.html
+      sources:
+        snapshots_dir: var/dailysnapshot
+        snapshots_pattern: consolidated_application_view_%Y%m%d.csv
+        lookback_days: 30
+      filters:
+      - field: ACTIVE
+        op: '='
+        value: Y
+      compare_field: ID
+      detail_fields:
+      - TITLE_NAME
+      - ID
+      - DEPARTMENT_NAME
+      - LAST_UPDATED_BY
+      column_aliases:
+        TITLE_NAME: Application Name
+        ID: Application ID
+        LAST_UPDATED_BY: Last Updated By
+        ACTIVE: Active Flag
+      theme:
+        dark: true
+      enabled: true
+    - id: server_inv_changes
+      title: "Server Inventory \u2014 Active count changes"
+      output:
+        dir: var/reporting
+        file: server_inventory_changes.html
+      sources:
+        snapshots_dir: var/dailysnapshot
+        snapshots_pattern: consolidated_server_view_%Y%m%d.csv
+        lookback_days: 30
+      compare_field: RECORDID
+      detail_fields:
+      - SERVERNAME
+      - TYPEOS
+      - MODIFIEDBY
+      column_aliases:
+        SERVERNAME: Hostname
+        RECORD: Server ID
+        MODIFIEDBY: Modified By
+      theme:
+        dark: true
+      enabled: true

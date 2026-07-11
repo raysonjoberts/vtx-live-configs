@@ -1,0 +1,1649 @@
+criteria:
+- attribute: Application Components
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: A listing of components that make up an application (web, app, db,
+    rds, etc.) This type of information may be found in a Architectural Repo instead
+    of a typical inventory system.
+  how used: Used to determine complexity of the application for logistics/ business
+    risk mitigation.
+  examples: web, app, db, rds, vdi
+  field_name_patterns:
+    like:
+    - Application Components
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  - pattern: ^(?i)(web|application|app|database|db|web/app|monolithic|bastion access|rds|vdi|frontend|backend|middleware|api|service|microservices?|message
+      broker|cache|load balancer|auth(?:entication|orization)?|identity|storage|file
+      server|queue|etl|reporting|container|vm|virtual desktop|cloud function|gateway|proxy|firewall|dns|cdn|monitoring|logging)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Application ID
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: High
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: For this Program Attribute,a high percentage of unique values is a positive
+    indicator as this uniquely identifies the Application.
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: If it exists, an Application ID is typically a unique identifier for
+    an Application, usually consisting of a number.
+  examples: 101, AP101, dept-101
+  how used: Every Application must be able to be uniquely identified in order to be
+    tracked through the Transformation Process. If the Application Name is not unique,
+    or Application ID Is used in the Inventory System, Application ID wil often be
+    used to uniquely identify the Application.
+  field_name_patterns:
+    like:
+    - app_id
+    - application_id
+    - appid
+    not_like:
+    - bureau
+    - department
+    - server
+    - dns
+    - host
+    - hostname
+  value_heuristics:
+  - pattern: .*\d{3,}.*
+    explanation: Must contain at least 3 digits
+  - pattern: ^[A-Za-z0-9_-]+$
+    explanation: Alphanumeric with optional dashes/underscores
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.2
+  min_unique_ratio: 0.6
+  min_length: 3
+  max_length: 10
+  match_requirements:
+  - name
+  - value
+- attribute: Application Name
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: For this Program Attribute,a high percentage of unique values is a positive
+    indicator as this uniquely identifies the Application.
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: A unique and descriptive name for an application, often a readable
+    word or phrase.
+  examples: ServiceNow, infoblox, sharepoint
+  how used: Each Application  must have a unique identifer in order to track progress
+    through the Transformation Process and often, the Application name is unique,
+    so it will be used for identification.
+  field_name_patterns:
+    like:
+    - application
+    - appname
+    - title
+    - name
+    not_like:
+    - bureau
+    - department
+    - server
+    - dns
+    - host
+    - hostname
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: Short application-like names, no digits or filler words
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+- attribute: Architecture Tier/Model
+  type: application
+  recommended source: architecture repo
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: A identification of the Application Archtiecture model to help identify
+    the complexity of the Application. This may indicate number of servers in an Application
+    but is more of a reference to the architecture and how the application functions.
+    -- i.e. a single server still could support a 3 tier application. This type of
+    information may be found in a Architectural Repo instead of a typical inventory
+    system.
+  examples: 3 Tier, 2 Tier/Condensed, Monolthic, n-Tier
+  how used: Application Complexity may be determined using the Architecture Model
+    which would be used in Migration Planning and Execution for Business Risk Mitigation.
+    However, in a strict rehost disposition, this definition may not be required as
+    it is more determinitive for identifying moderninzation canddiates.
+  field_name_patterns:
+    like:
+    - Architecture Tier/Model
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  - pattern: ^(?i)(monolithic|2[- ]?tier|3[- ]?tier|n[- ]?tier|multi[- ]?tier|web/app(/db)?|web[-
+      ]?tier|app[- ]?tier|db[- ]?tier|compressed)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Business Continuity Plan
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: This attribute determines whether a business continuity plan exists
+    for an application. This type of information may be found in a Architectural Repo
+    instead of a typical inventory system.
+  examples: yes, no
+  how used: Either for condition matching, i.e. 'must have bc plan for disposition'
+    or for Architectural/deployment conditions, such as where an application is deployed.
+  field_name_patterns:
+    like:
+    - business continuity
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Business Function
+  type: application
+  recommended source: application inventory
+  bloocks: Rationalize
+  category: program
+  priority_level: 2
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: The function or category an application serves to the organization.
+  examples: HR, Finance, Accounting, Sales, Marketing, Development, Corporate
+  how used: May be used in categorization for migration planning and business risk
+    mitigation.
+  field_name_patterns:
+    like:
+    - business
+    - function
+    - purpose
+    - description
+    - role
+  value_heuristics:
+  - pattern: "(?i)\b(sales|hr|finance|marketing|operations|customer|service)\b"
+    explanation: Common Names
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Business Owner
+  type: application
+  recommended source: application inventory
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: The identity of a single person responsbile for business decisions
+    for the application. This person may delegate responsibilities to an organization,
+    but will be the decision maker for migration planning logistics.
+  examples: Employee name
+  how used: The business owner is identified as the person through which application
+    validation, migration planning and migration execution processes go through.
+  field_name_patterns:
+    like:
+    - business owner
+    - owner
+    - director
+    - manager
+    - contact
+    not_like:
+    - technical
+    - tech
+    - lead
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Databases Used
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: architecture repo / tool
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: The database(s) which are a direct part of the application function
+  examples: Database names, separated by some delimiter (if multiple exist)
+  how used: Migration logistics, ensuring there is a plan for all components of an
+    application to either migrate or be accessible post migration.
+  field_name_patterns:
+    like:
+    - database
+    - db
+  value_heuristics:
+  - pattern: ^[A-Za-z][A-Za-z0-9_]*$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Dependencies
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: architecture repo
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Dependencies between Applications, specifically understanding how availability
+    of an Application may impact downstream Applications.
+  examples: Names of other applications
+  how used: Migration logistics and UAT testing, to ensure the Application functions
+    correctly post migration.
+  field_name_patterns:
+    like:
+    - Dependencies
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: DR Plan
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: An indication if a Disaster Recovery plan exists
+  examples: yes, no
+  how used: Either for condition matching, i.e. 'must have DR plan for disposition'
+    or for Architectural/deployment conditions, such as where an application is deployed.
+  field_name_patterns:
+    like:
+    - dr plan
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Hosting Location
+  type: application
+  bloocks: Rationalize
+  category: program
+  priority_level: 1
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: This attribute defines where an Application is hosted.
+  examples: On Premisis, SaaS, Cloud, MSP
+  how used: Used for pattern matching for App Rationalization and Decision Tree planning.  For
+    example, "Which Applications are eligible for migration?"
+  field_name_patterns:
+    like:
+    - hosted
+    - hosting
+    - location
+    - hosting_location
+    - HOSTING_LOCATION
+  value_heuristics:
+  - pattern: "\b(lsaas|on prem|on premisis|premisis|msp|could|aws|azure|gcp)\b"
+    explanation: Common location platforms
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Interface Mechanisms
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: The ways in which people and other applications interfaces with this
+    application.
+  examples: flat file, API, ftp, direct sql
+  how used: Migration Execution, ensuring the function of the Application post migration.
+  field_name_patterns:
+    like:
+    - authentication
+    - auth
+  value_heuristics:
+  - pattern: \b(api|rest[_\s]?api|soap|graphql)\b
+    explanation: Application Programming Interface (API-based integration such as
+      REST, SOAP, or GraphQL)
+  - pattern: \b(flat[_\s]?file|csv|tsv|excel|xls[x]?|text[_\s]?file)\b
+    explanation: Flat file interface (data exchanged via structured files such as
+      CSV, TSV, Excel, or text)
+  - pattern: \b(mq|message[_\s]?queue|ibm[_\s]?mq|rabbitmq|activemq|kafka)\b
+    explanation: Messaging Queue interface (asynchronous message-based integration
+      such as IBM MQ, RabbitMQ, ActiveMQ, Kafka)
+  - pattern: \b(database|db|sql|jdbc|odbc)\b
+    explanation: Database interface (direct integration via SQL queries, JDBC, or
+      ODBC connections)
+  - pattern: \b(ftp|sftp|ftps)\b
+    explanation: File Transfer Protocol interface (integration via FTP, SFTP, or FTPS)
+  - pattern: \b(http[s]?|web[_\s]?service|soap[_\s]?service)\b
+    explanation: Web service interface (integration over HTTP/HTTPS including SOAP
+      services)
+  - pattern: \b(edi|x12|edifact|hl7)\b
+    explanation: Electronic Data Interchange (EDI-based integration such as X12, EDIFACT,
+      HL7 for healthcare)
+  - pattern: \b(rpc|xml[_\s]?rpc|json[_\s]?rpc)\b
+    explanation: Remote Procedure Call interface (synchronous service invocation using
+      RPC, XML-RPC, or JSON-RPC)
+  - pattern: \b(file[_\s]?drop|shared[_\s]?folder|network[_\s]?share)\b
+    explanation: File drop or shared folder interface (integration by placing and
+      consuming files in shared directories)
+  - pattern: \b(webhook|callback|event[_\s]?notification)\b
+    explanation: Event-driven interface (push integration via webhooks, callbacks,
+      or event notifications)
+  - pattern: \b(saas[_\s]?connector|integration[_\s]?platform|mulesoft|boomi|informatica|workato)\b
+    explanation: Integration Platform as a Service (iPaaS or middleware-based integration
+      using tools like MuleSoft, Boomi, Informatica, Workato)
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Language / Framework
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: The Application Languages/Frameworks Used.
+  examples: python, ruby, php, java
+  how used: This attribute may not be used for a straight rehost disposition, but
+    may be used to help determine modernization candidates for future initiatives.
+  field_name_patterns:
+    like:
+    - framework
+    - language
+  value_heuristics:
+  - pattern: "\b(java|.net|c|python|php|ruby|go|node)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Monitoring Tools
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: Beyond typical infrastructure monitoring, any tools used to monitor
+    the status of the application, important to the application's function.
+  examples: yes, no
+  how used: Migration Execution, to ensure the proper operation of an Application
+    post migration.
+  field_name_patterns:
+    like:
+    - Monitoring Tools
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: OS/Platform Dependencies
+  type: application
+  bloocks: Rationalize
+  category: program
+  priority_level: 2
+  recommended source: architecture repo
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: Any requirements for specific OS or platform dependencies that are
+    in place.
+  examples: version X
+  how used: This may be a determinor of whether an Application is migration eligible,
+    or if precuror workstreams may need to be identified prior to a migration effort.
+    This also could be used to help identify modernization candidates for future initiatives.
+  field_name_patterns:
+    like:
+    - OS/Platform Dependencies
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: RPO
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Recovery Point Objective
+  examples: Near Zero, Limited Loss, Extended Loss, 0-1h, 1-4h, 24h, 7d
+  how used: May be used in a checklist for migration readiness, as in 'RPO must be
+    defined', would also direct build parameters in target landing zone.
+  field_name_patterns:
+    like:
+    - recovery
+    - recovery time
+    - recovery_time
+  value_heuristics:
+  - pattern: "\b(99.999|99.99|99.9|99)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: RTO
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Recovery Time Objective
+  examples: Near Zero, 1-4h, 4-8h, 24h, 7d
+  how used: May be used in a checklist for migration readiness, as in 'RTO must be
+    defined', would also direct build parameters in target landing zone.
+  field_name_patterns:
+    like:
+    - recovery
+    - recovery time
+    - recovery_time
+  value_heuristics:
+  - pattern: "\b(99.999|99.99|99.9|99)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Technical Owner
+  type: application
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This resource will be responsible for UAT post migration and possibly
+    Application shutdown/startup procedures during the migration. This is the SME
+    for the technical operation of the Application.
+  examples: Human Name
+  how used: In migration wave planning and migration execution, the Technical Owner
+    will help guide decisions about how an App would migrate and would assist with
+    the operations.
+  field_name_patterns:
+    like:
+    - tech
+    - technical
+    - lead
+    not_like:
+    - owner
+    - director
+    - manager
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Uptime Requirements
+  type: application
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: A target Service Level Agreement that, possibly contractually obligated,
+    to indicate expected downtime over a period of time of an Application.
+  examples: 99, 99.9, 99.99
+  how used: First to Assess the risk level during migration wave planning to ensure
+    risk is being distributed evenly. Then during migration execution, will be used
+    to define parameters around change control to ensure that SLAs are met through
+    the process.
+  field_name_patterns:
+    like:
+    - uptime
+    - sla
+    - service level
+    - service_level
+    - agreement
+  value_heuristics:
+  - pattern: "\b(99.999|99.99|99.9|99)\b"
+    explanation: Common location platforms
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Agent Tools (Encryption, AV, etc)
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: architecture repo / tool
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Required agents/tools to be installed on a server at deployment.
+  examples: AV Product, Splunk, Encryption Agent
+  how used: To ensure hosts deployed during migrations adhere to business standards.
+  field_name_patterns:
+    like:
+    - Agent Tools
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Authentication Method
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: How access to a server is granted.
+  examples: AD, ldap, mfa, 2fa, local
+  how used: To ensure hosts deployed during migrations adhere to business standards.
+  field_name_patterns:
+    like:
+    - authentication
+    - auth
+  value_heuristics:
+  - pattern: "\b(ad|active[_\\s]?directory|ldap|lightweight[_\\s]?directory[_\\s]?access[_\\\
+      s]?protocol)\b"
+    explanation: tbd
+  - pattern: "\bhipaa\b"
+    explanation: tbd
+  - pattern: "\b(local[_\\s]?auth|local[_\\s]?account|os[_\\s]?account|system[_\\\
+      s]?login)\b"
+    explanation: tbd
+  - pattern: "\b(2fa|two[_\\s]?factor|mfa|multi[_\\s]?factor|otp|one[_\\s]?time[_\\\
+      s]?password|authenticator[_\\s]?app)\b"
+    explanation: tbd
+  - pattern: "\b(sso|single[_\\s]?sign[_\\s]?on|federated[_\\s]?login|federation|saml|openid[_\\\
+      s]?connect|oidc)\b"
+    explanation: tbd
+  - pattern: "\b(oauth2?|oauth[_\\s]?2|bearer[_\\s]?token)\b"
+    explanation: tbd
+  - pattern: "\bkerberos\b"
+    explanation: tbd
+  - pattern: "\b(x509|pki|public[_\\s]?key|cert[_\\s]?auth|certificate[_\\s]?based[_\\\
+      s]?auth)\b"
+    explanation: tbd
+  - pattern: "\b(biometric|fingerprint|facial[_\\s]?recognition|iris[_\\s]?scan|voice[_\\\
+      s]?id)\b"
+    explanation: tbd
+  - pattern: "\b(google|facebook|linkedin|microsoft[_\\s]?login|github|apple[_\\s]?id)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Change Frequency
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: architecture repo / tool
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: How often data changes within an application
+  examples: High, Moderate, Low
+  how used: Primarily to deterime the procedures for a migration, to determine the
+    best process for syncing data between source and destination.
+  field_name_patterns:
+    like:
+    - Change Frequency
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Configuration Files / Paths
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: The location and identificaiton of configuration files/directories
+    used for an application.
+  examples: C:\path\to\Application Directory
+  how used: To have an undersatnding of the application(s) running on a server and
+    to ensure data transfers are complete.
+  field_name_patterns:
+    like:
+    - Configuration Files / Paths
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: CPU
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Currently configured CPU/processors
+  examples: Number
+  how used: For both forecasting consumption during the Program Strategy phase, rightsizing
+    and deploying during migration execution.
+  field_name_patterns:
+    like:
+    - cpu
+    - cpus
+    - cores
+    - processor
+    - processors
+  value_heuristics:
+  - pattern: ^(?:[1-9]|1[0-9]|2[0-4])$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Data Sensitivity / Classification
+  type: server
+  blocks: Rationalize
+  category: program
+  priority_level: 1
+  recommended source: architecture repo / tool
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: A description of the kind of data used by an applicaton and whether
+    it is sensitive/confidential and/or has to adhere to any particular data governance.
+  how used: To enure standards are maintained post migration, and Data Sensitivity
+    may be a determinor in an Application Rationalization Policy.
+  field_name_patterns:
+    like:
+    - sensitivity
+    - classification
+  value_heuristics:
+  - pattern: "\b(?:pii|personally[_\\s]?identifiable[_\\s]?information)\b"
+    explanation: tbd
+  - pattern: "\bhipaa\b"
+    explanation: tbd
+  - pattern: "\bphi|protected[_\\s]?health[_\\s]?information\b"
+    explanation: tbd
+  - pattern: "\b(?:pci|pci[_\\s]?dss|payment[_\\s]?card)\b"
+    explanation: tbd
+  - pattern: "\b(?:gdpr|general[_\\s]?data[_\\s]?protection)\b"
+    explanation: tbd
+  - pattern: "\b(confidential|internal[_\\s]?use[_\\s]?only)\b"
+    explanation: tbd
+  - pattern: "\b(restricted|sensitive|classified|secret)\b"
+    explanation: tbd
+  - pattern: "\b(financial|ssn|social[_\\s]?security|tax[_\\s]?id|tin|bank[_\\s]?account)\b"
+    explanation: tbd
+  - pattern: "\b(medical|patient|diagnosis|treatment|ehr|emr|mrn)\b"
+    explanation: tbd
+  - pattern: "\b(itar|export[_\\s]?controlled|government[_\\s]?restricted)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Environment
+  type: server
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: The instancem or environment the server/application operate in.
+  examples: prod, test, device
+  how used: In Migration Planning, test/dev instances will be migrated prior to prod
+    instances for business risk mitigation.
+  field_name_patterns:
+    like:
+    - env
+    - environment
+  value_heuristics:
+  - pattern: ^(DEV|TEST|UAT|QA|PROD)$
+    explanation: Common environment labels
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  max_unique_ratio: 0.8
+  match_requirements:
+  - name
+  - value
+- attribute: Firewall Rules
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: architecture repo / tool
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Access required to/from any environment (internal, external, WAN, etc.)
+  how used: To ensure the access to/from an Application stays consistent through the
+    migration process.
+  field_name_patterns:
+    like:
+    - firewall rules
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Hostname
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: A unique identifier of a server.
+  how used: Servers are associated with Applications, all unqiue servers which make
+    up an Application ecosystem must be uniquely defined.
+  examples: short names or FQDNs, windowsserver1, ws1.example.com
+  field_name_patterns:
+    like:
+    - host
+    - hostname
+    - server
+    - servername
+    - server_name
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9-]{3,}$
+    explanation: Standard hostname (alphanumeric + dashes)
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.4
+  min_unique_ratio: 0.3
+  max_unique_ratio: 1.0
+  match_requirements:
+  - name
+  - value
+- attribute: Hypervisor
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 3
+  recommended source: server inventory / tool
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: The system whcih manages current virtual match_requirements
+  examples: vcenter1
+  how used: If there are migrations based on current hypervisor, this would be used
+    to identify which.
+  field_name_patterns:
+    like:
+    - hypervisor
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Infrastructure Dependencies
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Components of an infrastructure that must be in place in order for
+    the server and it's application(s) to function properly. This is not meant to
+    define all infrastructure components or foundational services, but particular
+    dependencies that may not be used by all servers/applications.
+  examples: code repo, load balancer
+  how used: This is a check to ensure the landing zone meets the current environment
+    requirements.
+  field_name_patterns:
+    like:
+    - Infrastructure Dependencies
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: IOPS Throughput
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: architecture repo / tool
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Input/Output Operations per second.
+  how used: a consideration for what type of storage is used for a deployment.
+  field_name_patterns:
+    like:
+    - iops
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: IP Address
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 2
+  recommended source: server inventory
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: Standard IPv4 addresses
+  examples: 10.10.10.10
+  how used: Could be used for multiple efforts including inferring location of a server
+    if location is not explicitly defined.
+  field_name_patterns:
+    like:
+    - ip
+    - ip_address
+  value_heuristics:
+  - pattern: \b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b
+    explanation: IPv4 dotted decimal
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  max_unique_ratio: 1.0
+  match_requirements:
+  - value
+- attribute: Licenses
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: Licenses to note on a server which are required for it's function.
+  how used: To ensure applications and their compoents function correctly post migration.
+  field_name_patterns:
+    like:
+    - license
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Memory
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Current memory configuration of a server.
+  how used: Existing Memory, CPU and Storage measurements are used to forecast costs
+    in a deployment, as well as ensuring the new hosts are built to a proper spec.
+  field_name_patterns:
+    like:
+    - memory
+    - ram
+  value_heuristics:
+  - pattern: ^(?:[1-9]|1[0-9]|2[0-4])$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Network Bandwidth
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 3
+  CCoE Program Impact: low
+  recommended source: tool
+  required: true
+  priority: false
+  description: Bandwidth utilization by the Server
+  examples: 100mbps
+  how used: This may be used in cost modeling or resource planning.
+  field_name_patterns:
+    like:
+    - badwidth
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Operating System
+  type: server
+  blocks: Rationalize
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Name of the server operating system
+  example: Windows Server, Red Hat, Ubuntu, Linux
+  how used: Could be used for pattern matching, prioritization, scope definition,
+    etc.
+  field_name_patterns:
+    like:
+    - os
+    - operating_system
+  value_heuristics:
+  - pattern: ^(Windows|Linux|AIX|Solaris|HP-UX)
+    explanation: Common OS names
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Patch Level
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 2
+  recommended source: tool
+  CCoE Program Impact: low
+  required: true
+  priority: false
+  description: Current patch level of Server OS
+  how used: Could be used for pattern matching, prioritization, scope definition,
+    etc.
+  field_name_patterns:
+    like:
+    - patch
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Performance Over Time (CPU/Memory/Storage)
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: tool
+  CCoE Program Impact: medium
+  required: true
+  priority: false
+  description: Compute and storage utilization over a given time period to understand
+    busy and slow periods.
+  examples: Average (cpu, mem, storage)
+  how used: Used for rightsizing in migration execution to ensure the server can function
+    adequately post migration.
+  field_name_patterns:
+    like:
+    - performance
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Virtual / Physical
+  type: server
+  blocks: Rationalize
+  category: program
+  priority_level: 1
+  CCoE Program Impact: medium
+  recommended source: server inventory
+  required: true
+  priority: false
+  description: Whether the server is virtual or physical
+  examples: physical, virtual, yes/no
+  how used: Could be used for pattern matching, prioritization, scope definition,
+    etc. Could also be used to identify whether prerequisite workloads need to be
+    assigned, like virutailizing first, then re-hosting.
+  field_name_patterns:
+    like:
+    - virtual
+    - phsical
+  value_heuristics:
+  - pattern: "\b(physical|virtual)\b"
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Application Already Virtualized?
+  type: ccoe analysis
+  blocks: Rationalize
+  category: program
+  priority_level: 1
+  CCoE Program Impact: medium
+  recommended source: ccoe ci
+  required: false
+  priority: false
+  description: An indicator of whether the Application is already running on virtual
+    systems
+  how used: Could be an indicator of prerequisite workstreams, such as virtualize
+    then migrate.
+  field_name_patterns:
+    like:
+    - already virtualized
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Assumed Disposition
+  type: ccoe analysis
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  recommended source: ccoe ci
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: This will be determined when patterns are defined which indicate what
+    kind of servers and applications would fit certain dispositions. For example,
+    Windows servers may be listed as rehost candidates, Solaris servers may be deferred,
+    etc.
+  examples: Any of the Rs
+  how used: This is used to forecast what an end-state environment might look like
+    based on the current definitions of disposition candidates. This forecasting will
+    help make adjustments, create priorities and will serve as a basis for status
+    reporting.
+  field_name_patterns:
+    like:
+    - assumed disposition
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Planned Disposition
+  type: ccoe analysis
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: ccoe ci
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: Planned Disposition takes into account specific decisions made about
+    an Application's disposition during an App Rationalization process or strategy
+    processes. This is typically the agreed upon disposition between the Application
+    Business Owner and the Project Sponsor.
+  examples: Any of the Rs
+  how used: To create a backlog for Migration Planning.
+  field_name_patterns:
+    like:
+    - planned disposition
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Planned Disposition Date
+  type: ccoe analysis
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: ccoe ci
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: A date/window determined by the Application Owner, Project Sponsor
+    and Execution Team indicating which Migration Sprint a Application will be a part
+    of. The date indicates the Application is queued for migration.
+  examples: Date
+  how used: Used for migration execution, scheduling migrations in migration sprints.
+  field_name_patterns:
+    like:
+    - planned disposition date
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Recommended Disposition
+  type: ccoe analysis
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  recommended source: ccoe ci
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: Used after Assumed Disposition and performing some sort of Applicaiton
+    Rationalization as defined by the Project Sponsor. The Recommended Disposition
+    will take into account Application Sunset/Retire dates, Compatibility, etc.
+  how used: To further fine tune Applicaitons in the backlog for Migration Planning.
+  field_name_patterns:
+    like:
+    - recommended disposition
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Recommended Disposition Date
+  type: ccoe analysis
+  blocks: Migration Planning
+  category: program
+  priority_level: 1
+  recommended source: ccoe ci
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: A general date/range provided based on characteristics of the application
+    such as complexity and criticality.
+  examples: Date
+  how used: Will be used to help identify candidates by phase of the project, such
+    as pilots, early adopters, later efforts, etc.
+  field_name_patterns:
+    like:
+    - recommended disposition date
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Server Business Unit
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 3
+  recommended source: server inventory
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: The group of people who support/maintain the server, persumably up
+    to the OS level.
+  examples: IT, IS
+  how used: If an organization has multiple teams of server support staff, to positively
+    identify players involved in migration operations.
+  field_name_patterns:
+    like:
+    - server business unit
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Server Owner / Contact
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: server inventory
+  CCoE Program Impact: low
+  required: false
+  priority: false
+  description: A named person who would be the contact/ support person for a particular
+    server. This values is not always required, but may need to be specified if there
+    is special knowledge.
+  examples: human Name
+  how used: Used if a particular person needs to be involved for migration operations.
+  field_name_patterns:
+    like:
+    - server owner
+    - server contact
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Services Running
+  type: server
+  blocks: Migration Execution
+  category: program
+  priority_level: 1
+  recommended source: application repo / tool
+  CCoE Program Impact: high
+  required: false
+  priority: false
+  description: Services identified to indicate whether a Server's Application(s) are
+    functioning.
+  examples: servicesname.exe
+  how used: Spot check in UAT process to see if the proper services are running.
+  field_name_patterns:
+    like:
+    - license
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: Storage (size)
+  type: server
+  blocks: Program Strategy
+  category: program
+  priority_level: 1
+  recommended source: server inventory / tool
+  CCoE Program Impact: medium
+  required: false
+  priority: false
+  description: Storage sizes in GB/TB, single or range
+  exmaples: 1TB
+  how used: This may be used in cost modeling or resource planning.
+  field_name_patterns:
+    like:
+    - size
+    - storage
+    - capacity
+  value_heuristics:
+  - pattern: ^(?:0|[1-9][0-9]{0,2}|10[0-1][0-9]|102[0-4])\s*[TtGg][Bb]$
+    explanation: Single size (e.g., 512GB)
+  - pattern: ^(?:0|[1-9][0-9]{0,2}|10[0-1][0-9]|102[0-4])\s*[TtGg][Bb]\s*-\s*(?:0|[1-9][0-9]{0,2}|10[0-1][0-9]|102[0-4])\s*[TtGg][Bb]$
+    explanation: Range (e.g., 2GB - 64GB)
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.4
+  min_unique_ratio: 0.2
+  max_unique_ratio: 0.95
+  match_requirements:
+  - value
+- attribute: General Date
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - User
+  value_heuristics:
+  - pattern: ^(?=.*\d)(?=.*[-/:])[0-9]{1,4}[-/:][0-9]{1,2}[-/:][0-9]{1,4}(?:[ T][0-9]{1,2}:[0-9]{2}(?::[0-9]{2}(?:\.\d{1,6})?)?)?.*$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - value
+- attribute: General ID Field (1-10000)
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - User
+  value_heuristics:
+  - pattern: ^(?:[1-9]|[1-9][0-9]{1,3}|10000)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - value
+- attribute: General RAG Status
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - status
+    - score
+  value_heuristics:
+  - pattern: ^(?:red|yellow|green|amber|r|y|g|a)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.1
+  match_requirements:
+  - value
+- attribute: General Ranking Field (1-10)
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - User
+  value_heuristics:
+  - pattern: ^(?:100|[1-9]?[0-9])$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - value
+- attribute: General Username Field
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    not_like:
+    - owner
+    - director
+    - manager
+    - tech
+    - technical
+    - lead
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+- attribute: General Yes or No Field
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - User
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.2
+  match_requirements:
+  - value
+- attribute: General Link
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - User
+  value_heuristics:
+  - pattern: ^https?://\S+$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - value
+- attribute: General Description Field
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - description
+    - desc
+    - remarks
+    - notes
+    - annotation
+    - comments
+    - comment
+  value_heuristics:
+  - pattern: .+
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+  - value
+- attribute: General Link Field
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - url
+    - hyperlink
+    - website
+    - site
+    - link
+  value_heuristics:
+  - pattern: ^https?://\S+$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+  - value
+- attribute: General Disposition
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - disposition
+  value_heuristics:
+  - pattern: (?i)(rehost|replatform|repurchase|retire|relocate|retain|refactor|defer)
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+  - value
+- attribute: General Departmental Information
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - department
+    - organization
+    - org
+    - unit
+    - bureau
+    - agency
+  value_heuristics:
+  - pattern: .+
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+- attribute: General Business Category
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - business category
+    - application category
+    - app category
+    - function category
+  value_heuristics:
+  - pattern: (?i)(erp|enterprise resource planning|crm|customer relationship management|scm|supply
+      chain management|hrm|human resources management|accounting|finance|bi|business
+      intelligence|project management|communication|collaboration|e-?commerce|ecom|ecommerce|productivity|dbms|database
+      management systems|marketing|inventory management)
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+- attribute: General Third Party Relationship
+  type: general
+  description: tbd
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - vendor
+    - partner
+    - manufacturer
+    - supplier
+    - provider
+  value_heuristics:
+  - pattern: .+
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.1
+  match_requirements:
+  - name
+- attribute: General Unknown/Custom/Other fields
+  type: general
+  description: Fields in which the majority of non-null values are custom, other,
+    na, unknown
+  required: false
+  priority: false
+  field_name_patterns:
+    like:
+    - any
+  value_heuristics:
+  - pattern: (?i)^(unknown|custom|other|na)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  match_requirements:
+  - value

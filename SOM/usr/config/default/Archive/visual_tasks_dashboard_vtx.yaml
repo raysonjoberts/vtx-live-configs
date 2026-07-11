@@ -1,0 +1,94 @@
+# =====================================================================
+# VTX Universal Config (v1) - visual_tasks_dashboard_vtx.yaml
+# =====================================================================
+
+_vtx:
+  schema: v1
+  kind: dashboard
+  id: visual_tasks_dashboard
+  title: Visual Tasks Dashboard
+  description: Render task dashboards from CSV sources.
+  owner: default
+  version: 1.0.0
+  tags:
+  - dashboard
+  - reporting
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/dashboards/visual_tasks_dashboard_vtx.py
+
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: tasks
+      enabled: true
+      name: tasks
+      title: "Tasks — Program Management"
+      subtitle: Current tasks and status
+
+      # Per-job IO (required by new standard)
+      inputs:
+      - var/interactive/views/tasks.csv
+      - var/tables/tasks_log.csv
+      outputs:
+      - var/reporting/tasks.html
+
+      # Job configuration (preserved from legacy YAML)
+      source_csv: var/interactive/views/tasks.csv
+      output_html: var/reporting/tasks.html
+      log_csv: var/tables/tasks_log.csv
+      log_key_field: task_id
+      log_timestamp_field: timestamp
+      log_last_updated_column: update_text
+      status_field: status
+      name_field: task_label
+      assignee_field: assignee
+      created_field: created_at
+      id_field: task_id
+      search_fields:
+      - task_id
+      - task_label
+      - status
+      - priority
+      - phase
+      - assignee
+      display_columns:
+      - field: task_id
+        label: Task ID
+        type: text
+      - field: task_label
+        label: Task Name
+        type: text
+      - field: status
+        label: Status
+        type: status
+      - field: priority
+        label: Priority
+        type: text
+      - field: phase
+        label: Phase
+      - field: milestone
+        label: Milestone
+      - field: loe
+        label: LOE
+        type: text
+      - field: assignee
+        label: Assignee
+        type: text
+      - field: updated_at
+        label: Last Update
+        type: datetime
+      - field: created_at
+        label: Created
+        type: datetime

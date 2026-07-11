@@ -1,0 +1,324 @@
+_vtx:
+  schema: v1
+  kind: report
+  id: auto_server_inventory_matrix_vtx
+  title: Auto Server Inventory Matrix (VTX)
+  description: Auto-generated server inventory matrix (VTX format).
+  owner: default
+  version: 1.0.0
+  tags:
+  - detailedreporting
+  - auto
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/server_inventory_matrix_vtx.py
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/auto_server_inventory_matrix_vtx.yaml
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    globals:
+      vtx_root: ''
+      default_normalization:
+        hostname:
+          casefold: true
+          fqdn_to_shortname: true
+          strip: true
+        ip_address:
+          strip: true
+    inventories:
+    - id: Auto_Server_Inventory_Matrix
+      enabled: true
+      attributes:
+      - Hostname
+      - IP Address
+      - OS
+      - Environment
+      - CPU
+      - Memory
+      - Storage
+      match:
+        condition: any
+        keys:
+        - name: Hostname
+          type: hostname
+        - name: IP Address
+          type: ip_address
+      trust_ranking: {}
+      sources:
+      - id: azure1
+        enabled: true
+        priority: 1
+        path: var/tables/azure1.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: tags
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: azure2
+        enabled: true
+        priority: 2
+        path: var/tables/azure2.csv
+        format: csv
+        map:
+          Hostname: ''
+          IP Address: NETWORK_ADDRESS.Name
+          OS: ''
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: cmcc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 3
+        path: var/tables/cmcc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Primary IP Address
+          OS: Server
+          Environment: Environment
+          CPU: CPUs
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: cmcc-rvtools_vpartition_server_audit
+        enabled: true
+        priority: 4
+        path: var/tables/cmcc-rvtools_vpartition_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: ''
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: database_x_server
+        enabled: true
+        priority: 5
+        path: var/tables/database_x_server.csv
+        format: csv
+        map:
+          Hostname: SERVER_ID
+          IP Address: ''
+          OS: SERVER_ID
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: databases
+        enabled: true
+        priority: 6
+        path: var/tables/databases.csv
+        format: csv
+        map:
+          Hostname: ''
+          IP Address: DB_VERSION
+          OS: ''
+          Environment: ENVIRONMENT
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: defender_serverinventory
+        enabled: true
+        priority: 7
+        path: var/tables/defender_serverinventory.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: ''
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: flexera
+        enabled: true
+        priority: 8
+        path: var/tables/flexera.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: IP Address
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: insightvm
+        enabled: true
+        priority: 9
+        path: var/tables/insightvm.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: Asset IP Address
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: serverinventories
+        enabled: true
+        priority: 10
+        path: var/tables/serverinventories.csv
+        format: csv
+        map:
+          Hostname: VIRTUALSERVERHOSTOS
+          IP Address: IPADDRESS2
+          OS: VIRTUALSERVERHOSTOS
+          Environment: ENVIRONMENT
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: servers
+        enabled: true
+        priority: 11
+        path: var/tables/servers.csv
+        format: csv
+        map:
+          Hostname: VIRTUAL_SERVER_HOST_OS
+          IP Address: IPADDRESS
+          OS: VIRTUAL_SERVER_HOST_OS
+          Environment: ENVIRONMENT
+          CPU: ''
+          Memory: VMMEMORY
+          Storage: VMMEMORY
+        filters: []
+      - id: splunk
+        enabled: true
+        priority: 12
+        path: var/tables/splunk.csv
+        format: csv
+        map:
+          Hostname: Hostname
+          IP Address: sourceIp
+          OS: Hostname
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: splunk_hostname
+        enabled: true
+        priority: 13
+        path: var/tables/splunk_hostname.csv
+        format: csv
+        map:
+          Hostname: host
+          IP Address: ''
+          OS: host
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: ssdc-rvtools_vinfo_server_audit
+        enabled: true
+        priority: 14
+        path: var/tables/ssdc-rvtools_vinfo_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: VI SDK API Version
+          OS: Server
+          Environment: Environment
+          CPU: CPUs
+          Memory: ''
+          Storage: ''
+        filters: []
+      - id: ssdc-rvtools_vpartition_server_audit
+        enabled: true
+        priority: 15
+        path: var/tables/ssdc-rvtools_vpartition_server_audit.csv
+        format: csv
+        map:
+          Hostname: Server
+          IP Address: ''
+          OS: Server
+          Environment: ''
+          CPU: ''
+          Memory: ''
+          Storage: ''
+        filters: []
+      _auto_profile:
+        source_count: 15
+        tables:
+        - azure1
+        - azure2
+        - cmcc-rvtools_vinfo_server_audit
+        - cmcc-rvtools_vpartition_server_audit
+        - database_x_server
+        - databases
+        - defender_serverinventory
+        - flexera
+        - insightvm
+        - serverinventories
+        - servers
+        - splunk
+        - splunk_hostname
+        - ssdc-rvtools_vinfo_server_audit
+        - ssdc-rvtools_vpartition_server_audit
+    outputs:
+      inventory_table:
+        path: var/tables/views/unified_server_inventory_auto.csv
+        include_presence_flags: true
+        include_value_provenance: true
+        include_ranked_values: true
+        ranked_values_delimiter: ;
+        fields: '*'
+      presence_matrix_reports:
+      - id: hostname_presence
+        attribute: Hostname
+        normalize_as: hostname
+        source_of_truth: azure1
+        display_attributes:
+        - IP Address
+        path: var/detailedreporting/presence_hostname_matrix_auto.csv
+    jobs:
+    - id: server_inventory_matrix_auto
+      enabled: true
+      inputs:
+      - var/tables/azure1.csv
+      - var/tables/azure2.csv
+      - var/tables/cmcc-rvtools_vinfo_server_audit.csv
+      - var/tables/cmcc-rvtools_vpartition_server_audit.csv
+      - var/tables/database_x_server.csv
+      - var/tables/databases.csv
+      - var/tables/defender_serverinventory.csv
+      - var/tables/flexera.csv
+      - var/tables/insightvm.csv
+      - var/tables/serverinventories.csv
+      - var/tables/servers.csv
+      - var/tables/splunk.csv
+      - var/tables/splunk_hostname.csv
+      - var/tables/ssdc-rvtools_vinfo_server_audit.csv
+      - var/tables/ssdc-rvtools_vpartition_server_audit.csv
+      outputs:
+      - var/tables/views/unified_server_inventory_auto.csv
+      - var/detailedreporting/presence_hostname_matrix_auto.csv
+  _vtx_origin: AUTO_V2:usr/config/auto_v2/auto_server_inventory_matrix_vtx.yaml

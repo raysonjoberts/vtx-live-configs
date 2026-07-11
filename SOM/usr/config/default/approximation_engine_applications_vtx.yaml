@@ -1,0 +1,82 @@
+#_vtx:
+#  schema: v1
+#  kind: analysis
+#  id: approximation_engine_applications_vtx
+#  title: Approximation Engine Applications VTX
+#  description: Build application approximation masterdata outputs.
+#  owner: default
+#  version: 1.0.0
+#  tags: [approximation, masterdata]
+#  consumers:
+#    - usr/scripts/analysis/approximation_engine_applications_vtx.py
+
+#config:
+#  payload:
+#    app_parquet: var/masterdata/raw_application_table.parquet
+#    anchor_field: ID
+#    title_field: TITLE_NAME
+#    out_parquet: var/masterdata/application_approximation.parquet
+#    out_csv: var/masterdata/application_approximation.csv
+#    top_k: 50
+#    min_peer_group_size: 10
+#    targets:
+#      - name: Product Manager
+#        field: Product_Manager
+#        compare_fields:
+#          - Product_Manager
+#          - Technical_Lead
+#          - Applications_Director
+#          - IT_Manager
+#          - Business_Contact_Primary
+#          - Application_Inventory_Updater
+#          - DEPARTMENT_NAME
+#          - BUREAU_NAME
+#          - ORGANIZATION
+#      - name: Technical Lead
+#        field: Technical_Lead
+#        compare_fields:
+#          - Product_Manager
+#          - Technical_Lead
+#          - Applications_Director
+#          - IT_Manager
+#          - Business_Contact_Primary
+#          - Application_Inventory_Updater
+#          - DEPARTMENT_NAME
+#          - BUREAU_NAME
+#          - ORGANIZATION
+#      - name: Applications Director
+#        field: Applications_Director
+#        compare_fields:
+#          - Product_Manager
+#          - Technical_Lead
+#          - Applications_Director
+#          - IT_Manager
+#          - Business_Contact_Primary
+#          - Application_Inventory_Updater
+#          - DEPARTMENT_NAME
+#          - BUREAU_NAME
+#          - ORGANIZATION
+#      - name: IT Manager
+#        field: IT_Manager
+#        compare_fields:
+#          - Product_Manager
+#          - Technical_Lead
+#          - Applications_Director
+#          - IT_Manager
+#          - Business_Contact_Primary
+#          - Application_Inventory_Updater
+#          - DEPARTMENT_NAME
+#          - BUREAU_NAME
+#          - ORGANIZATION
+#      - name: Business Contact Primary
+#        field: Business_Contact_Primary
+#        compare_fields:
+#          - Product_Manager
+#          - Technical_Lead
+#          - Applications_Director
+#          - IT_Manager
+#          - Business_Contact_Primary
+#          - Application_Inventory_Updater
+#          - DEPARTMENT_NAME
+#          - BUREAU_NAME
+#          - ORGANIZATION

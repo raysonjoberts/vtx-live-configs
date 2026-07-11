@@ -1,0 +1,93 @@
+_vtx:
+  schema: v1
+  kind: analysis
+  id: auto_profile_tables
+  title: Auto Profile Tables (VTX)
+  description: Profile var/tables CSVs and generate auto aggregation + server matrix
+    YAMLs.
+  owner: default
+  version: 1.0.0
+  tags:
+  - analysis
+  - autogen
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/auto_profile_tables_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/auto_profile_tables_vtx.yaml
+config:
+  io:
+    inputs:
+    - usr/config/default/data_source_analysis.yaml
+    - var/tables/*.csv
+    outputs:
+    - usr/config/auto_v2/table_aggregator_vtx.yaml
+    - usr/config/auto_v2/auto_server_inventory_matrix.yaml
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: auto_profile_tables
+      enabled: true
+    dictionary:
+      path: usr/config/default/data_source_analysis.yaml
+    profiling:
+      sample_rows: 400
+      sample_unique_values: 400
+      uniqueness_sample_rows: 2000
+    classification:
+      min_confidence_gap: 1
+    joins:
+      min_uniqueness_ratio: 0.5
+      preferred_key_attributes:
+      - Application ID
+      - Application Name
+      excluded_key_tokens:
+      - date
+      - time
+      - rag
+      - red
+      - amber
+      - green
+      - status
+      - link
+      - url
+      - uri
+      - http
+      - mail
+      - email
+      - user
+      - owner
+      - contact
+      - category
+      - department
+      - bureau
+      - third
+      - vendor
+      - partner
+      - frequency
+      - question
+      - answer
+      - comment
+      - note
+      - description
+    subsets:
+      validation_subset_max_rows: 10
+      validation_subset_max_ratio: 0.05
+      validation_subset_max_cols: 6
+    tidy:
+      max_category_cardinality: 20
+      max_category_ratio: 0.2
+      min_anchor_duplicates: 2
+    outputs:
+      app_aggregator_yaml: usr/config/auto_v2/table_aggregator_vtx.yaml
+      server_matrix_yaml: usr/config/auto_v2/auto_server_inventory_matrix.yaml
+      app_raw_parquet_output: var/masterdata/raw_application_table_auto.parquet
+      app_manifest_yaml: usr/config/manifests/raw_application_table_manifest_auto.yaml
+      unified_server_inventory_output: var/masterdata/unified_server_inventory_auto.csv
+  _vtx_origin: DEFAULT:usr/config/default/auto_profile_tables_vtx.yaml

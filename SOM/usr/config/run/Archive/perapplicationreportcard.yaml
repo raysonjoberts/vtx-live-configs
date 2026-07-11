@@ -1,0 +1,103 @@
+title: Application Report Cards
+output:
+  html: var/reporting/application_report_cards.html
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+source_csv: var/tables/views/consolidated_application_view.csv
+columns:
+  id: ID
+  name: TITLE_NAME
+  acronym: ACRONYM
+  department: DEPARTMENT_NAME
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+filters:
+- column: ACTIVE
+  equals: Y
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+attributes:
+- Executive Business Sponsor
+- Technical Business Consultant
+- Application Inventory Updater
+- Budget Template Updater
+- Budget Template Read/Only
+- Product Manager
+- IT Manager
+- Business Contact - Primary
+- Business Contact - Secondary
+- Security Approver
+- Security Administrator (System)
+- Technical Lead
+- Applications Director
+- Project Manager
+- label: SERVERNAME
+  column: SERVERNAME
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: DatabaseName
+  column: DatabaseName
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Tier
+  column: Tier
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Components
+  column: Components
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Architecture Tier/Model
+  column: Architecture Tier/Model
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Business Function
+  column: Business Function
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Business Continuity Plan
+  column: Business Continuity Plan
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: DR Plan
+  column: DR Plan
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Language/Framework
+  column: Language/Framework
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: Uptime Requirements
+  column: Uptime Requirements
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: RTO
+  column: RTO
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+- label: RPO
+  column: RPO
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml
+pilot_required:
+- Executive Business Sponsor
+- Application Inventory Updater
+- Product Manager
+- IT Manager
+- Business Contact - Primary
+- Business Contact - Secondary
+- Security Approver
+- Security Administrator (System)
+- Technical Lead
+- Applications Director
+- Project Manager
+- SERVERNAME
+_autogen:
+  orchestrator:
+    id: '{tile}'
+    job_type: backbone
+    role: server
+    rule: mtime_input_newer_than_last_success_marker
+    marker_match: any
+    script: usr/scripts/default/per_application_report_card.py
+    args: []
+    inputs:
+    - '{source_csv}'
+    watch_recursive: true
+    settle_seconds: 2
+    timeout_seconds: 120
+    retries: 1
+    backoff_seconds: 10
+    jitter_seconds: 0
+  stretch:
+    sync_type: internal_to_external
+    internal_file: '{output.html}'
+    external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data
+      Dog\Correlated_Data\Reports\Dashboards
+    csv_xlsx_convert: false
+  _vtx_origin: DEFAULT:usr/config/default/perapplicationreportcard.yaml

@@ -1,0 +1,107 @@
+_vtx:
+#  schema: v1
+#  kind: analysis
+#  id: default_role_engine_estimator_vtx
+#  title: Default Role Engine Estimator VTX
+#  description: Estimate default role identities by peer group.
+#  owner: default
+#  version: 1.0.0
+#  tags:
+#  - analysis
+#  - masterdata
+#  - roles
+#  consumers:
+#  - usr/scripts/analysis/default_role_engine_estimator_vtx.py
+#config:
+#  io:
+#    inputs: []
+#    outputs: []
+#  run:
+#    enabled: true
+#    role: server
+#    log_level: INFO
+#    dry_run: false
+#    fail_fast: false
+#    cwd: ""
+#  payload:
+#    jobs:
+#    - id: default_roles_applications
+#      enabled: true
+#      source: var/masterdata/master_applications.parquet
+#      inputs:
+#      - var/masterdata/master_applications.parquet
+#      output: var/masterdata/default_roles.csv
+#      outputs:
+#      - var/masterdata/default_roles.csv
+#      anchor_field: ID
+#      key_fields:
+#      - name: DEPARTMENT_NAME
+#        field: DEPARTMENT_NAME
+#        required: true
+#      - name: BUREAU_NAME
+#        field: BUREAU_NAME
+#        required: true
+#      - name: ORGANIZATION
+#        field: ORGANIZATION
+#        required: false
+#      role_fields:
+#      - name: Product_Manager
+#        field: Product_Manager
+#      #- name: IT_Manager
+#      #  field: IT_Manager
+#      - name: Applications_Director
+#        field: Applications_Director
+#      - name: Technical_Lead
+#        field: Technical_Lead
+#      - name: Business_Contact_Primary
+#        field: Business_Contact_Primary
+#      - name: Application_Inventory_Updater
+#        field: Application_Inventory_Updater
+#      - name: Technical_Lead
+#        field: Technical_Lead
+#    - id: default_roles_applications_relaxed
+#      enabled: true
+#      source: var/masterdata/master_applications.parquet
+#      inputs:
+#      - var/masterdata/master_applications.parquet
+#      output: var/masterdata/default_roles_relaxed.csv
+#      outputs:
+#      - var/masterdata/default_roles_relaxed.csv
+#      anchor_field: ID
+#      key_fields:
+#      - name: DEPARTMENT_NAME
+#        field: DEPARTMENT_NAME
+#        required: true
+#      - name: BUREAU_NAME
+#        field: BUREAU_NAME
+#        required: false
+#      role_fields:
+#      - name: Product Manager
+#        field: Product_Manager
+#      - name: IT Manager
+#        field: IT_Manager
+#      - name: Applications Director
+#        field: Applications_Director
+#    - id: default_roles_applications_optional
+#      enabled: true
+#      source: var/masterdata/master_applications.parquet
+#      inputs:
+#      - var/masterdata/master_applications.parquet
+#      output: var/masterdata/default_roles_optional.csv
+#      outputs:
+#      - var/masterdata/default_roles_optional.csv
+#      anchor_field: ID
+#      key_fields:
+#      - name: DEPARTMENT_NAME
+#        field: DEPARTMENT_NAME
+#        required: false
+#      - name: BUREAU_NAME
+#        field: BUREAU_NAME
+#        required: false
+#      role_fields:
+#      - name: Product Manager
+#        field: Product_Manager
+#      - name: IT Manager
+#        field: IT_Manager
+#      - name: Applications Director
+#        field: Applications_Director

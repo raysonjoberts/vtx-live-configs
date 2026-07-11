@@ -1,0 +1,61 @@
+version: '1.0'
+client:
+  name: VTX
+  app_id: com.vectortx.client
+  install_root_macos: /Applications/VTX
+  install_root_windows: C:\Program Files\VTX
+  python:
+    min_version: '3.11'
+    venv_subpath: venv
+    requirements:
+    - PyYAML==6.0.2
+    - requests==2.32.2
+  apikey:
+    file_relpath: usr/config/default/apikey.txt
+    perms_macos: '600'
+    perms_windows: read_admin_only
+  files:
+    include:
+    - usr/scripts/default/vtx_client_agent_web.py
+    - usr/scripts/default/vtx_client_web.py
+    - usr/scripts/default/orchestrator.py
+    - usr/config/run/orchestrator.yaml
+    - usr/config/default/vtx_client_web.ini
+    exclude:
+    - '**/__pycache__/**'
+    - var/**
+    - logs/**
+  create_dirs:
+  - var/tables
+  - var/reporting
+  - var/analysis
+  - var/logs
+  shortcuts:
+    macos:
+    - name: VTX Client Agent
+      target_relpath: usr/scripts/default/vtx_client_web.py
+      run_in_terminal: true
+    windows:
+    - name: VTX Client Agent
+      target_relpath: usr/scripts/default/vtx_client_web.py
+      arguments: --config usr/config/default/vtx_client_web.ini
+      icon_relpath: usr/assets/vtx.ico
+  postinstall:
+    macos:
+    - scripts/macos/postinstall.sh
+    windows:
+    - scripts/windows/postinstall.ps1
+  _vtx_origin: DEFAULT:usr/config/default/vtx_client_build.yaml
+signing:
+  macos:
+    enabled: false
+    developer_id: ''
+    notarize: false
+  windows:
+    enabled: false
+    cert_path: ''
+    cert_password_env: WIN_CERT_PW
+  _vtx_origin: DEFAULT:usr/config/default/vtx_client_build.yaml
+distribution:
+  output_dir: /opt/vtx/build_artifacts/client
+  _vtx_origin: DEFAULT:usr/config/default/vtx_client_build.yaml

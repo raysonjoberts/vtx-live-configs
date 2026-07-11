@@ -1,0 +1,230 @@
+scheduler:
+  max_workers: 4
+  backbone_check_hz: 1.0
+  backbone_tick_hz: 20
+  backbone_target_ms_per_sec: 25
+  backbone_stat_benchmark_samples: 12
+  backbone_stat_benchmark_iters: 200
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+cron_jobs: null
+backbone_jobs:
+- id: Run Intake Processor
+  enabled: true
+  role: server
+  script: usr/scripts/default/intake_processor.py
+  args: '--mode=auto
+
+    '
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: any_file_in_dir
+  watch_dirs:
+  - var/customerdata
+  watch_glob: null
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run config_compiler
+  enabled: true
+  role: server
+  script: usr/scripts/default/config_compiler.py
+  args: null
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_input_newer_than_last_success_marker
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  watch_dirs:
+  - usr/config/default
+  - usr/config/auto_v2
+  - usr/config/custom
+  watch_glob: null
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Datasource Analysis Mapping Report
+  enabled: true
+  role: server
+  script: usr/scripts/default/data_source_analysis_mapping.py
+  args: --mode=auto
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_input_newer_than_last_success_marker
+  marker_match: any
+  require_inputs_exist: true
+  inputs:
+  - var/tables/views/consolidated_application_view.csv
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  outputs:
+  - var/analysis/consolidated_server_and_application_mapping.csv
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Attribute Reporting Processor
+  enabled: true
+  role: server
+  script: usr/scripts/default/attribute_reporting_processor.py
+  rule: mtime_input_newer_than_last_success_marker
+  marker_match: any
+  inputs:
+  - var/tables/views/consolidated_application_view.csv
+  - var/tables/views/consolidated_server_view.csv
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  watch_recursive: true
+  settle_seconds: 2
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Program Timeline Report
+  enabled: true
+  role: server
+  script: usr/scripts/default/program_timeline.py
+  args: null
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_input_newer_than_last_success_marker
+  require_inputs_exist: true
+  inputs:
+  - usr/config/data_source_analysis.yaml
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Migration Program Dictionary
+  enabled: true
+  role: server
+  script: usr/scripts/default/migration_program_dictionary.py
+  rule: mtime_input_newer_than_last_success_marker
+  marker_match: any
+  inputs:
+  - usr/config/run/migration_program_dictionary.yaml
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  watch_recursive: true
+  settle_seconds: 2
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run program attribute reporting
+  enabled: true
+  role: server
+  script: usr/scripts/default/attribute_reporting_processor.py
+  rule: mtime_input_newer_than_last_success_marker
+  marker_match: any
+  inputs:
+  - var/tables/views/consolidated_application_view.csv
+  - var/tables/views/consolidated_server_view.csv
+  - usr/config/run/attribute_reporting.yaml
+  - var/tables/insightvm.csv
+  - var/tables/defender_serverinventory.csv
+  - var/tables/flexera.csv
+  config_inputs:
+  - usr/config/run/orchestrator.yaml
+  watch_recursive: true
+  settle_seconds: 5
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: file_distribution_engine - psdo_consolidated_apps_base_062302026
+  enabled: true
+  role: server
+  script: usr/scripts/default/file_distribution_engine.py
+  args: --job "psdo_consolidated_apps_base_062302026"
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_input_newer_than_last_success_marker
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  marker_match: any
+  inputs:
+  - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+  config_inputs:
+  - usr/config/run/file_distribution_engine.yaml
+  - usr/config/custom/file_distribution_engine.yaml
+  outputs:
+  - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+- id: file_distribution_engine - psdo_consolidated_applications_interactive_06302026
+  enabled: true
+  role: server
+  script: usr/scripts/default/file_distribution_engine.py
+  args: --job "psdo_consolidated_applications_interactive_06302026"
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_input_newer_than_last_success_marker
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  marker_match: any
+  inputs:
+  - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
+  config_inputs:
+  - usr/config/run/file_distribution_engine.yaml
+  - usr/config/custom/file_distribution_engine.yaml
+  outputs:
+  - var/interactive/data/migrations_app_view.csv
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+- id: Copy consolidated application view to Archer
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/views/consolidated_application_view.csv" --dest   "C:\Users\Jayson.Roberts\State
+    of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory" --mode   copy
+    --append-date no --date-format %Y%m%d --skip-unchanged no
+
+    '
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_any_input_newer_than_any_output
+  require_inputs_exist: true
+  inputs:
+  - var/tables/views/consolidated_application_view.csv
+  outputs:
+  - C:\Users\Jayson.Roberts\State of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory\consolidated_application_view.csv
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+pipeline_jobs:
+- id: Data Handling Pipeline
+  enabled: true
+  role: server
+  cooldown_seconds: 60
+  trigger_markers:
+  - var/state/orchestrator_markers/Run_Intake_Processor.marker
+  - var/state/orchestrator_markers/Run_config_compiler.marker
+  stages:
+  - id: Raw Application Tables
+    script: usr/scripts/default/application_raw_table_builder.py
+  - id: Raw Server Tables
+    script: usr/scripts/default/server_raw_table_builder.py
+  - id: Master Tables
+    script: usr/scripts/default/master_table_builder_vtx.py
+  - id: Approximation Engine
+    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
+  - id: Tag Engine
+    script: usr/scripts/default/tag_engine.py
+  - id: Master Views
+    script: usr/scripts/default/master_view_builder_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml

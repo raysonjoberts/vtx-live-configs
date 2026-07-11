@@ -1,0 +1,431 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: master_view_builder_vtx
+  title: Master View Builder VTX v2
+  description: Build CSV views from master data tables with optional deterministic
+    collapse (v2).
+  owner: default
+  version: 1.0.0
+  tags:
+  - views
+  - masterdata
+  consumers:
+  - usr/scripts/default/master_view_builder_vtx.py
+  _vtx_origin: CUSTOM:usr/config/custom/master_view_builder_vtx.yaml
+config:
+  payload:
+    jobs:
+    - id: consolidated_application_view_collapsed_to_env
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - RECORDID
+      - Hostname
+      - OS
+      - Environment
+      - APPLICATION_TYPE_ID
+      - RISK_URGENCY_ID
+      - APPLICATION_STATUS_ID
+      - TLP_RATING
+      - BUSINESS_CATEGORY
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - Product_Manager
+      - Product_Manager_Status
+      - IT_Manager
+      - IT_Manager_Status
+      - Business Owner
+      - Business_Contact_Primary
+      - ApproxValue::Business_Contact_Primary
+      - default_role_identity_Business_Contact_Primary
+      - Business_Contact_Primary_Status
+      - Application_Inventory_Updater
+      - Technical Owner
+      - Technical_Lead
+      - ApproxValue::Technical_Lead
+      - default_role_identity_Technical_Lead
+      - Technical_Lead_Status
+      - Technical_Business_Consultant
+      - Applications_Director
+      - Applications_Director_Status
+      - Business_Contact_Secondary
+      - Security_Administrator_System
+      - Executive_Business_Sponsor
+      - Security_Approver
+      - Project_Manager
+      - Agency_Information_Security_Officer_AISO
+      - Server_Disposition
+      - Inferred Scope
+      - Inferred Server Location
+      - Assumed Disposition
+      - Planned Disposition
+      collapse:
+        enabled: true
+        mode: expand
+        expand_by: Environment
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - - RECORDID
+          - Hostname
+          - OS
+          - Environment
+          - Inferred Server Location
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/consolidated_application_collapsed_to_environment.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_output_column: tag
+    - id: consolidated_application_view
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - TOTAL_USERS
+      - DESCRIPTION
+      - REMARKS
+      - HYPERLINK
+      - VENDOR
+      - ORGANIZATION_ID
+      - APPLICATION_TYPE_ID
+      - RISK_URGENCY_ID
+      - LAST_UPDATED_BY
+      - LAST_UPDATED_DATE
+      - APPLICATION_STATUS_ID
+      - IMPORTANCE
+      - AGENCY_RESPONSIBLE
+      - HOSTING_ARRANGEMENT
+      - HOSTING_LOCATION
+      - EXTERNAL_APP
+      - DISPOSITION
+      - DEPT_ID
+      - END_PT_TEST
+      - TLP_RATING
+      - APP_REVIEWED
+      - BUSINESS_CATEGORY
+      - PS_DEVELOPMENT_CODE
+      - RFC_PROD
+      - RFC_DECOMM
+      - EMAIL_DIST_LIST
+      - NON_SOM_NETWORK
+      - NON_SOM_NETWORK_DESC
+      - VPN_REQUIRED
+      - VPN_DESC
+      - UTILIZES_LOAD_BALANCER
+      - LOAD_BALANCER_URL
+      - UTILIZES_GATEWAYS
+      - GATEWAY_URL
+      - UTILIZES_ARR
+      - ARR_URL
+      - WHO_ADMINISTERS
+      - WHO_MAINTAINS
+      - HOSTING_DETAILS
+      - DESKTOP_DEPENDENCIES
+      - AUTHENTICATION_METHOD
+      - ITBA_BUDGET_EXISTS
+      - ITBA_BUDGET_NAME
+      - OPER_OUTSIDE_BUS_HOURS
+      - OPER_LEVEL
+      - JAVA_ON_SERVER
+      - SERVER_JAVA_VERSION
+      - JAVA_ON_CLIENT
+      - CLIENT_JAVA_VERSION
+      - PUBLIC_END_POINT_URL
+      - PUBLIC_END_POINT_IP
+      - HAS_PUBLIC_END_POINT
+      - TOOL_VERSION_BRICK_ID
+      - TOOL_REP
+      - DEPARTMENT_NUMBER
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - DEPARTMENT_ACRONYM
+      - BUREAU_ACRONYM
+      - ORGANIZATION_ACRONYM
+      - app_x_tools_ID
+      - THIRD_PARTY_TOOL_ID
+      - third_party_tools_VENDOR
+      - PRODUCT_NAME
+      - USE_TYPE
+      - RECORDID
+      - Product_Manager
+      - Product_Manager_Status
+      - IT_Manager
+      - IT_Manager_Status
+      - Business Owner
+      - Business_Contact_Primary
+      - ApproxValue::Business_Contact_Primary
+      - default_role_identity_Business_Contact_Primary
+      - Business_Contact_Primary_Status
+      - Application_Inventory_Updater
+      - Technical Owner
+      - Technical_Lead
+      - ApproxValue::Technical_Lead
+      - default_role_identity_Technical_Lead
+      - Technical_Lead_Status
+      - Technical_Business_Consultant
+      - Applications_Director
+      - Applications_Director_Status
+      - Business_Contact_Secondary
+      - Security_Administrator_System
+      - Executive_Business_Sponsor
+      - Security_Approver
+      - Project_Manager
+      - Agency_Information_Security_Officer_AISO
+      - tools_lu_DESCRIPTION
+      - Hostname
+      - OS
+      - servers_ENVIRONMENT
+      - PURCHASE_DATE
+      - Server
+      - DATABASE_ID
+      - NAME
+      - INSTANCE
+      - DISPLAY_NAME
+      - Environment
+      - USAGE
+      - DB_VERSION
+      - TYPE
+      - CREATION_DATE
+      - DECOMMISSIONED
+      - CONTACT
+      - Assumed Disposition
+      - Server_Scope
+      - Server_Disposition
+      - Inferred Scope
+      - Inferred Server Location
+      - Planned Disposition
+      collapse:
+        enabled: true
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        linked_field_groups: null
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/consolidated_application_view.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_output_column: tag
+    - id: migrations_consolidated_application_view
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - RECORDID
+      - Hostname
+      - OS
+      - OS Version
+      - Environment
+      - APPLICATION_TYPE_ID
+      - RISK_URGENCY_ID
+      - APPLICATION_STATUS_ID
+      - TLP_RATING
+      - BUSINESS_CATEGORY
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - Product_Manager
+      - Product_Manager_Status
+      - IT_Manager
+      - IT_Manager_Status
+      - Business Owner
+      - Business_Contact_Primary
+      - ApproxValue::Business_Contact_Primary
+      - default_role_identity_Business_Contact_Primary
+      - Business_Contact_Primary_Status
+      - Application_Inventory_Updater
+      - Technical Owner
+      - Technical_Lead
+      - ApproxValue::Technical_Lead
+      - default_role_identity_Technical_Lead
+      - Technical_Lead_Status
+      - Technical_Business_Consultant
+      - Applications_Director
+      - Applications_Director_Status
+      - Business_Contact_Secondary
+      - Security_Administrator_System
+      - Executive_Business_Sponsor
+      - Security_Approver
+      - Project_Manager
+      - Agency_Information_Security_Officer_AISO
+      - Server_Disposition
+      - Inferred Scope
+      - Inferred Server Location
+      - Assumed Disposition
+      - Planned Disposition
+      collapse:
+        enabled: true
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - RECORDID
+        - Hostname
+        - OS
+        - Environment
+        - Inferred Server Location
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/migrations_consolidated_application_view.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_output_column: tag
+    - id: migrations_consolidated_application_view_collapsed_to_environment
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - Hostname
+      - OS
+      - Environment
+      - TLP_RATING
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - Product_Manager
+      - Business_Contact_Primary
+      - Technical_Lead
+      - Assumed Disposition
+      collapse:
+        enabled: true
+        mode: expand
+        expand_by: Environment
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - - RECORDID
+          - Hostname
+          - Environment
+          - OS
+          - Inferred Server Location
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_match_columns:
+      - Environment
+    - id: migrations_consolidated_server_view
+      enabled: true
+      source_table: var/masterdata/master_servers.parquet
+      select_fields: []
+      collapse:
+        enabled: true
+        anchor_field: Hostname
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - TITLE_NAME
+        linked_field_groups: []
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/migrations_consolidated_servers_view.csv
+    - id: billing_application_to_server
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - RECORDID
+      - Hostname
+      - OS
+      - Environment
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      collapse:
+        enabled: true
+        mode: expand
+        expand_by: RECORDID
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - - RECORDID
+          - Hostname
+          - OS
+          - Environment
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/billing_application_to_server_view.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_output_column: tag
+    - id: billing_application_to_db
+      enabled: true
+      source_table: var/masterdata/master_applications.parquet
+      select_fields:
+      - ID
+      - ACTIVE
+      - ACRONYM
+      - TITLE_NAME
+      - DEPARTMENT_NAME
+      - BUREAU_NAME
+      - ORGANIZATION
+      - NAME
+      - INSTANCE
+      - ENVIRONMENT
+      - TYPE
+      collapse:
+        enabled: true
+        mode: expand
+        expand_by: NAME
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - - NAME
+          - INSTANCE
+          - ENVIRONMENT
+          - TYPE
+        delimiter: ;
+      outputs:
+        csv: var/tables/views/billing_application_to_db_view.csv
+      tag_source_table: var/metadata/tags_application.csv
+      tag_anchor_field: ID
+      tag_output_column: tag
+  _vtx_origin: CUSTOM:usr/config/custom/master_view_builder_vtx.yaml

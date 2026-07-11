@@ -1,0 +1,64 @@
+reports:
+  - name: consolidated_server_and_application_mapping_visual
+    input_csv: /var/analysis/consolidated_server_and_application_mapping.csv
+    output_html: /var/analysis/consolidated_server_and_application_mapping.html
+    title: "Program Attribute Mapping — Consolidated Server & Application"
+    subtitle: "Coverage and quality for mapped fields"
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Visual Program Attribute Reporting - {name}"
+        script: usr/scripts/default/visual_program_attribute_mapping.py
+        args: [--mode=auto]
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{input_csv}"]      # wildcard gather
+        outputs: ["{output_html}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{output_html}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards
+        csv_xlsx_convert: false
+
+  - name: Archer to AIS Field Mapping_visual
+    input_csv: /var/analysis/archer_consolidated_server_and_application_mapping.csv
+    output_html: /var/analysis/archer_program_attributes.html
+    title: "Program Attribute Mapping — Archer to AIS Data Mapping"
+    subtitle: "Coverage and quality for mapped fields"
+
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: "Visual Program Attribute Reporting - {name}"
+        script: usr/scripts/default/visual_program_attribute_mapping.py
+        args: [--mode=auto]
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any                          # optional list (or string)
+        inputs: ["{input_csv}"]      # wildcard gather
+        outputs: ["{output_html}"]
+        #watch_glob: "*.yaml"        # optional; omit to include all files
+        watch_recursive: true         # optional; default false
+        #check_every_seconds: 30
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0        
+
+      stretch:
+        sync_type: internal_to_external
+        internal_file: "{output_html}"
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards
+        csv_xlsx_convert: false

@@ -1,0 +1,607 @@
+entries:
+- source: applications.csv
+  fields:
+  - field: ID
+    classification: ''
+  - field: ACTIVE
+    classification: ''
+  - field: ACRONYM
+    classification: ''
+  - field: TITLE_NAME
+    classification: ''
+  - field: TOTAL_USERS
+    classification: ''
+  - field: REMARKS
+    classification: ''
+  - field: HYPERLINK
+    classification: ''
+  - field: VENDOR
+    classification: ''
+  - field: ORGANIZATION_ID
+    classification: ''
+  - field: AGENCY_RESPONSIBLE
+    classification: ''
+  - field: HOSTING_ARRANGEMENT
+    classification: ''
+  - field: HOSTING_LOCATION
+    classification: ''
+  - field: EXTERNAL_APP
+    classification: ''
+  - field: DISPOSITION
+    classification: ''
+  - field: DEPT_ID
+    classification: ''
+  - field: END_PT_TEST
+    classification: ''
+  - field: APP_REVIEWED
+    classification: ''
+  - field: PS_DEVELOPMENT_CODE
+    classification: ''
+  - field: RFC_PROD
+    classification: ''
+  - field: RFC_DECOMM
+    classification: ''
+  - field: EMAIL_DIST_LIST
+    classification: ''
+  - field: NON_SOM_NETWORK
+    classification: ''
+  - field: NON_SOM_NETWORK_DESC
+    classification: ''
+  - field: VPN_REQUIRED
+    classification: ''
+  - field: VPN_DESC
+    classification: ''
+  - field: UTILIZES_LOAD_BALANCER
+    classification: ''
+  - field: LOAD_BALANCER_URL
+    classification: ''
+  - field: UTILIZES_GATEWAYS
+    classification: ''
+  - field: GATEWAY_URL
+    classification: ''
+  - field: UTILIZES_ARR
+    classification: ''
+  - field: ARR_URL
+    classification: ''
+  - field: HOSTING_DETAILS
+    classification: ''
+  - field: DESKTOP_DEPENDENCIES
+    classification: ''
+  - field: ITBA_BUDGET_EXISTS
+    classification: ''
+  - field: ITBA_BUDGET_NAME
+    classification: ''
+  - field: OPER_OUTSIDE_BUS_HOURS
+    classification: ''
+  - field: OPER_LEVEL
+    classification: ''
+  - field: JAVA_ON_SERVER
+    classification: ''
+  - field: SERVER_JAVA_VERSION
+    classification: ''
+  - field: JAVA_ON_CLIENT
+    classification: ''
+  - field: CLIENT_JAVA_VERSION
+    classification: ''
+  - field: PUBLIC_END_POINT_URL
+    classification: ''
+  - field: PUBLIC_END_POINT_IP
+    classification: ''
+  - field: HAS_PUBLIC_END_POINT
+    classification: ''
+  - field: Inferred Scope
+    classification: ''
+  - field: applications_APPLICATION_TYPE_ID
+    classification: ''
+  - field: applications_APPLICATION_STATUS_ID
+    classification: ''
+  - field: applications_BUSINESS_CATEGORY
+    classification: ''
+  - field: applications_RISK_URGENCY_ID
+    classification: ''
+  - field: applications_DESCRIPTION
+    classification: ''
+  - field: applications_WHO_ADMINISTERS
+    classification: ''
+  - field: applications_WHO_MAINTAINS
+    classification: ''
+  - field: applications_AUTHENTICATION_METHOD
+    classification: ''
+  - field: applications_IMPORTANCE
+    classification: ''
+  - field: applications_LAST_UPDATED_BY
+    classification: ''
+  - field: applications_LAST_UPDATED_DATE
+    classification: ''
+  - field: applications_TLP_RATING
+    classification: ''
+  - field: applications_ID
+    classification: ''
+  - field: applications_VENDOR
+    classification: ''
+  - field: applications_ACTIVE
+    classification: ''
+  - field: DESCRIPTION
+    classification: ''
+  - field: APPLICATION_TYPE_ID
+    classification: ''
+  - field: RISK_URGENCY_ID
+    classification: ''
+  - field: LAST_UPDATED_BY
+    classification: ''
+  - field: LAST_UPDATED_DATE
+    classification: ''
+  - field: APPLICATION_STATUS_ID
+    classification: ''
+  - field: IMPORTANCE
+    classification: ''
+  - field: TLP_RATING
+    classification: ''
+  - field: BUSINESS_CATEGORY
+    classification: ''
+  - field: WHO_ADMINISTERS
+    classification: ''
+  - field: WHO_MAINTAINS
+    classification: ''
+  - field: AUTHENTICATION_METHOD
+    classification: ''
+  - field: VERSION_CONTROL_USED
+    classification: ''
+  - field: GATEWAY_TYPE
+    classification: ''
+  - field: BFMS_DEPARTMENT_ID
+    classification: ''
+  - field: BFMS_BUREAU_ID
+    classification: ''
+  - field: BFMS_ORGANIZATION_ID
+    classification: ''
+- source: ps_development_lu.csv
+  fields:
+  - field: ps_development_lu_DESCRIPTION
+    classification: ''
+- source: bfms_organizations.csv
+  fields:
+  - field: DEPARTMENT_NUMBER
+    classification: ''
+  - field: DEPARTMENT_NAME
+    classification: ''
+  - field: BUREAU_NAME
+    classification: ''
+  - field: ORGANIZATION
+    classification: ''
+  - field: DEPARTMENT_ACRONYM
+    classification: ''
+  - field: BUREAU_ACRONYM
+    classification: ''
+  - field: ORGANIZATION_ACRONYM
+    classification: ''
+- source: servers_x_applications.csv
+  fields:
+  - field: RECORDID
+    classification: ''
+  - field: START_DATE
+    classification: ''
+  - field: END_DATE
+    classification: ''
+  - field: servers_x_applications_MODIFIED_BY
+    classification: ''
+  - field: servers_x_applications_MODIFIED_DATE
+    classification: ''
+  - field: MODIFIED_BY
+    classification: ''
+  - field: MODIFIED_DATE
+    classification: ''
+- source: staff_x_applications.csv
+  fields:
+  - field: staff_x_applications_LAST_UPDATED_BY
+    classification: ''
+  - field: staff_x_applications_LAST_UPDATED_DATE
+    classification: ''
+- source: staff.csv
+  fields:
+  - field: EMAIL
+    classification: ''
+  - field: SUPPORT_TEAM
+    classification: ''
+  - field: TYPE
+    classification: ''
+  - field: ROLE
+    classification: ''
+  - field: PHONE
+    classification: ''
+  - field: CONTRACTED
+    classification: ''
+  - field: AD_NAME
+    classification: ''
+  - field: staff_LAST_UPDATED_BY
+    classification: ''
+  - field: staff_LAST_UPDATED_DATE
+    classification: ''
+  - field: AD_UNIT
+    classification: ''
+  - field: TITLE
+    classification: ''
+  - field: FAX
+    classification: ''
+  - field: DATE_LAST_ACCESS
+    classification: ''
+  - field: AD_UNIT_ID
+    classification: ''
+  - field: CREATED_DATE
+    classification: ''
+  - field: CREATED_BY
+    classification: ''
+  - field: DFLT_ADD
+    classification: ''
+  - field: INACTIVE
+    classification: ''
+  - field: INACTIVATION_DATE
+    classification: ''
+  - field: COMMENTS
+    classification: ''
+  - field: LAST_LOGIN
+    classification: ''
+  - field: LAST_VER
+    classification: ''
+  - field: LAST_APP
+    classification: ''
+  - field: ADMIN_TEST
+    classification: ''
+  - field: DOMAIN
+    classification: ''
+  - field: staff_END_DATE
+    classification: ''
+  - field: value
+    classification: ''
+- source: staff_roles_lu.csv
+  fields:
+  - field: staff_roles_lu_DESCRIPTION
+    classification: ''
+  - field: staff_roles_lu_END_DATE
+    classification: ''
+- source: ''
+  fields:
+  - field: LAST_UPDATED_BY
+    classification: ''
+  - field: LAST_UPDATED_DATE
+    classification: ''
+  - field: END_DATE
+    classification: ''
+  - field: DESCRIPTION
+    classification: ''
+  - field: ID
+    classification: ''
+  - field: ACTIVE
+    classification: ''
+  - field: VENDOR
+    classification: ''
+  - field: COMMENTS
+    classification: ''
+  - field: MODIFIED_BY
+    classification: ''
+  - field: MODIFIED_DATE
+    classification: ''
+  - field: ENVIRONMENT
+    classification: ''
+- source: tools_x_applications.csv
+  fields:
+  - field: TOOL_VERSION_BRICK_ID
+    classification: ''
+  - field: TOOL_REP
+    classification: ''
+  - field: tools_x_applications_LAST_UPDATED_BY
+    classification: ''
+  - field: tools_x_applications_LAST_UPDATED_DATE
+    classification: ''
+  - field: tools_x_applications_COMMENTS
+    classification: ''
+  - field: COMMENTS
+    classification: ''
+- source: app_x_tools.csv
+  fields:
+  - field: app_x_tools_ID
+    classification: ''
+  - field: THIRD_PARTY_TOOL_ID
+    classification: ''
+  - field: app_x_tools_COMMENTS
+    classification: ''
+  - field: app_x_tools_LAST_UPDATED_BY
+    classification: ''
+  - field: app_x_tools_LAST_UPDATED_DATE
+    classification: ''
+  - field: COMMENTS
+    classification: ''
+- source: third_party_tools.csv
+  fields:
+  - field: third_party_tools_VENDOR
+    classification: ''
+  - field: PRODUCT_NAME
+    classification: ''
+  - field: PRODUCT_MAJOR_VERSION
+    classification: ''
+  - field: PRODUCT_MINOR_VERSION
+    classification: ''
+  - field: third_party_tools_LAST_UPDATED_DATE
+    classification: ''
+  - field: USE_TYPE
+    classification: ''
+  - field: third_party_tools_ACTIVE
+    classification: ''
+  - field: third_party_tools_LAST_UPDATED_BY
+    classification: ''
+  - field: ACTIVE
+    classification: ''
+- source: tools_lu.csv
+  fields:
+  - field: tools_lu_DESCRIPTION
+    classification: ''
+  - field: TOOL_VENDOR_ID
+    classification: ''
+- source: application_staff_roles.parquet
+  fields:
+  - field: Product_Manager
+    classification: ''
+  - field: IT_Manager
+    classification: ''
+  - field: Business_Contact_Primary
+    classification: ''
+  - field: Application_Inventory_Updater
+    classification: ''
+  - field: Technical_Lead
+    classification: ''
+  - field: Technical_Business_Consultant
+    classification: ''
+  - field: Applications_Director
+    classification: ''
+  - field: Business_Contact_Secondary
+    classification: ''
+  - field: Security_Administrator_System
+    classification: ''
+  - field: Executive_Business_Sponsor
+    classification: ''
+  - field: Security_Approver
+    classification: ''
+  - field: Project_Manager
+    classification: ''
+  - field: Agency_Information_Security_Officer_AISO
+    classification: ''
+  - field: Business_Contact_Budget
+    classification: ''
+  - field: Budget_Template_Updater
+    classification: ''
+- source: servers.csv
+  fields:
+  - field: MANAGEDEPT
+    classification: ''
+  - field: SERVERNAME
+    classification: ''
+  - field: servers_ENVIRONMENT
+    classification: ''
+  - field: IPADDRESS
+    classification: ''
+  - field: IPADDRESS2
+    classification: ''
+  - field: IPADDRESS3
+    classification: ''
+  - field: ILO_IPADDRESS
+    classification: ''
+  - field: MACADDRESS
+    classification: ''
+  - field: ILO_MACADDRESS
+    classification: ''
+  - field: FQDN
+    classification: ''
+  - field: servers_COMMENTS
+    classification: ''
+  - field: MAKE
+    classification: ''
+  - field: MODEL
+    classification: ''
+  - field: MODEL_NUMBER
+    classification: ''
+  - field: SERIAL_NUMBER
+    classification: ''
+  - field: WARRANTY_CONTACT
+    classification: ''
+  - field: WARRANTY_EXPDATE
+    classification: ''
+  - field: MAINTENANCE_EXPDATE
+    classification: ''
+  - field: LOCATION
+    classification: ''
+  - field: LOCATIONCODE
+    classification: ''
+  - field: LOCATIONCODE_DESC
+    classification: ''
+  - field: STREET_ADDRESS
+    classification: ''
+  - field: ADDED_DATE
+    classification: ''
+  - field: ADDED_BY
+    classification: ''
+  - field: servers_MODIFIED_BY
+    classification: ''
+  - field: servers_MODIFIED_DATE
+    classification: ''
+  - field: TAGNUMBER
+    classification: ''
+  - field: PURCHASE_DATE
+    classification: ''
+  - field: PURCHASED_FROM
+    classification: ''
+  - field: PURCHASE_PRICE
+    classification: ''
+  - field: ACCOUNTCODE
+    classification: ''
+  - field: ACCOUNTCODE2
+    classification: ''
+  - field: ALLOCATE1
+    classification: ''
+  - field: ALLOCATE2
+    classification: ''
+  - field: BILLINGCONTACT
+    classification: ''
+  - field: BILLINGCODE
+    classification: ''
+  - field: BILLINGCODE2
+    classification: ''
+  - field: BILLINGCODE3
+    classification: ''
+  - field: BILLINGCODE4
+    classification: ''
+  - field: BILLINGCODE5
+    classification: ''
+  - field: BILLINGCODEALLOCATE1
+    classification: ''
+  - field: BILLINGCODEALLOCATE2
+    classification: ''
+  - field: BILLINGCODEALLOCATE3
+    classification: ''
+  - field: BILLINGCODEALLOCATE4
+    classification: ''
+  - field: BILLINGCODEALLOCATE5
+    classification: ''
+  - field: BILLINGRATECODE
+    classification: ''
+  - field: ASSOCIATEDSERVICERATE
+    classification: ''
+  - field: COSTCENTER
+    classification: ''
+  - field: PROCUREDBY
+    classification: ''
+  - field: APPLICATION_SERVER_YN
+    classification: ''
+  - field: FILE_SERVER_YN
+    classification: ''
+  - field: DATABASE_SERVER_YN_TYPE
+    classification: ''
+  - field: WEB_SERVER_YN
+    classification: ''
+  - field: VIRTUAL_SERVER_YN
+    classification: ''
+  - field: VIRTUAL_SERVER_HOST
+    classification: ''
+  - field: PRODUCTS
+    classification: ''
+  - field: ASSETVALUE
+    classification: ''
+  - field: VMCLUSTER
+    classification: ''
+  - field: VMMEMORY
+    classification: ''
+  - field: VMSTORAGE
+    classification: ''
+  - field: VMPROCESSORS
+    classification: ''
+  - field: BACKUP_SOLUTION
+    classification: ''
+  - field: BACKUP_COMMENTS
+    classification: ''
+  - field: BACKUP_NETWORKINUSE_YN
+    classification: ''
+  - field: ENDOFLIFE_DATE
+    classification: ''
+  - field: ENDOFSUPPORT_DATE
+    classification: ''
+  - field: RACK
+    classification: ''
+  - field: RACKUNITS
+    classification: ''
+  - field: RACKPOSITION
+    classification: ''
+  - field: WHICHEMCSAN
+    classification: ''
+  - field: POWERPATHVERSION
+    classification: ''
+  - field: TYPEOS
+    classification: ''
+  - field: OPERATINGSYSTEM
+    classification: ''
+  - field: OS_VERSION
+    classification: ''
+  - field: OS_BITS
+    classification: ''
+  - field: OS_SERVICEPACK
+    classification: ''
+  - field: OS_RELEASELEVEL
+    classification: ''
+  - field: DELETEDYN
+    classification: ''
+  - field: DELETEDDATE
+    classification: ''
+  - field: SURPLUS
+    classification: ''
+  - field: SURPLUSDATE
+    classification: ''
+  - field: RETIRED
+    classification: ''
+  - field: RETIREDDATE
+    classification: ''
+  - field: SELFASSURANCE
+    classification: ''
+  - field: SELFASSURANCE_DATE
+    classification: ''
+  - field: VIRTUAL_SERVER_HOST_OS
+    classification: ''
+  - field: PATCHADMIN
+    classification: ''
+  - field: DATACENTERMOVE
+    classification: ''
+  - field: DATACENTERMOVE_LOCATION
+    classification: ''
+  - field: DATE_REMOVED
+    classification: ''
+  - field: Server
+    classification: ''
+- source: application_x_database.csv
+  fields:
+  - field: DATABASE_ID
+    classification: ''
+  - field: application_x_database_LAST_UPDATED_DATE
+    classification: ''
+  - field: application_x_database_LAST_UPDATED_BY
+    classification: ''
+- source: databases.csv
+  fields:
+  - field: NAME
+    classification: ''
+  - field: INSTANCE
+    classification: ''
+  - field: DISPLAY_NAME
+    classification: ''
+  - field: USAGE
+    classification: ''
+  - field: DB_VERSION
+    classification: ''
+  - field: TYPE
+    classification: ''
+  - field: CREATION_DATE
+    classification: ''
+  - field: DECOMMISSION_DATE
+    classification: ''
+  - field: DECOMMISSIONED
+    classification: ''
+  - field: CONTACT
+    classification: ''
+  - field: databases_LAST_UPDATED_DATE
+    classification: ''
+  - field: databases_LAST_UPDATED_BY
+    classification: ''
+  - field: ENVIRONMENT
+    classification: ''
+- source: bfms_hierarchy.csv
+  fields:
+  - field: DEPARTMENT_NUMBER
+    classification: ''
+  - field: DEPARTMENT_NAME
+    classification: ''
+  - field: BUREAU_NAME
+    classification: ''
+  - field: ORGANIZATION
+    classification: ''
+  - field: DEPARTMENT_ACRONYM
+    classification: ''
+  - field: BUREAU_ACRONYM
+    classification: ''
+  - field: ORGANIZATION_ACRONYM
+    classification: ''

@@ -1,0 +1,181 @@
+version: 1
+pricing:
+  mode: athena
+  athena:
+    database: vtx_pricing
+    results_s3: s3://vtx-shared-data-prod/_athena_results/
+    effective_date: '2025-12-01'
+  os_map:
+    linux: Linux
+    windows: Windows
+    rhel: RHEL
+    redhat: RHEL
+    ubuntu: Linux
+    regions:
+    - us-east-1
+    - us-east-2
+    - us-west-1
+    - us-west-2
+    - eu-west-1
+    - eu-west-2
+    - eu-west-3
+    - eu-central-1
+    - eu-central-2
+    - eu-north-1
+    - eu-south-1
+    - eu-south-2
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+inputs:
+  server_specs_csv: var/masterdata/unified_server_inventory.csv
+  id_field: SERVERNAME
+  source_fields:
+    cpu: VMPROCESSORS
+    memory_gb: VMMEMORY
+    storage_gb: storage_gb
+    os: TYPEOS
+    region: region
+    tenancy: tenancy
+    pricing_model: pricing_model
+    volume_type: volume_type
+    cost_scenario: cost_scenario
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+mapping:
+  spec_units:
+    cpu_to: vcpu
+    memory_gb_to: gib
+    storage_gb_to: gb
+  conversions:
+    cpu_multiplier: 1
+    convert_memory_gb_to_gib: true
+    convert_storage_gb_to_gib: false
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+defaults:
+  use_defaults_only_when_missing: true
+  aws:
+    region: us-east-1
+    os: linux
+    tenancy: shared
+    pricing_model: on_demand
+  storage:
+    volume_type: gp3
+    gp3_defaults:
+      iops: 3000
+      throughput_mbps: 125
+  minimum_specs:
+    vcpu: 2
+    memory_gib: 4
+    storage_gb: 50
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+modeling:
+  hours_per_month: 730
+  instance_matching:
+    families:
+    - m
+    - r
+    - c
+    low_end:
+      strategy: smallest_that_fits
+      headroom_percent:
+        vcpu: 0
+        memory: 0
+    high_end:
+      strategy: smallest_that_fits
+      headroom_percent:
+        vcpu: 25
+        memory: 25
+    max_instance_vcpu: 128
+    max_instance_memory_gib: 1024
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+quality_flags:
+  flag_when_default_used: true
+  output_flag_fields:
+    used_default_region: used_default_region
+    used_default_os: used_default_os
+    used_default_tenancy: used_default_tenancy
+    used_default_pricing_model: used_default_pricing_model
+    used_default_volume_type: used_default_volume_type
+    used_default_vcpu: used_default_vcpu
+    used_default_memory_gib: used_default_memory_gib
+    used_default_storage_gb: used_default_storage_gb
+  summary:
+    enabled: true
+    output_csv: var/costmodeling/server_cost_model_quality_summary.csv
+    include_by_field_breakdown: true
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+outputs:
+  output_csv: var/costmodeling/server_cost_model.csv
+  output_detail_csv: var/costmodeling/server_cost_model_detail.csv
+  columns:
+  - server_id
+  - region
+  - os
+  - pricing_model
+  - volume_type
+  - required_vcpu
+  - required_memory_gib
+  - required_storage_gb
+  - low_shared_monthly
+  - high_shared_monthly
+  - low_dedicated_monthly
+  - high_dedicated_monthly
+  - used_default_region
+  - used_default_os
+  - used_default_tenancy
+  - used_default_pricing_model
+  - used_default_volume_type
+  - used_default_vcpu
+  - used_default_memory_gib
+  - used_default_storage_gb
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+v1:
+  enabled: true
+  scenario_matrix:
+    regions:
+    - us-east-1
+    os_list:
+    - linux
+    pricing_models:
+    - reserved
+    - on_demand
+    tenancies:
+    - shared
+    - dedicated
+  compute_filters:
+    storage: EBS only
+    reserved:
+      lease_contract_length: 3yr
+      purchase_option: No Upfront
+  matching:
+    round_up:
+      vcpu: true
+      memory_gib: true
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml
+v2:
+  enabled: false
+  scenarios:
+  - name: Critical_regionA
+    region: us-east-1
+    os: linux
+    tenancy: dedicated
+    pricing_model: reserved
+    volume_type: gp3
+    match_profile: high_end
+  - name: NonCritical_regionA
+    region: us-east-1
+    os: linux
+    tenancy: shared
+    pricing_model: reserved
+    volume_type: gp3
+    match_profile: low_end
+  - name: Transient_regionA
+    region: us-east-1
+    os: linux
+    tenancy: shared
+    pricing_model: on_demand
+    volume_type: gp3
+    match_profile: low_end
+  assignment:
+    mode: manual
+    manual_field_name: cost_scenario
+    rules: []
+  _vtx_origin: DEFAULT:usr/config/default/aws_cost_modeling.yaml

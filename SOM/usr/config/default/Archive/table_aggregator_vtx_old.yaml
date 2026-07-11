@@ -1,0 +1,368 @@
+# =====================================================================
+# VTX Universal Config (v1) - table_aggregator_vtx.yaml
+# =====================================================================
+
+_vtx:
+#  schema: v1
+#  kind: transform
+#  id: table_aggregator
+#  title: Table Aggregator (VTX)
+#  description: Aggregate and enrich tables via lookup transactions.
+#  owner: default
+#  version: 1.0.0
+#  tags:
+#  - aggregation
+#  created_utc: ''
+#  updated_utc: ''
+#  consumers:
+#  - usr/scripts/default/parquet_table_builder.py
+#
+#config:
+#  io:
+#    inputs: []
+#    outputs: []
+#  run:
+#    enabled: true
+#    role: any
+#    log_level: INFO
+#    dry_run: false
+#    fail_fast: false
+#    cwd: ''
+#  payload:
+#    jobs:
+#    - id: consolidated_application_view
+#      enabled: true
+#      inputs:
+#      - var/tables/applications.csv
+#      - var/tables/application_x_database.csv
+#      - var/tables/application_types_lu.csv
+#      - var/tables/application_status_lu.csv
+#      - var/tables/business_category_lu.csv
+#      - var/tables/risk_urgency_lu.csv
+#      - var/tables/ps_development_lu.csv
+#      - var/tables/tools_x_applications.csv
+#      - var/tables/tools_lu.csv
+#      - var/tables/bfms_organizations.csv
+#      - var/tables/who_administers_lu.csv
+#      - var/tables/databases.csv
+#      - var/tables/who_maintains_lu.csv
+#      - var/tables/auth_method_lu.csv
+#      - var/tables/app_x_tools.csv
+#      - var/tables/third_party_tools.csv
+#      - var/tables/importance_lu.csv
+#      - var/tables/database_type_lu.csv
+#      - var/tables/servers_x_applications.csv
+#      - var/tables/views/consolidated_server_view.csv
+#      - var/tables/staff_x_applications.csv
+#      - var/tables/staff.csv
+#      - var/tables/staff_roles_lu.csv
+#      - var/tables/tlp_lu.csv
+#      outputs:
+#      - var/tables/views/consolidated_application_view.csv
+#      seed: var/tables/applications.csv
+#      anchor: ID
+#      delimiter: " ; "
+#      transactions:
+#      - type: simple_lookup
+#        lookup_table: var/tables/application_x_database.csv
+#        key: APP_ID
+#        seed_field: ID
+#        fields:
+#        - DATABASE_ID
+#      - type: lookup_replace
+#        lookup_table: var/tables/application_types_lu.csv
+#        key: ID
+#        seed_field: APPLICATION_TYPE_ID
+#        lookup_field: DESCRIPTION
+#        output_field: APPLICATION_TYPE_ID
+#      - type: lookup_replace
+#        lookup_table: var/tables/application_status_lu.csv
+#        key: ID
+#        seed_field: APPLICATION_STATUS_ID
+#        lookup_field: DESCRIPTION
+#        output_field: APPLICATION_STATUS_ID
+#      - type: lookup_replace
+#        lookup_table: var/tables/business_category_lu.csv
+#        key: ID
+#        seed_field: BUSINESS_CATEGORY
+#        lookup_field: DESCRIPTION
+#        output_field: BUSINESS_CATEGORY
+#      - type: lookup_replace
+#        lookup_table: var/tables/risk_urgency_lu.csv
+#        key: ID
+#        seed_field: RISK_URGENCY_ID
+#        lookup_field: DESCRIPTION
+#        output_field: RISK_URGENCY_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/ps_development_lu.csv
+#        key: ID
+#        seed_field: PS_DEVELOPMENT_CODE
+#        fields:
+#        - DESCRIPTION -> DevelopmentSource
+#      - type: simple_lookup
+#        lookup_table: var/tables/tools_x_applications.csv
+#        key: APP_ID
+#        seed_field: ID
+#        fields:
+#        - TOOL_VERSION_BRICK_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/tools_lu.csv
+#        key: ID
+#        seed_field: TOOL_VERSION_BRICK_ID
+#        fields:
+#        - DESCRIPTION -> Tools
+#        - TOOL_VENDOR_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/bfms_organizations.csv
+#        key: ID
+#        seed_field: ORGANIZATION_ID
+#        fields:
+#        - DEPARTMENT_NUMBER
+#        - DEPARTMENT_NAME
+#        - BUREAU_NAME
+#        - ORGANIZATION
+#        - DEPARTMENT_ACRONYM
+#        - BUREAU_ACRONYM
+#        - ORGANIZATION_ACRONYM
+#      - type: simple_lookup
+#        lookup_table: var/tables/ps_development_lu.csv
+#        key: ID
+#        seed_field: PS_DEVELOPMENT_CODE
+#        fields:
+#        - DESCRIPTION -> PS_DEVELOPMENT_CODE_NAMETmp
+#      - type: lookup_replace
+#        lookup_table: var/tables/who_administers_lu.csv
+#        key: ID
+#        seed_field: WHO_ADMINISTERS
+#        lookup_field: DESCRIPTION
+#        output_field: WHO_ADMINISTERS
+#      - type: simple_lookup
+#        lookup_table: var/tables/databases.csv
+#        key: ID
+#        seed_field: DATABASE_ID
+#        fields:
+#        - NAME -> DatabaseName
+#        - INSTANCE -> DatabaseInstance
+#        - ENVIRONMENT -> DatabaseEnvironment
+#        - CONTACT -> DatabaseContact
+#        - TYPE -> DBType
+#      - type: lookup_replace
+#        lookup_table: var/tables/who_maintains_lu.csv
+#        key: ID
+#        seed_field: WHO_MAINTAINS
+#        lookup_field: DESCRIPTION
+#        output_field: WHO_MAINTAINS
+#      - type: lookup_replace
+#        lookup_table: var/tables/auth_method_lu.csv
+#        key: ID
+#        seed_field: AUTHENTICATION_METHOD
+#        lookup_field: DESCRIPTION
+#        output_field: AUTHENTICATION_METHOD
+#      - type: simple_lookup
+#        lookup_table: var/tables/app_x_tools.csv
+#        key: APP_ID
+#        seed_field: ID
+#        fields:
+#        - THIRD_PARTY_TOOL_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/third_party_tools.csv
+#        key: ID
+#        seed_field: THIRD_PARTY_TOOL_ID
+#        fields:
+#        - VENDOR -> ThirdPartyToolVendor
+#        - PRODUCT_NAME -> ThirdPartyTool
+#      - type: lookup_replace
+#        lookup_table: var/tables/importance_lu.csv
+#        key: ID
+#        seed_field: IMPORTANCE
+#        lookup_field: DESCRIPTION
+#        output_field: IMPORTANCE
+#      - type: lookup_replace
+#        lookup_table: var/tables/database_type_lu.csv
+#        key: ID
+#        seed_field: DBType
+#        lookup_field: DESCRIPTION
+#        output_field: DBType
+#      - type: simple_lookup
+#        lookup_table: var/tables/servers_x_applications.csv
+#        key: APP_ID
+#        seed_field: ID
+#        fields:
+#        - RECORDID
+#      - type: simple_lookup
+#        lookup_table: var/tables/views/consolidated_server_view.csv
+#        key: RECORDID
+#        seed_field: RECORDID
+#        fields:
+#        - SERVERNAME
+#        - ENVIRONMENT
+#      - type: simple_lookup
+#        lookup_table: var/tables/staff_x_applications.csv
+#        key: APP_ID
+#        seed_field: ID
+#        fields:
+#        - STAFF_ID
+#        - STAFF_ROLE_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/staff.csv
+#        key: ID
+#        seed_field: STAFF_ID
+#        fields:
+#        - STAFF_NAME
+#      - type: simple_lookup
+#        lookup_table: var/tables/staff_roles_lu.csv
+#        key: ID
+#        seed_field: STAFF_ROLE_ID
+#        fields:
+#        - DESCRIPTION -> StaffRole
+#      - type: lookup_replace
+#        lookup_table: var/tables/tlp_lu.csv
+#        key: ID
+#        seed_field: TLP_RATING
+#        lookup_field: TLP
+#        output_field: TLP_RATING
+#      - type: simple_lookup
+#        lookup_table: var/tables/views/consolidated_application_view.csv
+#        key: ID
+#        seed_field: ID
+#        fields:
+#        - Assumed Disposition
+#        - Inferred Scope
+#      - type: transform_tidy
+#        anchor: ID
+#        column_field: StaffRole
+#        value_field: STAFF_NAME
+#        drop_fields:
+#        - STAFF_ID
+#        - STAFF_ROLE_ID
+#        delimiter: " ; "
+#
+#    - id: consolidated_server_view
+#      enabled: true
+#      inputs:
+#      - var/tables/serverinventories.csv
+#      - var/tables/servers_x_applications.csv
+#      - var/tables/applications.csv
+#      - var/tables/views/consolidated_server_view.csv
+#      outputs:
+#      - var/tables/views/consolidated_server_view.csv
+#      seed: var/tables/serverinventories.csv
+#      anchor: RECORDID
+#      delimiter: " ; "
+#      transactions:
+#      - type: simple_lookup
+#        lookup_table: var/tables/servers_x_applications.csv
+#        key: RECORDID
+#        seed_field: RECORDID
+#        fields:
+#        - APP_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/applications.csv
+#        key: ID
+#        seed_field: APP_ID
+#        fields:
+#        - TITLE_NAME -> Application
+#      - type: simple_lookup
+#        lookup_table: var/tables/views/consolidated_server_view.csv
+#        key: RECORDID
+#        seed_field: RECORDID
+#        fields:
+#        - Inferred Location
+#
+#    - id: server_inventory_view
+#      enabled: true
+#      inputs:
+#      - var/tables/serverinventories.csv
+#      - var/tables/servers_x_applications.csv
+#      - var/tables/applications.csv
+#      - var/tables/views/consolidated_application_view.csv
+#      outputs:
+#      - var/tables/views/server_inventory_view.csv
+#      seed: var/tables/serverinventories.csv
+#      anchor: SERVERNAME
+#      delimiter: " ; "
+#      seed_fields:
+#      - SERVERNAME
+#      - IPADDRESS
+#      - ENVIRONMENT
+#      - RECORDID
+#      - TYPEOS
+#      transactions:
+#      - type: simple_lookup
+#        lookup_table: var/tables/servers_x_applications.csv
+#        key: RECORDID
+#        seed_field: RECORDID
+#        fields:
+#        - APP_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/applications.csv
+#        key: ID
+#        seed_field: APP_ID
+#        fields:
+#        - TITLE_NAME -> Application
+#      - type: simple_lookup
+#        lookup_table: var/tables/views/consolidated_application_view.csv
+#        key: ID
+#        seed_field: APP_ID
+#        fields:
+#        - Application Inventory Updater
+#
+#    - id: waivers_consolidated_server_view
+#      enabled: true
+#      inputs:
+#      - var/tables/waivers.csv
+#      - var/tables/waivers_x_applications.csv
+#      - var/tables/applications.csv
+#      - var/tables/waiver_statuses_lu.csv
+#      - var/tables/waiver_categories_lu.csv
+#      - var/tables/waiver_risk_lu.csv
+#      - var/tables/waivers_x_servers.csv
+#      - var/tables/servers.csv
+#      outputs:
+#      - var/tables/views/waivers_consolidated_server_view.csv
+#      seed: var/tables/waivers.csv
+#      delimiter: " ; "
+#      transactions:
+#      - type: simple_lookup
+#        lookup_table: var/tables/waivers_x_applications.csv
+#        key: WAIVER_ID
+#        seed_field: ID
+#        fields:
+#        - APP_ID
+#      - type: simple_lookup
+#        lookup_table: var/tables/applications.csv
+#        key: ID
+#        seed_field: APP_ID
+#        fields:
+#        - TITLE_NAME -> Application
+#      - type: lookup_replace
+#        lookup_table: var/tables/waiver_statuses_lu.csv
+#        key: CODE
+#        seed_field: STATUS_CODE
+#        lookup_field: DESCRIPTION
+#        output_field: STATUS_CODE
+#      - type: lookup_replace
+#        lookup_table: var/tables/waiver_categories_lu.csv
+#        key: CODE
+#        seed_field: CATEGORY_CODE
+#        lookup_field: DESCRIPTION
+#        output_field: CATEGORY_CODE
+#      - type: lookup_replace
+#        lookup_table: var/tables/waiver_risk_lu.csv
+#        key: CODE
+#        seed_field: RISK_CODE
+#        lookup_field: DESCRIPTION
+#        output_field: RISK_CODE
+#      - type: simple_lookup
+#        lookup_table: var/tables/waivers_x_servers.csv
+#        key: WAIVER_ID
+#        seed_field: ID
+#        fields:
+#        - RECORDID
+#      - type: simple_lookup
+#        lookup_table: var/tables/servers.csv
+#        key: RECORDID
+#        seed_field: RECORDID
+#        fields:
+#        - SERVERNAME
+#

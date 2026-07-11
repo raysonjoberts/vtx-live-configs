@@ -1,0 +1,97 @@
+stretch_files:
+  ccoe_consolidated_application_view:
+    enabled: true
+    source_path: var/tables/views/consolidated_application_view.csv
+    output_path: var/interactive/ccoe_consolidated_application_view.csv
+    owned_columns:
+    - ID
+    - ACTIVE
+    - TITLE_NAME
+    - ACRONYM
+    - APPLICATION_TYPE_ID
+    - SERVERNAME
+    - DEPARTMENT_NAME
+    - BUREAU_NAME
+    - ORGANIZATION
+    - RISK_URGENCY_ID
+    - APPLICATION_STATUS_ID
+    - IMPORTANCE
+    - WHO_ADMINISTERS
+    - WHO_MAINTAINS
+    - DatabaseName
+    - Business Contact - Primary
+    - Technical Lead
+    - Inferred Scope
+    - Assumed Disposition
+    anchor_field: ID
+    id_field: program_id
+    auto_id_prefix: auto-
+    id_map_path: var/metadata/stretch_maps/ccoe_applications_stretch_id_map.csv
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: Stretch File Processor - ccoe_consolidated_application_view
+        script: usr/scripts/default/stretch_file_processor.py
+        args:
+        - --all
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any
+        inputs:
+        - '{source_path}'
+        outputs:
+        - '{output_path}'
+        watch_recursive: true
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0
+      stretch:
+        sync_type: two_way_sync
+        internal_file: '{output_path}'
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data
+          Dog\Correlated_Data\CCoE_Inventory\current
+        csv_xlsx_convert: true
+  ccoe_consolidated_server_view:
+    enabled: true
+    source_path: var/tables/views/consolidated_server_view.csv
+    output_path: var/interactive/ccoe_consolidated_server_view.csv
+    owned_columns:
+    - RECORDID
+    - SERVERNAME
+    - IPADDRESS
+    - VMPROCESSORS
+    - VMMEMORY
+    - VMSTORAGE
+    - Inferred Server Location
+    anchor_field: RECORDID
+    id_field: program_id
+    auto_id_prefix: auto-
+    id_map_path: var/metadata/stretch_maps/ccoe_servers_stretch_id_map.csv
+    _autogen:
+      orchestrator:
+        job_type: backbone
+        role: server
+        id: Stretch File Processor - ccoe_consolidated_server_view
+        script: usr/scripts/default/stretch_file_processor.py
+        args: []
+        rule: mtime_input_newer_than_last_success_marker
+        marker_match: any
+        inputs:
+        - '{source_path}'
+        outputs:
+        - '{output_path}'
+        watch_recursive: true
+        settle_seconds: 2
+        timeout_seconds: 120
+        retries: 1
+        backoff_seconds: 10
+        jitter_seconds: 0
+      stretch:
+        sync_type: two_way_sync
+        internal_file: '{output_path}'
+        external_dir: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data
+          Dog\Correlated_Data\CCoE_Inventory\current
+        csv_xlsx_convert: true
+  _vtx_origin: CUSTOM:usr/config/custom/stretch_file_processor.yaml

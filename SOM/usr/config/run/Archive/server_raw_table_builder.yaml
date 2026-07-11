@@ -1,0 +1,46 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: server_raw_table_builder
+  title: Server Raw Table Builder
+  description: Build canonical expanded raw server table.
+  owner: default
+  version: 1.0.0
+  tags:
+  - inventory
+  - masterdata
+  - canonical
+  consumers:
+  - usr/scripts/default/server_raw_table_builder.py
+  _vtx_origin: DEFAULT:usr/config/default/server_raw_table_builder.yaml
+config:
+  payload:
+    schema_contracts:
+      raw_application_table:
+        path: var/masterdata/raw_application_table.parquet
+        anchor_field: ID
+        row_key_field: __row_key__
+      raw_server_table:
+        path: var/masterdata/raw_server_table.parquet
+        anchor_field: Hostname
+        row_key_field: __row_key__
+        notes: Expanded canonical server rows, no semicolon collapse.
+      application_approximation:
+        path: var/masterdata/application_approximation.parquet
+        anchor_field: ID
+      master_applications:
+        path: var/masterdata/master_applications.parquet
+        anchor_field: ID
+      master_servers:
+        path: var/masterdata/master_servers.parquet
+        anchor_field: Hostname
+    jobs:
+    - id: build_raw_server_table
+      enabled: true
+      source: var/masterdata/unified_server_inventory.csv
+      anchor_field: Hostname
+      row_key_field: __row_key__
+      outputs:
+        parquet: var/masterdata/raw_server_table.parquet
+        csv: var/masterdata/raw_server_table.csv
+  _vtx_origin: DEFAULT:usr/config/default/server_raw_table_builder.yaml

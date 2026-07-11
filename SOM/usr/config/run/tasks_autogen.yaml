@@ -1,0 +1,22 @@
+tasks:
+  tasks_csv: VTX_ROOT/var/interactive/views/tasks.csv
+  tasks_log_csv: VTX_ROOT/var/tables/tasks_log.csv
+  _vtx_origin: CUSTOM:usr/config/custom/tasks_autogen.yaml
+sources:
+- name: program_attribute_utilization
+  stats_table: VTX_ROOT/var/analysis/consolidated_server_and_application_mapping.csv
+  utilization_column: Used %
+  attribute_column: Program Attribute
+  priority_column: Priority
+  phase_column: Phase
+  threshold_lt: 100.0
+  task_label_template: '{attribute} values missing'
+  auto_key_template: PROGRAM_ATTRIBUTE:{attribute}
+  default_status: Backlog
+  auto_controlled_fields:
+  - task_label
+  - progress
+  - priority
+  - phase
+  null_task_label_template: '{attribute} program attribute not mapped'
+  _vtx_origin: CUSTOM:usr/config/custom/tasks_autogen.yaml

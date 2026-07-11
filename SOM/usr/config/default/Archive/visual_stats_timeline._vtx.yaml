@@ -1,0 +1,51 @@
+# =====================================================================
+# VTX Universal Config (v1) - visual_stats_timeline._vtx.yaml
+# =====================================================================
+
+_vtx:
+  schema: v1
+  kind: dashboard
+  id: visual_stats_timeline
+  title: Visual Stats Timeline
+  description: Generate timeline HTML reports from statistics tables.
+  owner: default
+  version: 1.0.0
+  tags:
+  - dashboard
+  - reporting
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/dashboards/visual_stats_timeline_vtx.py
+
+config:
+  io:
+    inputs: []
+    outputs: []
+  run:
+    enabled: true
+    role: any
+    log_level: INFO
+    dry_run: false
+    fail_fast: false
+    cwd: ''
+  payload:
+    jobs:
+    - id: consolidated_application_view_stats
+      name: consolidated_application_view_stats
+      enabled: true
+      sources:
+        input_table: var/statistics/consolidated_application_view_stats.csv
+        program_attribute_mapping_yaml: usr/config/run/data_source_analysis_mapping.yaml
+      output:
+        dir: var/reporting
+        file: consolidated_application_view_stats_timeline.html
+    - id: consolidated_server_view_stats
+      name: consolidated_server_view_stats
+      enabled: true
+      sources:
+        input_table: var/statistics/consolidated_server_view_stats.csv
+        program_attribute_mapping_yaml: usr/config/run/data_source_analysis_mapping.yaml
+      output:
+        dir: var/reporting
+        file: consolidated_server_view_stats_timeline.html

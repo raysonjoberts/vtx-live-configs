@@ -1,0 +1,48 @@
+settings:
+  title: VTX Status
+  output_dir: var/reporting
+  output_file: vtx_status.html
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+checks:
+- id: application_inventory_status_age
+  type: file_fresh
+  label: Application Inventory Dashboard updated < 24h
+  path: var/reporting/application_inventory_status.html
+  max_age: 24h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: server_inventory_status_age
+  type: file_fresh
+  label: Server Inventory Dashboard updated < 24h
+  path: var/reporting/server_inventory_status.html
+  max_age: 24h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: application_report_cards_age
+  type: file_fresh
+  label: Application Report Cards updated < 24h
+  path: var/reporting/application_report_cards.html
+  max_age: 24h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: consolidated_application_view < 2h
+  type: file_fresh
+  label: Consolidated Application View updated < 2h
+  path: var/tables/views/consolidated_application_view.csv
+  max_age: 2h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: consolidated_server_view < 2h
+  type: file_fresh
+  label: Consolidated Application View updated < 2h
+  path: var/tables/views/consolidated_server_view.csv
+  max_age: 2h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: ccoe_consolidated_application_view < 2h
+  type: file_fresh
+  label: CCoE Consolidated Application View updated < 2h
+  path: var/tables/views/ccoe_consolidated_application_view.csv
+  max_age: 2h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml
+- id: ccoe_consolidated_server_view < 2h
+  type: file_fresh
+  label: CCoE Consolidated Application View updated < 2h
+  path: var/tables/views/ccoe_consolidated_server_view.csv
+  max_age: 2h
+  _vtx_origin: DEFAULT:usr/config/default/vtx_status_checks.yaml

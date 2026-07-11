@@ -1,0 +1,39 @@
+_vtx:
+  schema: v1
+  kind: processor
+  id: aws_pricing_catalog_builder_vtx
+  title: AWS Pricing Catalog Builder VTX
+  description: Downloads AWS EC2 pricing CSVs and writes regional parquet catalogs.
+  owner: default
+  version: 1.0.0
+  tags:
+  - aws
+  - pricing
+  - catalog
+  consumers:
+  - usr/scripts/default/aws_pricing_catalog_builder_vtx.py
+  _vtx_origin: DEFAULT:usr/config/default/aws_pricing_catalog_builder_vtx.yaml
+config:
+  payload:
+    regions:
+      include:
+      - us-east-1
+      us_only_guardrail: true
+    aws_offer:
+      base_host: https://pricing.us-east-1.amazonaws.com
+      index_template: /offers/v1.0/aws/AmazonEC2/current/{region}/index.csv
+      timeout_seconds: 1800
+    tmp:
+      directory: var/tmp/aws_pricing_catalog_builder_vtx
+      keep_downloaded_csv: true
+    filters:
+      include_record_types:
+      - ec2_instance
+      - ebs_storage
+      - data_transfer
+      currency: USD
+      require_price: true
+    output:
+      directory: var/masterdata/aws_regional_pricing
+      filename_template: pricing_catalog_{region}.parquet
+  _vtx_origin: DEFAULT:usr/config/default/aws_pricing_catalog_builder_vtx.yaml

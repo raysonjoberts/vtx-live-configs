@@ -1,0 +1,19 @@
+log_noise_monitor:
+  enabled: true
+  logs_dir: var/logs
+  include_globs:
+  - '*.log'
+  - '*.txt'
+  recurse: false
+  out_dir: var/tables/metrics
+  views_dir: var/tables/views
+  state_file: var/run/log_noise_state.json
+  output_html: var/reports/operations/log_noise_dashboard.html
+  sample_every_seconds: 60
+  quadrant_minutes: 360
+  baseline_days: 30
+  min_days_for_baseline: 5
+  warn_z: 2.0
+  hot_z: 3.0
+  smooth_window_minutes: 5
+  _vtx_origin: DEFAULT:usr/config/default/log_noise_monitor.yaml

@@ -1,0 +1,169 @@
+stretches:
+#  - name: ccoe_consolidated_application_view
+#    sync_type: two_way_sync              # internal_to_external | external_to_internal | two_way_sync
+#    csv_xlsx_convert: true               # if true: internal=csv, external=xlsx
+#    internal_file: var/interactive/ccoe_consolidated_application_view.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_application_view.xlsx
+#    sheet_name: Sheet1
+#    key_columns: [ID]   # optional but recommended
+#    xlsx_truncate_extra_rows: true  # default true
+#    xlsx_truncate_extra_cols: false # default false (safer)
+#
+#  - name: ccoe_consolidated_server_view
+#    sync_type: two_way_sync              # internal_to_external | external_to_internal | two_way_sync
+#    csv_xlsx_convert: true               # if true: internal=csv, external=xlsx
+#    internal_file: var/interactive/ccoe_consolidated_server_view.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\current\ccoe_consolidated_server_view.xlsx
+#    sheet_name: Sheet1
+#    key_columns: [RECORDID]   # optional but recommended
+#    xlsx_truncate_extra_rows: true  # default true
+#    xlsx_truncate_extra_cols: false # default false (safer)
+
+  - name: tasks
+    sync_type: two_way_sync              # internal_to_external | external_to_internal | two_way_sync
+    csv_xlsx_convert: true               # if true: internal=csv, external=xlsx
+    internal_file: "var/interactive/views/tasks.csv"
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\tasks.xlsx
+    key_columns: ["task_id"]
+    xlsx_truncate_extra_rows: true  # default true
+    xlsx_truncate_extra_cols: false # default false (safer)
+
+
+#  - name: raid
+#    sync_type: two_way_sync              # internal_to_external | external_to_internal | two_way_sync
+#    csv_xlsx_convert: true               # if true: internal=csv, external=xlsx
+#    internal_file: "var/interactive/views/raid.csv"
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\raid.xlsx
+#    sheet_name: Sheet1
+#    key_columns: ["Description"]
+#    xlsx_truncate_extra_rows: true  # default true
+#    xlsx_truncate_extra_cols: false # default false (safer)
+
+#  - name: inferred_decision_engine
+#    sync_type: two_way_sync              # internal_to_external | external_to_internal | two_way_sync
+#    csv_xlsx_convert: true               # if true: internal=csv, external=xlsx
+#    internal_file: "bin/ui/inferred_decision_engine.csv"
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\ProgramManagement\inferred_decision_engine.xlsx
+#    sheet_name: Sheet1
+#    key_columns: ["ID"]
+#    xlsx_truncate_extra_rows: true  # default true
+#    xlsx_truncate_extra_cols: false # default false (safer)
+
+
+# ====== 1 way syncs ====================
+#  - name: stretch_servers_in_ssdcrvtools_notin_serverinventory.csv
+#    sync_type: internal_to_external
+#    csv_xlsx_convert: false
+#    internal_file: var/detailedreporting/servers_in_ssdcrvtools_notin_serverinventory.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\servers_in_ssdcrvtools_notin_serverinventory.csv
+
+
+  - name: stretch_application_report_cards.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/application_report_cards.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\application_report_cards.html
+
+  - name: stretch_application_inventory_changes.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/application_inventory_changes.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\application_inventory_changes.html
+
+
+  - name: stretch_server_inventory_changes.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/server_inventory_changes.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\server_inventory_changes.html
+
+  - name: stretch_consolidated_application_view_stats_timeline.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/consolidated_application_view_stats_timeline.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_application_view_stats_timeline.html
+
+  - name: stretch_consolidated_server_view_stats_timeline.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/consolidated_server_view_stats_timeline.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_view_stats_timeline.html
+
+  - name: stretch_index.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/index.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\index.html
+
+  - name: stretch_tasks.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/tasks.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\tasks.html
+
+  - name: stretch_raid.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/raid.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\raid.html
+
+  - name: stretch_ccoe_program_attribute_dictionary.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/dictionaries/ccoe_program_attribute_dictionary.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\ccoe_program_attribute_dictionary.html
+
+  - name: stretch_program_timeline.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/reporting/program_timeline.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\program_timeline.html
+
+  - name: stretch_archer_program_attributes.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/analysis/archer_program_attributes.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\archer_program_attributes.html
+
+  - name: stretch_consolidated_server_and_application_mapping.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/analysis/consolidated_server_and_application_mapping.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_mapping.html
+
+  - name: stretch_consolidated_server_and_application_report_visual.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/analysis/consolidated_server_and_application_report_visual.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_report_visual.html
+
+#  - name: stretch_server_inventory_view.csv
+#    sync_type: internal_to_external
+#    csv_xlsx_convert: false
+#    internal_file: var/tables/views/server_inventory_view.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\server_inventory_view.csv
+
+  - name: stretch_consolidated_server_view.csv
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/tables/views/consolidated_server_view.csv
+    external_file: C:\Users\Jayson.Roberts\State of Maine\MaineIT OPTIV Project - Dataset\ConsolidatedInventory\consolidated_server_view.csv
+
+#  - name: stretch_servers_without_apps.csv
+#    sync_type: internal_to_external
+#    csv_xlsx_convert: false
+#    internal_file: var/tables/views/consolidated_server_view.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\windows_servers_without_apps.csv
+
+#  - name: stretch_linux_servers_without_apps.csv
+#    sync_type: internal_to_external
+#    csv_xlsx_convert: false
+#    internal_file: var/detailedreporting/linux_servers_without_apps.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\linux_servers_without_apps.csv
+
+#  - name: stretch_presence_hostname_matrix.csv
+#    sync_type: internal_to_external
+#    csv_xlsx_convert: true
+#    internal_file: var/detailedreporting/presence_hostname_matrix.csv
+#    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\detailedreporting\presence_hostname_matrix.xlsx
+

@@ -1,0 +1,1574 @@
+criteria:
+- attribute: Acronym
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: Application Acronym
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - acronym
+  value_heuristics:
+  - pattern: (?i)^[A-Za-z]{3,5}$
+    explanation: 3, 4 or 5 characters in length
+  - pattern: null
+    explanation: null
+  min_viable_ratio: null
+  min_match_ratio: null
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Agency Vendor
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - who_administers
+  value_heuristics:
+  - pattern: (?i)^(yes|no|y|n)$
+    explanation: yes or no field
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Agency Vendor Relationship
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - agency_responsible
+  value_heuristics:
+  - pattern: (?i)^(yes|no|y|n)$
+    explanation: yes or no field
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Description
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - description
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application ID
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: For this Program Attribute,a high percentage of unique values is a positive
+    indicator as this uniquely identifies the Application.
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: This field displays the name of the application, which must be a unique
+    value within the context of the Applications application.
+  examples: ServiceNow, infoblox, sharepoint
+  how used: null
+  field_name_patterns:
+    like:
+    - id
+    - application ID
+    - appid
+    - app id
+  value_heuristics:
+  - pattern: .*\d{3,}.*
+    explanation: Must contain at least 3 digits
+  - pattern: ^[A-Za-z0-9_-]+$
+    explanation: Alphanumeric with optional dashes/underscores
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Importance
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - importance
+  value_heuristics:
+  - pattern: (?i)^(high|low|medium|very high)$
+    explanation: high, low, medium, very high
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Name
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: For this Program Attribute,a high percentage of unique values is a positive
+    indicator as this uniquely identifies the Application.
+  dispersion_exp: For this Program Attribute, it is expected that entries are going
+    to be similar to each other and a low difference between the average entry and
+    the =/- standard deviation is a good indicator.
+  description: This field displays the name of the application, which must be a unique
+    value within the context of the Applications application.
+  examples: ServiceNow, infoblox, sharepoint
+  how used: null
+  field_name_patterns:
+    like:
+    - application
+    - appname
+    - title
+    - name
+    not_like:
+    - bureau
+    - department
+    - server
+    - dns
+    - host
+    - hostname
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: Short application-like names, no digits or filler words
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Manager
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This field allows users to select individuals, from the Contacts application,
+    responsible for supporting the application described within this record.
+  how used: null
+  field_name_patterns:
+    like:
+    - manager
+    not_like:
+    - owner
+    - technical
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Owner
+  type: application
+  recommended source: application inventory
+  blocks: Discover
+  category: program
+  priority_level: 1
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This field is used to identify the owner of the application. The owner
+    is the individual that is ultimately responsible for the application. The individual
+    selected will receive read and update access to this record.
+  examples: Employee name
+  how used: null
+  field_name_patterns:
+    like:
+    - business owner
+    - owner
+    - director
+    - manager
+    - contact
+    - application owner
+    not_like:
+    - technical
+    - tech
+    - lead
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Status
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - application_status
+  value_heuristics:
+  - pattern: (?i)^(active|inactive|awaiting decommissioning|development|decommissioned)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Support
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This field allows users to select individuals, from the Contacts application,
+    responsible for supporting the application described within this record.
+  how used: null
+  field_name_patterns:
+    like:
+    - tech
+    - technical
+    - lead
+    not_like:
+    - owner
+    - director
+    - manager
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Application Type
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: This field displays the application type. Users can select from the
+    following options:<BR><BR>--Enterprise Software<BR>--Embedded Software<BR>--Information
+    Worker Software<BR>--Content Access Software<BR>--Enterprise Infrastructure Software<BR>--Product
+    Engineering Software
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - application type
+    - type
+  value_heuristics:
+  - pattern: null
+    explanation: null
+  - pattern: (?i)\b(?:Enterprise\s+Software|Embedded\s+Software|Information\s+Worker\s+Software|Content\s+Access\s+Software|Enterprise\s+Infrastructure\s+Software|Product\s+Engineering\s+Software)\b
+    explanation: null
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Authentication Type
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: architecture repo
+  CCoE Program Impact: high
+  required: true
+  priority: false
+  description: This field displays the category of authentication (log in method)
+    used by the application. Users can select from the following options:<BR><BR>--Single
+    Sign-on<BR>--Manual<BR>--None
+  examples: AD, ldap, mfa, 2fa, local
+  how used: null
+  field_name_patterns:
+    like:
+    - authentication
+    - auth
+  value_heuristics:
+  - pattern: (?i)^(sfa|mfa|sso)$
+    explanation: tbd
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Backup Host
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - backup host
+  value_heuristics:
+  - pattern: (?i)^(cohesity|vendor|cloud|aws|azure|gcc|google)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Data Impact
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - RISK_URGENCY_ID
+  value_heuristics:
+  - pattern: (?i)^(low|medium|high|very high)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Data Sensitivity
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - data sensitivity
+  value_heuristics:
+  - pattern: (?i)^(federal|phi|pii|none)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Deployment Model
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - deployment model
+  value_heuristics:
+  - pattern: (?i)^(hybrid|on prem|cloud|na)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device Description
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - device description
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device ID
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - recordid
+  value_heuristics:
+  - pattern: ^[0-9]{4,7}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device Name
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: This field provides a link to records in the Devices application that
+    are related to this application.
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - server
+    - servername
+    - hostname
+    - host
+  value_heuristics:
+  - pattern: (?s).*
+    explanation: null
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device Manager
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This field allows users to select individuals, from the Contacts application,
+    responsible for supporting the application described within this record.
+  how used: null
+  field_name_patterns:
+    like:
+    - manager
+    not_like:
+    - tech
+    - director
+    - technical
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device Owner
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  description: This field allows users to select individuals, from the Contacts application,
+    responsible for supporting the application described within this record.
+  how used: null
+  field_name_patterns:
+    like:
+    - owner
+    not_like:
+    - technical
+  value_heuristics:
+  - pattern: '^(?:[A-Z][a-z]+(?: [A-Z](?:\.|[a-z]+)?)? [A-Z][a-z]+|[A-Z][a-z]+, [A-Z][a-z]+(?:
+      [A-Z](?:\.|[a-z]+)?)?)$'
+    explanation: tbd
+  lookup_table:
+    file: C:\BTDM_7.1\var\data\all_names.csv
+    field: name
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device State
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - state
+  value_heuristics:
+  - pattern: (?i)^(active|inactive|awaiting decommissioning|development|decommissioned)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Device Type
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - device type
+  value_heuristics:
+  - pattern: (?i)^(laptop|server|workstation|router|switch|firewall|appliance)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Devices
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - devices
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Environment
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - environment
+    - env
+  value_heuristics:
+  - pattern: (?i)^(staging|prod|test|dev)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Federal Auditing Agency
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - federal auditing agency
+  value_heuristics:
+  - pattern: (?i)^(irs|cms|fbi|ssa)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Host Location
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - hosting_location
+  value_heuristics:
+  - pattern: (?i)^(on-prem|gcc|azure|google|hybrid)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Hosting Cloud
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - hosting cloud
+  value_heuristics:
+  - pattern: (?i)^(on-prem|gcc|azure|google|hybrid)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Internet Protocol
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - internet protocol
+  value_heuristics:
+  - pattern: (?i)^(weblogic|apache|iis)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Internet Protocol Version
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - internet protocol version
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: License Model
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: This field displays the application's license model. Users can select
+    from the following options:<BR><BR>--Per Seat<BR>--Subscription<BR>--Enterprise
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - subscription
+  value_heuristics:
+  - pattern: (?i)^(perpetual|subscription|usage based|seat based|enterprise)$
+    explanation: null
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Operating System
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - typeos
+  value_heuristics:
+  - pattern: (?i)^(Windows 2016| Windows 2019| Windows 2022|Windows 2025|RHEL|Oracle
+      Linux|Windows 10|Windows 11|MACOS|IOS-XE|NX-OS)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Operating System Version
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - operating system version
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Manufacturer
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: This field displays the application's manufacturer.
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - manufacturer
+  value_heuristics:
+  - pattern: null
+    explanation: null
+  - pattern: null
+    explanation: null
+  min_viable_ratio: null
+  min_match_ratio: null
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Platform
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - operatingsystem
+  value_heuristics:
+  - pattern: ^(Windows 2016| Windows 2019| Windows 2022|Windows 2025|RHEL|Oracle Linux|Windows
+      10|Windows 11|MACOS|IOS-XE|NX-OS)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Serial Number
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - serial number
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Service Tag Number
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - service tag number
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Software Release Number
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - software release number
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Status
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - status
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Storage Devices
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - storage devices
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Telephony Application
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - telephony application
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Telephony Technology
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - telephony technology
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: TLP Rating
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - tlp_rating
+  value_heuristics:
+  - pattern: ^(white|amber|amber-sensitive|red)$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Vendor
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - vendor
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Version
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: This field displays the version of the application.
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - version
+  value_heuristics:
+  - pattern: null
+    explanation: null
+  - pattern: null
+    explanation: null
+  min_viable_ratio: null
+  min_match_ratio: null
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: MFA Authentication
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: Values Yes or No
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - mfa
+    - multi-factor authentication
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: null
+  - pattern: null
+    explanation: null
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Mobile Access
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: null
+  CCoE Program Impact: null
+  required: true
+  priority: null
+  description: Values Yes or No
+  how used: null
+  examples: null
+  field_name_patterns:
+    like:
+    - mobile
+  value_heuristics:
+  - pattern: ^(?:y|n|yes|no)$
+    explanation: null
+  - pattern: null
+    explanation: null
+  min_viable_ratio: 0.05
+  min_match_ratio: 0.5
+  match_requirements:
+  - name
+  - value
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: VM Host
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - vm host
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml
+- attribute: Number of Users
+  type: application
+  blocks: Discover
+  category: program
+  priority_level: 1
+  recommended source: application inventory
+  CCoE Program Impact: high
+  required: true
+  priority: true
+  used_pct_exp: The percentage of non-null values in this field in the data source.
+  match_ratio_exp: The percentage of non-null values which match the patterns defined
+    for this Program Attibute.
+  unique_exp: null
+  dispersion_exp: null
+  description: null
+  examples: null
+  how used: null
+  field_name_patterns:
+    like:
+    - total_users
+  value_heuristics:
+  - pattern: ^[A-Za-z0-9][A-Za-z0-9 ()/_\.-]{2,100}$
+    explanation: tbd
+  min_viable_ratio: 0.1
+  min_match_ratio: 0.5
+  min_unique_ratio: 0.3
+  min_length: 3
+  max_length: 100
+  match_requirements:
+  - name
+  _vtx_origin: DEFAULT:usr/config/default/archer_data_source_analysis.yaml

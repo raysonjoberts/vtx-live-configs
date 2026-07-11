@@ -1,0 +1,18 @@
+jobs:
+- id: Ingest CCoE_CI.xlsx to var/customerdata
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source-glob "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE -
+    Data Dog\Correlated_Data\CCoE_Inventory\ccoe_ci.xlsx" --dest "var/customerdata"
+    --mode copy --append-date no --skip-missing yes --skip-unchanged yes --is-intake-data
+    yes
+
+    '
+  schedule:
+    cron: '* * * * *'
+    _vtx_origin: CUSTOM:usr/config/custom/scheduler.yaml
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: CUSTOM:usr/config/custom/scheduler.yaml

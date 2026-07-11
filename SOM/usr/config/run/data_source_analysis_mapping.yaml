@@ -1,0 +1,152 @@
+reports:
+- name: consolidated_server_and_application_mapping
+  input_csv1: /var/tables/views/consolidated_application_view.csv
+  input_csv1_filters: ACTIVE = Y
+  input_csv2: /var/tables/views/consolidated_server_view.csv
+  dictionary_yaml: VTX_ROOT/usr/config/run/data_source_analysis.yaml
+  output_csv: /var/analysis/consolidated_server_and_application_mapping.csv
+  program_attribute_mapping:
+    Hostname: SERVERNAME
+    Application Name: TITLE_NAME
+    Application ID: ID
+    Business Owner: Business Contact - Primary
+    Technical Owner: Technical Lead
+    CPU: VMPROCESSORS
+    Memory: VMMEMORY
+    Cost Center: COSTCENTER
+    Virtual / Physical: VIRTUALSERVERYN
+    Environment: ENVIRONMENT
+    Databases Used: DatabaseName
+    Hosting Location: null
+    Change Frequency: null
+    Configuration Files / Paths: null
+    Data Sensitivity / Classification: null
+    Firewall Rules: null
+    Licenses: null
+    Operating System: TYPEOS
+    Application Components: null
+    Business Function: null
+    Dependencies: null
+    OS/Platform Dependencies: null
+    RPO: null
+    RTO: null
+    Uptime Requirements: null
+    Agent Tools (Encryption, AV, etc): null
+    Infrastructure Dependencies: null
+    IP Address: IPADDRESS
+    Patch Level: null
+    Architecture Tier/Model: null
+    Business Continuity Plan: null
+    DR Plan: null
+    Interface Mechanisms: null
+    Language / Framework: null
+    Monitoring Tools: null
+    Authentication Method: null
+    Hypervisor: null
+    IOPS Throughput: null
+    Network Bandwidth: null
+    Performance Over Time (CPU/Memory/Storage): null
+    Server Business Unit: null
+    Application Deployment Certification: null
+    TLP Data Clasfification: TLP_ID
+    Application Updater: Application Inventory Updater
+  _autogen:
+    orchestrator:
+      job_type: backbone
+      role: server
+      id: Program Attribute Mapping - {name}
+      script: usr/scripts/default/data_source_analysis_mapping.py
+      args: []
+      rule: mtime_input_newer_than_last_success_marker
+      marker_match: any
+      inputs:
+      - '{name.input_csv1}'
+      outputs:
+      - '{output_csv}'
+      watch_recursive: true
+      settle_seconds: 2
+      timeout_seconds: 120
+      retries: 1
+      backoff_seconds: 10
+      jitter_seconds: 0
+  _vtx_origin: CUSTOM:usr/config/custom/data_source_analysis_mapping.yaml
+- name: Archer to AIS Field Mapping
+  input_csv1: /var/tables/views/consolidated_application_view.csv
+  input_csv1_filters: ACTIVE = Y
+  input_csv2: /var/tables/views/consolidated_server_view.csv
+  dictionary_yaml: VTX_ROOT/usr/config/run/archer_data_source_analysis.yaml
+  output_csv: /var/analysis/archer_consolidated_server_and_application_mapping.csv
+  program_attribute_mapping:
+    Application Type: APPLICATION_TYPE_ID
+    Authentication Type: AUTHENTICATION_METHOD
+    Devices: null
+    License Model: null
+    Manufacturer: null
+    Platform: OPERATINGSYSTEM
+    Version: OS_VERSION
+    MFA Authentication: null
+    Vendor: null
+    Agency Vendor: WHO_ADMINISTERS
+    Data Impact: RISK_URGENCY_ID
+    Application Importance: IMPORTANCE
+    Number of Users: TOTAL_USERS
+    Host Location: HOSTING_LOCATION
+    VM HOST: null
+    Backup Host: null
+    Telephony Application: null
+    Telephony Technology: null
+    Federal Auditing Agencies: null
+    Deployment Model: null
+    Mobile Access: null
+    Data Sensitivity: null
+    Application Name: TITLE_NAME
+    Application ID: ID
+    Application Owner: Business Contact - Primary
+    Application Support: Technical Lead
+    Applicatoin Description: Description
+    Acronym: ACRONYM
+    Agency Vendor Relationship: AGENCY_RESPONSIBLE
+    TLP Rating: TLP_RATING
+    Application Status: APPLICATION_STATUS_ID
+    Applications: null
+    Device Description: null
+    Device ID: RECORDID
+    Device Manager: IT Manager
+    Device Owner: null
+    Device State: null
+    Environment: ENVIRONMENT
+    Operating System: TYPEOS
+    Serial Number: null
+    Service Tag Number: null
+    Status: null
+    Storage Devices: null
+    Device Type: null
+    Internet Protocol: null
+    Internet Protocol Version: null
+    Hosting Cloud: null
+    Device Name: SERVERNAME
+    Make: Make
+    Model: Model
+    Operating System Version: OS_VERSION
+    Software Release Number: OS_RELEASELEVEL
+  _autogen:
+    orchestrator:
+      job_type: backbone
+      role: server
+      id: Program Attribute Mapping - {name}
+      script: usr/scripts/default/data_source_analysis_mapping.py
+      args:
+      - --mode=auto
+      rule: mtime_input_newer_than_last_success_marker
+      marker_match: any
+      inputs:
+      - '{name.input_csv1}'
+      outputs:
+      - '{output_csv}'
+      watch_recursive: true
+      settle_seconds: 2
+      timeout_seconds: 120
+      retries: 1
+      backoff_seconds: 10
+      jitter_seconds: 0
+  _vtx_origin: CUSTOM:usr/config/custom/data_source_analysis_mapping.yaml
