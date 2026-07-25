@@ -1,0 +1,70 @@
+_vtx:
+  schema: v1
+  kind: processor
+  id: master_table_builder_vtx
+  title: Master Table Builder VTX
+  description: Staged master builder for application/server inventories.
+  owner: default
+  version: 1.0.0
+  tags:
+  - inventory
+  - masterdata
+  - decisions
+  consumers:
+  - usr/scripts/default/master_table_builder_vtx.py
+  _vtx_origin: CUSTOM:usr/config/custom/master_table_builder_vtx.yaml
+config:
+  payload:
+    schema_contracts:
+      raw_application_table:
+        path: var/masterdata/raw_application_table.parquet
+        anchor_field: ID
+      raw_server_table:
+        path: var/masterdata/raw_server_table.parquet
+        anchor_field: Hostname
+      application_approximation:
+        path: var/masterdata/application_approximation.parquet
+        anchor_field: ID
+      master_applications:
+        path: var/masterdata/master_applications.parquet
+        anchor_field: ID
+      master_servers:
+        path: var/masterdata/master_servers.parquet
+        anchor_field: Hostname
+    jobs:
+    - id: build_master_applications
+      enabled: true
+      base:
+        path: var/masterdata/s1_raw_application_table.parquet
+        anchor_field: ID
+      joins:
+      - alias: server_inventory
+        path: var/masterdata/s1_raw_server_table.parquet
+        left_key: RECORDID
+        right_key: RECORDID
+        include_fields:
+        - IP Address
+        - Environment
+        - Hostname
+        - OS
+        - OS Version
+      outputs:
+        parquet: var/masterdata/s2_master_applications.parquet
+        csv: var/masterdata/s2_master_applications.csv
+    - id: build_master_servers
+      enabled: true
+      base:
+        path: var/masterdata/s1_raw_server_table.parquet
+        anchor_field: Hostname
+      joins:
+      - alias: appinventory
+        path: var/masterdata/s1_raw_application_table.parquet
+        left_key: RECORDID
+        right_key: RECORDID
+        include_fields:
+        - ID
+        - TITLE_NAME
+      outputs:
+        parquet: var/masterdata/s2_master_servers.parquet
+        csv: var/masterdata/s2_master_servers.csv
+  _vtx_origin: CUSTOM:usr/config/custom/s2_master_table_builder_vtx.yaml

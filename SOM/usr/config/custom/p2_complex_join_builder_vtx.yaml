@@ -1,0 +1,150 @@
+_vtx:
+  schema: v1
+  kind: processor
+  id: complex_join_builder_vtx
+  title: Complex Join Builder VTX
+  description: Staged table builder with composite join-key support.
+  owner: default
+  version: 1.0.0
+  tags:
+  - inventory
+  - joins
+  - masterdata
+  consumers:
+  - usr/scripts/architecture_repo_pipeline/p2_complex_join_builder_vtx.py
+config:
+  payload:
+    jobs:
+    - id: build_consolidated_apps_with_dbs
+      enabled: true
+      base:
+        path: var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv
+        anchor_field: ID
+      joins:
+      - alias: databases
+        path: var/tables/databases.csv
+        match_keys:
+        - left_key: ID
+          right_key: ID
+        - left_key: Environment
+          right_key: ENVIRONMENT
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Name
+          output_field: Database Name
+        - source_field: Instance
+          output_field: Database Instance
+      - alias: tags
+        path: var/metadata/s4_tags_application.csv
+        match_keys:
+        - left_key: ID
+          right_key: anchor
+        - left_key: Environment
+          right_key: Environment
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+      - alias: external_prod_arr_routes
+        path: var/tables/external_prod_arr_requests.csv
+        match_keys:
+        - left_key: ID
+          right_key: APP_ID
+        - left_key: Environment
+          right_key: Environment
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Pattern
+          output_field: External Prod ARR Routing
+        - source_field: ARR Hostname
+          output_field: External Prod ARR Hostname
+
+      - alias: external_test_arr_routes
+        path: var/tables/external_test_arr_requests.csv
+        match_keys:
+        - left_key: ID
+          right_key: APP_ID
+        - left_key: Environment
+          right_key: Environment
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Pattern
+          output_field: External Test ARR Routing
+        - source_field: ARR Hostname
+          output_field: External Test ARR Hostname
+
+      - alias: internal_prod_arr_routes
+        path: var/tables/internal_prod_arr_requests.csv
+        match_keys:
+        - left_key: ID
+          right_key: APP_ID
+        - left_key: Environment
+          right_key: Environment
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Pattern
+          output_field: Internal Prod ARR Routing
+        - source_field: ARR Hostname
+          output_field: Internal Prod ARR Hostname
+
+      - alias: internal_test_arr_routes
+        path: var/tables/internal_test_arr_requests.csv
+        match_keys:
+        - left_key: ID
+          right_key: APP_ID
+        - left_key: Environment
+          right_key: Environment
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Pattern
+          output_field: Internal Test ARR Routing
+        - source_field: ARR Hostname
+          output_field: Internal Test ARR Hostname
+      outputs:
+        csv: var/pipelines/p2_architecture_repo_pipeline/consolidated_apps_with_dbs.csv
+  _vtx_origin: DEFAULT:usr/config/default/complex_join_builder_vtx.yaml

@@ -16,44 +16,19 @@ _vtx:
 config:
   payload:
     jobs:
-    - id: consolidated_applications_base_update
-      enabled: true
-      mode: base
-      inputs:
-      - var/tables/views/migrations_consolidated_application_view.csv
-      - var/tables/views/consolidated_application_view.csv
-      - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
-      outputs:
-      - var/interactive/application_views.xlsx
-      tabs:
-      - migrations_cons_app_view
-      - cons_app_view
-      - cons_app_expanded
-      sanitize_tabs: true
-      anchor_column: first
-      file_format: xlsx
-    - id: consolidated_server_interactive_update
-      enabled: true
-      mode: interactive
-      inputs:
-      - var/interactive/server_view.xlsx
-      outputs:
-      - var/interactive/data
-      tabs:
-      - server_view
-      sanitize_tabs: true
-      file_format: xlsx
     - id: psdo_consolidated_apps_base_062302026
       enabled: true
       mode: base
       inputs:
-      - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+      - var/tables/views/s5_migrations_consolidated_application_table_expanded_by_environment.csv
       outputs:
       - C:/Users/Jayson.Roberts/State of Maine/DAFS-MaineIT CCOE - Data Dog/Correlated_Data\CCoE_Inventory/migrations_application_view.xlsx
       tabs:
       - migrations_app_view
       sanitize_tabs: true
-      anchor_column: first
+      anchor_columns:
+      - ID
+      - Environment
       file_format: xlsx
     - id: psdo_consolidated_applications_interactive_06302026
       enabled: true
@@ -64,19 +39,6 @@ config:
       - var/interactive/data
       tabs:
       - migrations_app_view
-      sanitize_tabs: true
-      file_format: xlsx
-    - id: consolidated_applications_interactive_update_v2
-      enabled: true
-      mode: interactive
-      inputs:
-      - var/interactive/application_views_v2.xlsx
-      outputs:
-      - var/interactive/data/application_views_v2
-      tabs:
-      - migrations_cons_app_view
-      - cons_app_view
-      - cons_app_expanded
       sanitize_tabs: true
       file_format: xlsx
   _vtx_origin: CUSTOM:usr/config/custom/file_distribution_engine.yaml

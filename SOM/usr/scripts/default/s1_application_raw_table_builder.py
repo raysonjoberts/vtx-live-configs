@@ -32,7 +32,7 @@ def resolve_vtx_root() -> Path:
 
 
 VTX_ROOT = resolve_vtx_root()
-DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "table_aggregator_vtx.yaml"
+DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "s1_table_aggregator_vtx.yaml"
 DEFAULT_MANIFEST_PATH = VTX_ROOT / "usr" / "config" / "manifests" / "raw_application_table_manifest.yaml"
 _WINDOWS_ABS_RE = re.compile(r"^[A-Za-z]:[\\/]")
 _ARROW_RE = re.compile(r"\s*-\s*>\s*")

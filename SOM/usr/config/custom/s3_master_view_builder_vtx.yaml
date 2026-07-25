@@ -1,0 +1,41 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: master_view_builder_vtx
+  title: Master View Builder VTX v2
+  description: Build CSV views from master data tables with optional deterministic
+    collapse (v2).
+  owner: default
+  version: 1.0.0
+  tags:
+  - views
+  - masterdata
+  consumers:
+  - usr/scripts/default/s3_master_view_builder_vtx.py
+config:
+  payload:
+    jobs:
+    - id: consolidated_application_table_expanded_by_env
+      enabled: true
+      source_table: var/masterdata/s2_master_applications.parquet
+      collapse:
+        enabled: true
+        mode: expand
+        expand_by: Environment
+        anchor_fields:
+        - ID
+        order_fields:
+        - __row_order__
+        - __expand_index__
+        - __row_key__
+        - RECORDID
+        linked_field_groups:
+        - - RECORDID
+          - Hostname
+          - IP Address
+          - OS
+          - Environment
+        delimiter: ;
+      outputs:
+        csv: var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv
+

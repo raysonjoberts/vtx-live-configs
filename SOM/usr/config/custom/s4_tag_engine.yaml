@@ -1,0 +1,1485 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: tag_engine
+  title: Tag Engine
+  description: Rule-driven tagging for application entities
+  owner: default
+  version: 1.0.0
+  tags:
+  - core
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/tag_engine.py
+  _vtx_origin: DEFAULT:usr/config/default/tag_engine.yaml
+config:
+  payload:
+    jobs:
+    - id: tag_engine
+      enabled: true
+      inputs:
+      #- var/masterdata/master_applications.parquet
+      - var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv
+      outputs:
+      - var/metadata/s4_tags_application.csv
+      anchor_field: ID
+      entity_type: application
+      key_delimiter: ;
+      tags:
+      - id: application_active
+        tag_column: ACTIVE
+        source: rule
+        key_fields: null
+        #condition_logic: any
+        first_match_only: true
+        rules:
+        - id: active_applications
+          tag_value: Y
+          condition_logic: any
+          conditions:
+          - field: APPLICATION_STATUS_ID
+            operator: contains
+            value: Production
+          - field: APPLICATION_STATUS_ID
+            operator: contains
+            value: Development
+      - id: adoption_stage
+        tag_column: tag_adoption_stage
+        source: rule
+        key_fields: null
+        condition_logic: all
+        first_match_only: true
+        rules:
+        - id: adoption_stage_dafs
+          tag_value: early
+          conditions:
+          - field: DEPARTMENT_ACRONYM
+            operator: ==
+            value: DAFS
+        - id: adoption_stage_dhhs
+          tag_value: early
+          conditions:
+
+          - field: DEPARTMENT_ACRONYM
+            operator: ==
+            value: DHHS
+        - id: adoption_stage_dhhs
+          tag_value: early
+          conditions:
+
+          - field: DEPARTMENT_ACRONYM
+            operator: ==
+            value: DOT
+      - id: complexity_by_environment
+        tag_column: tag_complexity
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        first_match_only: true
+        rules:
+        - id: complexity_low
+          tag_value: low
+          conditions:
+
+          - field: Hostname
+            operator: in_range
+            value:
+            - 1
+            - 2
+            agg: count
+        - id: complexity_medium
+          tag_value: medium
+          conditions:
+
+          - field: Hostname
+            operator: in_range
+            value:
+            - 3
+            - 4
+            agg: count
+        - id: complexity_high
+          tag_value: high
+          conditions:
+
+          - field: Hostname
+            operator: '>='
+            value: 5
+            agg: count
+      - id: scope_azure_candidate
+        tag_column: tag_scope
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: ACTIVE_windows_no_linux
+          tag_value: azure_candidate
+          conditions:
+
+          - field: OS
+            operator: notcontains
+            value: Linux
+          - field: OS
+            operator: contains
+            value: Windows
+      - id: scope_oci_candidate
+        tag_column: tag_scope
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: ACTIVE_linux_no_windows
+          tag_value: oci_candidate
+          conditions:
+
+          - field: OS
+            operator: notcontains
+            value: Windows
+          - field: OS
+            operator: contains
+            value: Linux
+      - id: scope_oci_multi_os
+        tag_column: tag_scope
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: Active_multi-os
+          tag_value: oci_candidate_multi-os
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS
+            operator: contains
+            value: Linux
+      - id: windows_os_2008
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment        
+        condition_logic: all
+        rules:
+        - id: os_windows_2008
+          tag_value: os_windows_2008
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2008'
+      - id: windows_os_2012
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment
+        condition_logic: all
+        rules:
+        - id: os_windows_2012
+          tag_value: os_windows_2012
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2012'
+      - id: windows_os_2016
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment
+        condition_logic: all
+        rules:
+        - id: os_windows_2016
+          tag_value: os_windows_2016
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2016'
+      - id: windows_os_2019
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment
+        condition_logic: all
+        rules:
+        - id: os_windows_2019
+          tag_value: os_windows_2019
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2019'
+      - id: windows_os_2022
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment
+        condition_logic: all
+        rules:
+        - id: os_windows_2022
+          tag_value: os_windows_2022
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2022'
+      - id: windows_os_2025
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        match_columns:
+        - Environment
+        condition_logic: all
+        rules:
+        - id: os_windows_2025
+          tag_value: os_windows_2025
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2025'
+      - id: windows_os_unknown
+        tag_column: tag_os_version
+        source: rule
+        key_fields: null
+        condition_logic: any
+        rules:
+        - id: os_windows_unknown
+          tag_value: os_windows_unknown
+          conditions:
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: Group Supported
+      - id: app_instance_location_cmcc
+        tag_column: tag_app_instance_location
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        rules:
+        - id: active_inferred_location_cmcc
+          tag_value: CMCC
+          conditions:
+
+          - field: Inferred Server Location
+            operator: notcontains
+            value: SSDC
+          - field: Inferred Server Location
+            operator: contains
+            value: CMCC
+      - id: app_instance_location_ssdc
+        tag_column: tag_app_instance_location
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        rules:
+        - id: active_inferred_location_ssdc
+          tag_value: SSDC
+          conditions:
+
+          - field: Inferred Server Location
+            operator: notcontains
+            value: CMCC
+          - field: Inferred Server Location
+            operator: contains
+            value: SSDC
+      - id: app_instance_location_on_prem_multi-site
+        tag_column: tag_app_instance_location
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        rules:
+        - id: active_inferred_location_ssdc
+          tag_value: on_prem-multisite
+          conditions:
+
+          - field: Inferred Server Location
+            operator: contains
+            value: CMCC
+          - field: Inferred Server Location
+            operator: contains
+            value: SSDC
+      - id: app_ecosystem_location_cmcc
+        tag_column: tag_app_ecosystem_location
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: ecosystem_cmcc
+          tag_value: CMCC
+          conditions:
+
+          - field: Inferred Server Location
+            operator: notcontains
+            value: SSDC
+          - field: Inferred Server Location
+            operator: contains
+            value: CMCC
+      - id: app_ecosystem_location_ssdc
+        tag_column: tag_app_ecosystem_location
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: ecosystem_ssdc
+          tag_value: SSDC
+          conditions:
+
+          - field: Inferred Server Location
+            operator: notcontains
+            value: CMCC
+          - field: Inferred Server Location
+            operator: contains
+            value: SSDC
+      - id: app_ecosystem_location_on_prem_multi-site
+        tag_column: tag_app_ecosystem_location
+        source: rule
+        key_fields: null
+        condition_logic: all
+        rules:
+        - id: ecosystem_multisite
+          tag_value: on_prem-multisite
+          conditions:
+
+          - field: Inferred Server Location
+            operator: contains
+            value: CMCC
+          - field: Inferred Server Location
+            operator: contains
+            value: SSDC
+
+      - id: contains_sql
+        tag_column: tag_sql
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        first_match_only: true
+        rules:
+        - id: EXP
+          tag_value: EXP
+          conditions:
+          - field: TYPE
+            operator: ==
+            value: '2'
+          - field: USAGE
+            operator: ==
+            value: EXP
+        - id: REG
+          tag_value: REG
+          conditions:
+          - field: TYPE
+            operator: ==
+            value: '2'
+          - field: USAGE
+            operator: ==
+            value: REG
+
+      - id: migration_planning_exclusions
+        tag_column: tag_migration_planning_exclusions
+        source: rule
+        #key_fields:
+        match_columns:
+          - Environment
+        condition_logic: all
+        first_match_only: false
+        rules:
+        - id: Enterprise Backup
+          tag_value: Enterprise_Backup
+          conditions:
+
+          - field: DEPARTMENT_ACRONYM
+            operator: "!="
+            value: DAFS
+        - id: Minimal_OS_2012
+          tag_value: Minimal_OS
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2012'
+        - id: Minimal_OS_2016
+          tag_value: Minimal_OS
+          conditions:
+
+          - field: OS
+            operator: contains
+            value: Windows
+          - field: OS Version
+            operator: contains
+            value: '2016'
+        - id: has_sql
+          tag_value: app_has_sql
+          conditions:
+
+          - field: TYPE
+            operator: contains
+            value: '2'
+        - id: is_dmz
+          tag_value: app_has_dmz_server
+          conditions:
+
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.'
+
+#=========== Connected to External Prod ARR Server======================
+        - id: ext_prod_arr_10.10.198.82
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.10.198.82'
+
+        - id: ext_prod_arr_10.110.148.7
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.148.7'
+
+        - id: ext_prod_arr_10.110.72.108
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.108'
+
+        - id: ext_prod_arr_10.110.72.111
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.111'
+
+        - id: ext_prod_arr_10.110.72.149
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.149'
+
+        - id: ext_prod_arr_10.110.72.159
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.159'
+
+        - id: ext_prod_arr_10.110.72.176
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.176'
+
+        - id: ext_prod_arr_10.110.72.4
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.4'
+
+        - id: ext_prod_arr_10.10.198.82
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.10.198.82'
+
+        - id: ext_prod_arr_10.110.78.153
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.153'
+
+        - id: ext_prod_arr_10.110.78.223
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.223'
+            
+        - id: ext_prod_arr_10.110.78.60
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.60'
+
+        - id: ext_prod_arr_10.210.148.236
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.236'
+
+        - id: ext_prod_arr_10.210.148.237
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.237'
+
+        - id: ext_prod_arr_10.210.148.46
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.46'
+
+        - id: ext_prod_arr_10.210.148.66
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.66'
+
+        - id: ext_prod_arr_10.210.148.9
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.9'
+
+        - id: ext_prod_arr_10.210.72.131
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.131'
+
+        - id: ext_prod_arr_10.210.72.212
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.212'
+
+        - id: ext_prod_arr_10.210.72.62
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.62'
+
+        - id: ext_prod_arr_10.210.72.73
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.73'
+
+        - id: ext_prod_arr_10.210.72.79
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.79'
+
+        - id: ext_prod_arr_10.210.73.179
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.179'
+
+        - id: ext_prod_arr_10.210.78.164
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.164'
+
+        - id: ext_prod_arr_198.182.162.111
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.111'
+
+        - id: ext_prod_arr_198.182.162.214
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.214'
+
+        - id: ext_prod_arr_w-b1va-dpslims
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-b1va-dpslims'
+
+        - id: ext_prod_arr_W-B1VWDAVEPRD1
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWDAVEPRD1'
+
+        - id: ext_prod_arr_W-B1VWDAVEPRD2
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWDAVEPRD2'
+
+
+
+#============= Connected to External Test ARR ====================
+
+
+        - id: ext_test_arr_10.10.90.152
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.10.90.152'
+
+        - id: ext_test_arr_10.110.72.109
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.109'
+
+        - id: ext_test_arr_10.110.72.163
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.163'
+
+        - id: ext_test_arr_10.110.72.189
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.189'
+
+        - id: ext_test_arr_10.110.72.198
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.198'
+
+        - id: ext_test_arr_10.110.72.221
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.221'
+
+        - id: ext_test_arr_10.110.72.234
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.234'
+
+        - id: ext_test_arr_10.110.72.25
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.25'
+
+        - id: ext_test_arr_10.110.72.3
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.3'
+
+        - id: ext_test_arr_10.110.78.11
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.11'
+
+        - id: ext_test_arr_10.110.78.150
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.150'
+
+        - id: ext_test_arr_10.110.78.4
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.4'
+
+        - id: ext_test_arr_10.110.78.40
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.40'
+
+        - id: ext_test_arr_10.210.72.122
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.122'
+
+        - id: ext_test_arr_10.210.72.126
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.126'
+
+        - id: ext_test_arr_10.210.72.194
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.194'
+
+        - id: ext_test_arr_10.210.72.225
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.225'
+
+        - id: ext_test_arr_10.210.72.228
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.228'
+
+        - id: ext_test_arr_10.210.72.239
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.239'
+
+        - id: ext_test_arr_10.210.73.158
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.158'
+
+        - id: ext_test_arr_10.210.73.179
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.179'
+
+        - id: ext_test_arr_10.210.73.19
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.19'
+
+        - id: ext_test_arr_10.210.73.44
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.44'
+
+        - id: ext_test_arr_10.210.73.7
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.7'
+
+        - id: ext_test_arr_10.210.73.73
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.73'
+
+        - id: ext_test_arr_10.210.73.83
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.83'
+
+        - id: ext_test_arr_10.210.78.13
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.13'
+
+        - id: ext_test_arr_10.210.78.168
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.168'
+
+        - id: ext_test_arr_10.210.78.198
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.198'
+
+        - id: ext_test_arr_10.210.78.231
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.231'
+
+        - id: ext_test_arr_10.210.90.121
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.90.121'
+
+        - id: ext_test_arr_10.210.90.122
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.90.122'
+
+        - id: ext_test_arr_198.182.162.106
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.106'
+
+        - id: ext_test_arr_198.182.162.110
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.110'
+
+        - id: ext_test_arr_198.182.162.113
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.113'
+
+        - id: ext_test_arr_198.182.162.214
+          tag_value: connected_ext_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '198.182.162.214'
+
+        - id: ext_prod_arr_W-A3AS-CWTEST
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-A3AS-CWTEST'
+  
+          - id: ext_prod_arr_w-a3vw-dpslims
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-a3vw-dpslims'
+
+        - id: ext_prod_arr_w-b3va-dpslims
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-b3va-dpslims'
+
+        - id: ext_prod_arr_w-b3vw-arr22
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-b3vw-arr22'
+
+        - id: ext_prod_arr_b3vwdavetst1
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'b3vwdavetst1'
+
+        - id: ext_prod_arr_w-b3vwdavetst2
+          tag_value: connected_ext_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-b3vwdavetst2'
+
+
+#=============== Connected to Internal Prod ARR ===================================
+
+
+        - id: int_prod_arr_10.110.148.7
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.148.7'
+
+        - id: int_prod_arr_10.110.72.108
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.108'
+
+        - id: int_prod_arr_10.110.72.159
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.159'
+
+        - id: int_prod_arr_10.110.72.209
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.209'
+
+        - id: int_prod_arr_10.110.72.221
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.221'
+
+        - id: int_prod_arr_10.19.6.11
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.19.6.11'
+
+        - id: int_prod_arr_10.210.148.237
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.237'
+
+        - id: int_prod_arr_10.210.148.46
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.46'
+
+        - id: int_prod_arr_10.210.148.9
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.9'
+
+        - id: int_prod_arr_10.210.73.105
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.105'
+
+        - id: int_prod_arr_10.210.73.170
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.170'
+
+        - id: int_prod_arr_10.210.73.90
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.90'
+
+        - id: int_prod_arr_10.210.78.141
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.141'
+
+        - id: int_prod_arr_10.210.78.142
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.142'
+
+        - id: int_prod_arr_10.210.78.179
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.179'
+
+        - id: int_prod_arr_10.210.78.65
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.65'
+
+        - id: int_prod_arr_10.210.78.94
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.94'
+
+        - id: int_prod_arr_OIT-ISAEASWMRT1
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'OIT-ISAEASWMRT1'
+
+        - id: int_prod_arr_OIT-TEAQASWMRT2
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'OIT-TEAQASWMRT2'
+
+        - id: int_prod_arr_w-a1vacognop
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-a1vacognop'
+
+        - id: int_prod_arr_W-B1VWDAVEPRD1
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWDAVEPRD1'
+
+        - id: int_prod_arr_W-B1VWDAVEPRD2
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWDAVEPRD2'
+
+        - id: int_prod_arr_W-B1VWIWBP1
+          tag_value: connected_int_prod_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWIWBP1'
+
+
+#=============== Connected to Internal Test ARR ===================================
+
+
+        - id: int_test_arr_10.10.198.81
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.10.198.81'
+
+        - id: int_test_arr_10.110.36.148
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.36.148'
+
+        - id: int_test_arr_10.110.72.139
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.139'
+
+        - id: int_test_arr_10.110.72.209
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.209'
+
+        - id: int_test_arr_10.110.72.3
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.72.3'
+
+        - id: int_test_arr_10.110.78.150
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.150'
+
+        - id: int_test_arr_10.110.78.4
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.4'
+
+        - id: int_test_arr_10.110.78.40
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.110.78.40'
+
+        - id: int_test_arr_10.210.148.236
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.148.236'
+
+        - id: int_test_arr_10.210.72.109
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.109'
+
+        - id: int_test_arr_10.210.72.126
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.126'
+
+        - id: int_test_arr_10.210.72.147
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.147'
+
+        - id: int_test_arr_10.210.72.186
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.186'
+
+        - id: int_test_arr_10.210.72.225
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.72.225'
+
+        - id: int_test_arr_10.210.73.122
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.122'
+
+        - id: int_test_arr_10.210.73.130
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.130'
+
+        - id: int_test_arr_10.210.73.158
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.158'
+
+        - id: int_test_arr_10.210.73.170
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.170'
+
+        - id: int_test_arr_10.210.73.207
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.207'
+
+        - id: int_test_arr_10.210.73.39
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.39'
+
+        - id: int_test_arr_10.210.73.44
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.44'
+
+        - id: int_test_arr_10.210.73.7
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.7'
+
+        - id: int_test_arr_10.210.73.73
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.73'
+
+        - id: int_test_arr_10.210.73.83
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.83'
+
+        - id: int_test_arr_10.210.73.90
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.73.90'
+
+        - id: int_test_arr_10.210.78.36
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.78.36'
+
+        - id: int_test_arr_10.210.90.121
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.90.121'
+
+        - id: int_test_arr_10.210.90.122
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: '10.210.90.122'
+
+        - id: int_test_arr_Oit-isaeasedrt1
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'Oit-isaeasedrt1'
+
+        - id: int_test_arr_Oit-isaeasedrt2
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'Oit-isaeasedrt2'
+
+        - id: int_test_arr_oit-isaeashetlt
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'oit-isaeashetlt'
+
+        - id: int_test_arr_oms.lb.state.me.us
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'oms.lb.state.me.us'
+
+        - id: int_test_arr_W-A3AS-CWTEST
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-A3AS-CWTEST'
+
+        - id: int_test_arr_w-a3vwsdwisws2t
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'w-a3vwsdwisws2t'
+
+        - id: int_test_arr_W-B1VWDAVEMIRR
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B1VWDAVEMIRR'
+
+        - id: int_test_arr_W-B3VWDAVETST1
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B3VWDAVETST1'
+
+        - id: int_test_arr_W-B3VWDAVETST2
+          tag_value: connected_int_test_arr
+          conditions:
+          - field: Hostname
+            operator: contains
+            value: 'W-B3VWDAVETST2'
+
+#      derived_tags:
+#      - id: migration_tranches
+#        tag_column: derived_tag_migration_tranches
+#        condition_logic: all
+#        first_match_only: true
+#        rules:
+#        - id: pilot_candidates
+#          tag_value: pilot_candidates
+#          condition_logic: any
+#          conditions:
+#          - field: tag_scope
+#            operator: ==
+#            value: azure_candidate
+#          - field: tag_complexity
+#            operator: ==
+#            value: low
+#          - field: tag_adoption_stage
+#            operator: ==
+#            value: early
+#      - id: hosting_type
+#        tag_column: tag_hosting_type
+#        source: rule
+#        scope: anchor_key
+#        include_anchor_tags: true
+#        condition_logic: any
+#        first_match_only: true
+#        rules:
+#        - id: on_prem_cmcc
+#          tag_value: on_prem_single_site
+#          condition_logic: any
+#          conditions:
+#          - field: tag_column
+#            operator: ==
+#            value: app_ecosystem_location
+#          - field: tag_value
+#            operator: ==
+#            value: CMCC
+#          - field: tag_column
+#            operator: ==
+#            value: app_ecosystem_location
+#          - field: tag_value
+#            operator: ==
+#            value: SSDC
+ #     - id: os_unsupported_windows
+ #       tag_column: tag_os_version
+ #       source: rule
+ #       scope: anchor_key
+ #       include_anchor_tags: true
+ #       condition_logic: any
+ #       first_match_only: true
+ #       rules:
+ #       - id: os_unsupported_windows
+ #         tag_value: os_version
+ #         condition_logic: any
+ #         conditions:
+ #         - field: os_version
+ #           operator: ==
+ #           value: '2012'
+ #         - field: os_version
+ #           operator: ==
+ #           value: '2016'
+ #         - field: os_version
+ #           operator: ==
+ #           value: '2019'
+
+#      - id: migration_tranche
+#        tag_column: tag_migration_tranche
+#        source: rule
+#        scope: anchor_key
+#        include_anchor_tags: true
+#        condition_logic: any
+#        first_match_only: true
+#        rules:
+#        - id: pilot
+#          tag_value: pilot_candidate
+#          condition_logic: all
+#          conditions:
+#          - field: tag_adoption_stage
+#            operator: ==
+#            value: early
+#          - field: tag_complexity
+#            operator: ==
+#            value: low
+#          - field: tag_scope
+#            operator: ==
+#            value: azure_candidate
+
+
+
+#
+#

@@ -6,7 +6,121 @@ scheduler:
   backbone_stat_benchmark_samples: 12
   backbone_stat_benchmark_iters: 200
   _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
-cron_jobs: null
+cron_jobs:
+- id: Run Snapshot Statistics
+  enabled: true
+  role: server
+  script: usr/scripts/default/snapshot_statistics.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 30 22 * * *
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Run Data Source Type Profiler
+  enabled: true
+  role: server
+  script: usr/scripts/default/datasource_type_profiler.py
+  args: --mode=auto
+  cwd: ''
+  env: {}
+  schedule:
+    cron: 1 12 * * 0
+  timeout_seconds: 1800
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 5
+  run_on_start: false
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive /views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/views/*.csv" --dest "var/dailysnapshot" --mode
+    copy --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 41 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables/views to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/views/*.csv" --dest "var/dailysnapshot" --mode copy
+    --append-date yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/interactive to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 45 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Copy var/tables to dailysnapshot
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/tables/*.csv" --dest "var/dailysnapshot" --mode copy --append-date
+    yes --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 40 18 * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: server
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+- id: Move zipped logs to log archive
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source "var/logs/*.gz" --dest "var/logarchive" --mode move --append-date
+    no --date-format %Y%m%d --skip-missing yes
+
+    '
+  schedule:
+    cron: 47 * * * *
+  timeout_seconds: 180
+  retries: 1
+  backoff_seconds: 10
+  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
 backbone_jobs:
 - id: Run Intake Processor
   enabled: true
@@ -46,102 +160,6 @@ backbone_jobs:
   backoff_seconds: 10
   jitter_seconds: 0
   _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
-- id: Run Datasource Analysis Mapping Report
-  enabled: true
-  role: server
-  script: usr/scripts/default/data_source_analysis_mapping.py
-  args: --mode=auto
-  settle_seconds: 2
-  debounce_seconds: 5
-  rule: mtime_input_newer_than_last_success_marker
-  marker_match: any
-  require_inputs_exist: true
-  inputs:
-  - var/tables/views/consolidated_application_view.csv
-  config_inputs:
-  - usr/config/run/orchestrator.yaml
-  outputs:
-  - var/analysis/consolidated_server_and_application_mapping.csv
-  timeout_seconds: 120
-  retries: 1
-  backoff_seconds: 10
-  jitter_seconds: 0
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
-- id: Run Attribute Reporting Processor
-  enabled: true
-  role: server
-  script: usr/scripts/default/attribute_reporting_processor.py
-  rule: mtime_input_newer_than_last_success_marker
-  marker_match: any
-  inputs:
-  - var/tables/views/consolidated_application_view.csv
-  - var/tables/views/consolidated_server_view.csv
-  config_inputs:
-  - usr/config/run/orchestrator.yaml
-  watch_recursive: true
-  settle_seconds: 2
-  timeout_seconds: 120
-  retries: 1
-  backoff_seconds: 10
-  jitter_seconds: 0
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
-- id: Run Program Timeline Report
-  enabled: true
-  role: server
-  script: usr/scripts/default/program_timeline.py
-  args: null
-  settle_seconds: 2
-  debounce_seconds: 5
-  rule: mtime_input_newer_than_last_success_marker
-  require_inputs_exist: true
-  inputs:
-  - usr/config/data_source_analysis.yaml
-  config_inputs:
-  - usr/config/run/orchestrator.yaml
-  timeout_seconds: 120
-  retries: 1
-  backoff_seconds: 10
-  jitter_seconds: 0
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
-- id: Run Migration Program Dictionary
-  enabled: true
-  role: server
-  script: usr/scripts/default/migration_program_dictionary.py
-  rule: mtime_input_newer_than_last_success_marker
-  marker_match: any
-  inputs:
-  - usr/config/run/migration_program_dictionary.yaml
-  config_inputs:
-  - usr/config/run/orchestrator.yaml
-  watch_recursive: true
-  settle_seconds: 2
-  timeout_seconds: 120
-  retries: 1
-  backoff_seconds: 10
-  jitter_seconds: 0
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
-- id: Run program attribute reporting
-  enabled: true
-  role: server
-  script: usr/scripts/default/attribute_reporting_processor.py
-  rule: mtime_input_newer_than_last_success_marker
-  marker_match: any
-  inputs:
-  - var/tables/views/consolidated_application_view.csv
-  - var/tables/views/consolidated_server_view.csv
-  - usr/config/run/attribute_reporting.yaml
-  - var/tables/insightvm.csv
-  - var/tables/defender_serverinventory.csv
-  - var/tables/flexera.csv
-  config_inputs:
-  - usr/config/run/orchestrator.yaml
-  watch_recursive: true
-  settle_seconds: 5
-  timeout_seconds: 120
-  retries: 1
-  backoff_seconds: 10
-  jitter_seconds: 0
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
 - id: file_distribution_engine - psdo_consolidated_apps_base_062302026
   enabled: true
   role: server
@@ -156,7 +174,7 @@ backbone_jobs:
   jitter_seconds: 0
   marker_match: any
   inputs:
-  - var/tables/views/migrations_consolidated_application_view_collapsed_to_environment.csv
+  - var/tables/views/s5_migrations_consolidated_application_table_expanded_by_environment.csv
   config_inputs:
   - usr/config/run/file_distribution_engine.yaml
   - usr/config/custom/file_distribution_engine.yaml
@@ -206,8 +224,31 @@ backbone_jobs:
   backoff_seconds: 10
   jitter_seconds: 0
   _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+- id: Copy MDT Data File To Dave Share
+  enabled: true
+  role: client
+  script: usr/utils/file_move.py
+  args: '--source "var/interactive/data/migrations_app_view.csv" --dest   "C:\Users\Jayson.Roberts\State
+    of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\CCoE_Inventory\dave_views"
+    --mode   copy --append-date no --date-format %Y%m%d --skip-unchanged no
+
+    '
+  settle_seconds: 2
+  debounce_seconds: 5
+  rule: mtime_any_input_newer_than_any_output
+  require_inputs_exist: true
+  inputs:
+  - var/interactive/data/migrations_app_view.csv
+  outputs:
+  - C:\Users\Jayson.Roberts\State of Maine\State of Maine\DAFS-MaineIT CCOE - Data
+    Dog\Correlated_Data\CCoE_Inventory\dave_views\migrations_app_view.csv
+  timeout_seconds: 120
+  retries: 1
+  backoff_seconds: 10
+  jitter_seconds: 0
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
 pipeline_jobs:
-- id: Data Handling Pipeline
+- id: Version 2 Data Handling Pipeline
   enabled: true
   role: server
   cooldown_seconds: 60
@@ -215,16 +256,38 @@ pipeline_jobs:
   - var/state/orchestrator_markers/Run_Intake_Processor.marker
   - var/state/orchestrator_markers/Run_config_compiler.marker
   stages:
-  - id: Raw Application Tables
-    script: usr/scripts/default/application_raw_table_builder.py
-  - id: Raw Server Tables
-    script: usr/scripts/default/server_raw_table_builder.py
-  - id: Master Tables
-    script: usr/scripts/default/master_table_builder_vtx.py
-  - id: Approximation Engine
-    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
-  - id: Tag Engine
-    script: usr/scripts/default/tag_engine.py
-  - id: Master Views
-    script: usr/scripts/default/master_view_builder_vtx.py
-  _vtx_origin: DEFAULT:usr/config/default/orchestrator.yaml
+  - id: Stage 1.1- Raw Application Tables
+    script: usr/scripts/default/s1_application_raw_table_builder.py
+  - id: Stage 1.2- Raw Server Tables
+    script: usr/scripts/default/s1_server_raw_table_builder.py
+  - id: Stage 2- Master Servers
+    script: usr/scripts/default/s2_master_table_builder_vtx.py
+  - id: Stage 3- Initial Views
+    script: usr/scripts/default/s3_master_view_builder_vtx.py
+  - id: Stage 4- Approximation Engine
+    script: usr/scripts/analysis/s4_approximation_engine_applications_vtx.py
+  - id: Stage 4- Tagging Engine
+    script: usr/scripts/default/s4_tag_engine.py
+  - id: Stage 5- Final View Builder
+    script: usr/scripts/default/s5_master_view_builder.py
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml
+- id: Reporting Pipeline
+  enabled: true
+  role: server
+  cooldown_seconds: 60
+  trigger_markers:
+  - var/state/orchestrator_markers/Version_2_Data_Handling_Pipeline__Stage_5-_Final_View_Builder.marker
+  stages:
+  - id: Stage 1- Run Migration Program Dictionary
+    script: usr/scripts/default/migration_program_dictionary.py
+  - id: Stage 1.2- Run Program Timeline Report
+    script: usr/scripts/default/program_timeline.py
+  - id: Stage 1.3- Publish Migration Data Dictionary
+    script: usr/scripts/default/publish_dictionaries.py
+  - id: Stage 2- Run Datasource Analysis Mapping Report
+    script: usr/scripts/default/data_source_analysis_mapping.py
+  - id: State 3-  Run Visual Stats Timeline
+    script: usr/scripts/dashboards/visual_stats_timeline_vtx.py
+  - id: Stage 4- Run Visual Program Attribute Mapping
+    script: usr/scripts/dashboards/visual_program_attribute_mapping_vtx.py
+  _vtx_origin: CUSTOM:usr/config/custom/orchestrator.yaml

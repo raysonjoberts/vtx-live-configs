@@ -1,399 +1,400 @@
 _vtx:
-  schema: v1
-  kind: transform
-  id: tag_engine
-  title: Tag Engine
-  description: Rule-driven tagging for application entities
-  owner: default
-  version: 1.0.0
-  tags:
-  - core
-  created_utc: ''
-  updated_utc: ''
-  consumers:
-  - usr/scripts/default/tag_engine.py
-  _vtx_origin: DEFAULT:usr/config/default/tag_engine.yaml
-config:
-  payload:
-    jobs:
-    - id: tag_engine
-      enabled: true
-      inputs:
-      - var/masterdata/master_applications.parquet
-      outputs:
-      - var/metadata/tags_application.csv
-      anchor_field: ID
-      entity_type: application
-      key_delimiter: ;
-      tags:
-      - id: application_active
-        tag_column: tag_active
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: active_applications
-          tag_value: Active
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-      - id: adoption_stage
-        tag_column: tag_adoption_stage
-        source: rule
-        key_fields: []
-        condition_logic: all
-        first_match_only: true
-        rules:
-        - id: adoption_stage_dafs
-          tag_value: early
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: DEPARTMENT_ACRONYM
-            operator: ==
-            value: DAFS
-        - id: adoption_stage_dhhs
-          tag_value: early
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: DEPARTMENT_ACRONYM
-            operator: ==
-            value: DHHS
-      - id: complexity_by_environment
-        tag_column: tag_complexity
-        source: rule
-        match_columns:
-        - Environment
-        condition_logic: all
-        first_match_only: true
-        rules:
-        - id: complexity_low
-          tag_value: low
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Hostname
-            operator: in_range
-            value:
-            - 1
-            - 2
-            agg: count
-        - id: complexity_medium
-          tag_value: medium
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Hostname
-            operator: in_range
-            value:
-            - 3
-            - 4
-            agg: count
-        - id: complexity_high
-          tag_value: high
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Hostname
-            operator: '>='
-            value: 5
-            agg: count
-      - id: scope_azure_candidate
-        tag_column: tag_scope
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: ACTIVE_windows_no_linux
-          tag_value: azure_candidate
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: notcontains
-            value: Linux
-          - field: OS
-            operator: contains
-            value: Windows
-      - id: scope_oci_candidate
-        tag_column: tag_scope
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: ACTIVE_linux_no_windows
-          tag_value: oci_candidate
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: notcontains
-            value: Windows
-          - field: OS
-            operator: contains
-            value: Linux
-      - id: scope_oci_multi_os
-        tag_column: tag_scope
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: Active_multi-os
-          tag_value: oci_candidate_multi-os
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS
-            operator: contains
-            value: Linux
-      - id: windows_os_2008
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2008
-          tag_value: os_windows_2008
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2008'
-      - id: windows_os_2012
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2012
-          tag_value: os_windows_2012
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2012'
-      - id: windows_os_2016
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2016
-          tag_value: os_windows_2016
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2016'
-      - id: windows_os_2019
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2019
-          tag_value: os_windows_2019
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2019'
-      - id: windows_os_2022
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2022
-          tag_value: os_windows_2022
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2022'
-      - id: windows_os_2025
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: os_windows_2025
-          tag_value: os_windows_2025
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: '2025'
-      - id: windows_os_unknown
-        tag_column: tag_os_version
-        source: rule
-        key_fields: null
-        condition_logic: any
-        rules:
-        - id: os_windows_unknown
-          tag_value: os_windows_unknown
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: OS
-            operator: contains
-            value: Windows
-          - field: OS Version
-            operator: contains
-            value: Group Supported
-      - id: app_instance_location_cmcc
-        tag_column: tag_app_instance_location
-        source: rule
-        match_columns:
-        - Environment
-        condition_logic: all
-        rules:
-        - id: active_inferred_location_cmcc
-          tag_value: CMCC
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: notcontains
-            value: SSDC
-          - field: Inferred Server Location
-            operator: contains
-            value: CMCC
-      - id: app_instance_location_ssdc
-        tag_column: tag_app_instance_location
-        source: rule
-        match_columns:
-        - Environment
-        condition_logic: all
-        rules:
-        - id: active_inferred_location_ssdc
-          tag_value: SSDC
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: notcontains
-            value: CMCC
-          - field: Inferred Server Location
-            operator: contains
-            value: SSDC
-      - id: app_instance_location_on_prem_multi-site
-        tag_column: tag_app_instance_location
-        source: rule
-        match_columns:
-        - Environment
-        condition_logic: all
-        rules:
-        - id: active_inferred_location_ssdc
-          tag_value: on_prem-multisite
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: contains
-            value: CMCC
-          - field: Inferred Server Location
-            operator: contains
-            value: SSDC
-      - id: app_ecosystem_location_cmcc
-        tag_column: tag_app_ecosystem_location
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: ecosystem_cmcc
-          tag_value: CMCC
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: notcontains
-            value: SSDC
-          - field: Inferred Server Location
-            operator: contains
-            value: CMCC
-      - id: app_ecosystem_location_ssdc
-        tag_column: tag_app_ecosystem_location
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: ecosystem_ssdc
-          tag_value: SSDC
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: notcontains
-            value: CMCC
-          - field: Inferred Server Location
-            operator: contains
-            value: SSDC
-      - id: app_ecosystem_location_on_prem_multi-site
-        tag_column: tag_app_ecosystem_location
-        source: rule
-        key_fields: null
-        condition_logic: all
-        rules:
-        - id: ecosystem_multisite
-          tag_value: on_prem-multisite
-          conditions:
-          - field: ACTIVE
-            operator: ==
-            value: Y
-          - field: Inferred Server Location
-            operator: contains
-            value: CMCC
-          - field: Inferred Server Location
-            operator: contains
-            value: SSDC
-  _vtx_origin: CUSTOM:usr/config/custom/tag_engine.yaml
+#  schema: v1
+#  kind: transform
+#  id: tag_engine
+#  title: Tag Engine
+#  description: Rule-driven tagging for application entities
+#  owner: default
+#  version: 1.0.0
+#  tags:
+#  - core
+#  created_utc: ''
+#  updated_utc: ''
+#  consumers:
+#  - usr/scripts/default/tag_engine.py
+#  _vtx_origin: DEFAULT:usr/config/default/tag_engine.yaml
+#config:
+#  payload:
+#    jobs:
+#    - id: tag_engine
+#      enabled: true
+#      inputs:
+#      - var/masterdata/master_applications.parquet
+#      outputs:
+#      - var/metadata/tags_application.csv
+#      anchor_field: ID
+#      entity_type: application
+#      key_delimiter: ;
+#      tags:
+#      - id: application_active
+#        tag_column: tag_active
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: active_applications
+#          tag_value: Active
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#      - id: adoption_stage
+#        tag_column: tag_adoption_stage
+#        source: rule
+#        key_fields: []
+#        condition_logic: all
+#        first_match_only: true
+#        rules:
+#        - id: adoption_stage_dafs
+#          tag_value: early
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: DEPARTMENT_ACRONYM
+#            operator: ==
+#            value: DAFS
+#        - id: adoption_stage_dhhs
+#          tag_value: early
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: DEPARTMENT_ACRONYM
+#            operator: ==
+#            value: DHHS
+#      - id: complexity_by_environment
+#        tag_column: tag_complexity
+#        source: rule
+#        match_columns:
+#        - Environment
+#        condition_logic: all
+#        first_match_only: true
+#        rules:
+#        - id: complexity_low
+#          tag_value: low
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Hostname
+#            operator: in_range
+#            value:
+#            - 1
+#            - 2
+#            agg: count
+#        - id: complexity_medium
+#          tag_value: medium
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Hostname
+#            operator: in_range
+#            value:
+#            - 3
+#            - 4
+#            agg: count
+#        - id: complexity_high
+#          tag_value: high
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Hostname
+#            operator: '>='
+#            value: 5
+#            agg: count
+#      - id: scope_azure_candidate
+#        tag_column: tag_scope
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: ACTIVE_windows_no_linux
+#          tag_value: azure_candidate
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: notcontains
+#            value: Linux
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#      - id: scope_oci_candidate
+#        tag_column: tag_scope
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: ACTIVE_linux_no_windows
+#          tag_value: oci_candidate
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: notcontains
+#            value: Windows
+#          - field: OS
+#            operator: contains
+#            value: Linux
+#      - id: scope_oci_multi_os
+#        tag_column: tag_scope
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: Active_multi-os
+#          tag_value: oci_candidate_multi-os
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS
+#            operator: contains
+#            value: Linux
+#      - id: windows_os_2008
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2008
+#          tag_value: os_windows_2008
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2008'
+#      - id: windows_os_2012
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2012
+#          tag_value: os_windows_2012
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2012'
+#      - id: windows_os_2016
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2016
+#          tag_value: os_windows_2016
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2016'
+#      - id: windows_os_2019
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2019
+#          tag_value: os_windows_2019
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2019'
+#      - id: windows_os_2022
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2022
+#          tag_value: os_windows_2022
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2022'
+#      - id: windows_os_2025
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: os_windows_2025
+#          tag_value: os_windows_2025
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: '2025'
+#      - id: windows_os_unknown
+#        tag_column: tag_os_version
+#        source: rule
+#        key_fields: null
+#        condition_logic: any
+#        rules:
+#        - id: os_windows_unknown
+#          tag_value: os_windows_unknown
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: OS
+#            operator: contains
+#            value: Windows
+#          - field: OS Version
+#            operator: contains
+#            value: Group Supported
+#      - id: app_instance_location_cmcc
+#        tag_column: tag_app_instance_location
+#        source: rule
+#        match_columns:
+#        - Environment
+#        condition_logic: all
+#        rules:
+#        - id: active_inferred_location_cmcc
+#          tag_value: CMCC
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: notcontains
+#            value: SSDC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: CMCC
+#      - id: app_instance_location_ssdc
+#        tag_column: tag_app_instance_location
+#        source: rule
+#        match_columns:
+#        - Environment
+#        condition_logic: all
+#        rules:
+#        - id: active_inferred_location_ssdc
+#          tag_value: SSDC
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: notcontains
+#            value: CMCC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: SSDC
+#      - id: app_instance_location_on_prem_multi-site
+#        tag_column: tag_app_instance_location
+#        source: rule
+#        match_columns:
+#        - Environment
+#        condition_logic: all
+#        rules:
+#        - id: active_inferred_location_ssdc
+#          tag_value: on_prem-multisite
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: CMCC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: SSDC
+#      - id: app_ecosystem_location_cmcc
+#        tag_column: tag_app_ecosystem_location
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: ecosystem_cmcc
+#          tag_value: CMCC
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: notcontains
+#            value: SSDC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: CMCC
+#      - id: app_ecosystem_location_ssdc
+#        tag_column: tag_app_ecosystem_location
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: ecosystem_ssdc
+#          tag_value: SSDC
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: notcontains
+#            value: CMCC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: SSDC
+#      - id: app_ecosystem_location_on_prem_multi-site
+#        tag_column: tag_app_ecosystem_location
+#        source: rule
+#        key_fields: null
+#        condition_logic: all
+#        rules:
+#        - id: ecosystem_multisite
+#          tag_value: on_prem-multisite
+#          conditions:
+#          - field: ACTIVE
+#            operator: ==
+#            value: Y
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: CMCC
+#          - field: Inferred Server Location
+#            operator: contains
+#            value: SSDC
+#  _vtx_origin: CUSTOM:usr/config/custom/tag_engine.yaml
+#

@@ -35,7 +35,7 @@ def resolve_vtx_root() -> Path:
 
 
 VTX_ROOT = resolve_vtx_root()
-DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "master_view_builder_vtx.yaml"
+DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "s5_master_view_builder_vtx.yaml"
 
 
 def vtx_path(path_str: str | Path, *, must_exist: bool = False) -> Path:
@@ -314,6 +314,55 @@ def expand_view(
                 if field not in record:
                     record[field] = normalize(row.get(field, ""))
             rows_out.append(record)
+
+    out_df = pd.DataFrame(rows_out)
+    ordered_columns = [column for column in df.columns if column in out_df.columns]
+    for column in out_df.columns:
+        if column not in ordered_columns:
+            ordered_columns.append(column)
+    out_df = out_df[ordered_columns]
+    return collapse_expanded_view(out_df, anchor_fields, expand_by, resolved_groups, delimiter)
+
+
+def collapse_expanded_view(
+    df: pd.DataFrame,
+    anchor_fields: List[str],
+    expand_by: str,
+    linked_groups: List[List[str]],
+    delimiter: str,
+) -> pd.DataFrame:
+    group_fields = [field for field in anchor_fields + [expand_by] if field in df.columns]
+    if not group_fields:
+        return df
+
+    group_map: Dict[str, int] = {}
+    for group_index, group in enumerate(linked_groups):
+        for field in group:
+            if field in df.columns:
+                group_map[field] = group_index
+
+    rows_out: List[Dict[str, str]] = []
+    groupby_key: List[str] | str = group_fields[0] if len(group_fields) == 1 else group_fields
+    for key, subframe in df.groupby(groupby_key, sort=False, dropna=False):
+        key_values = [normalize(key)] if not isinstance(key, tuple) else [normalize(value) for value in key]
+        record = {field: key_values[idx] for idx, field in enumerate(group_fields)}
+        handled_groups: set[int] = set()
+
+        for column in df.columns:
+            if column in group_fields:
+                continue
+            if column in group_map:
+                group_index = group_map[column]
+                if group_index in handled_groups:
+                    continue
+                for linked_field in linked_groups[group_index]:
+                    if linked_field in group_fields or linked_field not in df.columns:
+                        continue
+                    record[linked_field] = collapse_scalar(subframe[linked_field].tolist(), delimiter)
+                handled_groups.add(group_index)
+                continue
+            record[column] = collapse_scalar(subframe[column].tolist(), delimiter)
+        rows_out.append(record)
 
     out_df = pd.DataFrame(rows_out)
     ordered_columns = [column for column in df.columns if column in out_df.columns]

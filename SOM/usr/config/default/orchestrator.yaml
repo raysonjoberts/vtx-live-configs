@@ -22,23 +22,6 @@ scheduler:
 # Cron / ad-hoc jobs (schedule-driven)
 # ------------------------------------------------------------
 cron_jobs:
-
-
-#  - id: Run VTX_SYNC
-#    enabled: true
-#    role: server
-#    script: repos/vtx-dev/vtx_sync.py
-#    args:
-#    cwd: "" # default BTDM_ROOT
-#    env: { }
-#    schedule:
-#      cron: "0 6 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
-#    timeout_seconds: 1800
-#    retries: 1
-#    backoff_seconds: 10
-#    jitter_seconds: 5 # random 0..5s delay before run
-#    run_on_start: true
-
   - id: Run Snapshot Statistics
     enabled: true
     role: server
@@ -240,21 +223,21 @@ cron_jobs:
 #    retries: 1
 #    backoff_seconds: 10
 
-  - id: Publish Migration Data Dictionary
-    enabled: true
-    role: server
-    script: usr/scripts/default/publish_dictionaries.py
-    args: --job "Migration Program Attributes Dictionary"
-    cwd: "" # default BTDM_ROOT
-    env: { }
-    schedule:
-      cron: "0 */6 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
-    timeout_seconds: 1800
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 5 # random 0..5s delay before run
-    run_on_start: false
-
+#  - id: Publish Migration Data Dictionary
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/publish_dictionaries.py
+#    args: --job "Migration Program Attributes Dictionary"
+#    cwd: "" # default BTDM_ROOT
+#    env: { }
+#    schedule:
+#      cron: "0 */6 * * *" # alternatives: { daily: "02:30" } or { cron: "*/5 * * * *" }
+#    timeout_seconds: 1800
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 5 # random 0..5s delay before run
+#    run_on_start: false
+#
 # ------------------------------------------------------------
 # Backbone jobs (orchestrated, freshness-driven)
 # - inputs/outputs defined here so orchestrator can check mtimes directly
@@ -325,66 +308,66 @@ backbone_jobs:
 #    jitter_seconds: 0
 
 
-  - id: Run Datasource Analysis Mapping Report
-    enabled: true
-    role: server
-    script: usr/scripts/default/data_source_analysis_mapping.py
-    args: --mode=auto
-    #check_every_seconds: 60
-    settle_seconds: 2
-    debounce_seconds: 5
-    rule: mtime_input_newer_than_last_success_marker
-    marker_match: any
-    require_inputs_exist: true
-    inputs:
-      - "var/tables/views/consolidated_application_view.csv"
-    config_inputs:
-      - usr/config/run/orchestrator.yaml
-    outputs:
-      - var/analysis/consolidated_server_and_application_mapping.csv
-    timeout_seconds: 120
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 0
+#  - id: Run Datasource Analysis Mapping Report
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/data_source_analysis_mapping.py
+#    args: --mode=auto
+#    #check_every_seconds: 60
+#    settle_seconds: 2
+#    debounce_seconds: 5
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any
+#    require_inputs_exist: true
+#    inputs:
+#      - "var/tables/views/consolidated_application_view.csv"
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    outputs:
+#      - var/analysis/consolidated_server_and_application_mapping.csv
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
 
-  - id: Run Attribute Reporting Processor
-    enabled: true
-    role: server
-    script: usr/scripts/default/attribute_reporting_processor.py
-    rule: mtime_input_newer_than_last_success_marker
-    marker_match: any # or all
-    inputs:
-      - var/tables/views/consolidated_application_view.csv
-      - var/tables/views/consolidated_server_view.csv
-    config_inputs:
-      - usr/config/run/orchestrator.yaml
-    #watch_glob: "*.yaml"        # optional; omit to include all files
-    watch_recursive: true         # optional; default false
-    #check_every_seconds: 30
-    settle_seconds: 2
-    timeout_seconds: 120
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 0
+ # - id: Run Attribute Reporting Processor
+ #   enabled: true
+ #   role: server
+ #   script: usr/scripts/default/attribute_reporting_processor.py
+ #   rule: mtime_input_newer_than_last_success_marker
+ #   marker_match: any # or all
+ #   inputs:
+ #     - var/tables/views/consolidated_application_view.csv
+ #     - var/tables/views/consolidated_server_view.csv
+ #   config_inputs:
+ #     - usr/config/run/orchestrator.yaml
+ #   #watch_glob: "*.yaml"        # optional; omit to include all files
+ #   watch_recursive: true         # optional; default false
+ #   #check_every_seconds: 30
+ #   settle_seconds: 2
+ #   timeout_seconds: 120
+ #   retries: 1
+ #   backoff_seconds: 10
+ #   jitter_seconds: 0
 
-  - id: Run Program Timeline Report
-    enabled: true
-    role: server
-    script: usr/scripts/default/program_timeline.py
-    args: 
-    #check_every_seconds: 60
-    settle_seconds: 2
-    debounce_seconds: 5
-    rule: mtime_input_newer_than_last_success_marker
-    require_inputs_exist: true
-    inputs:
-      - "usr/config/data_source_analysis.yaml"
-    config_inputs:
-      - usr/config/run/orchestrator.yaml
-    timeout_seconds: 120
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 0
+ # - id: Run Program Timeline Report
+ #   enabled: true
+ #   role: server
+ #   script: usr/scripts/default/program_timeline.py
+ #   args: 
+ #   #check_every_seconds: 60
+ #   settle_seconds: 2
+ #   debounce_seconds: 5
+ #   rule: mtime_input_newer_than_last_success_marker
+ #   require_inputs_exist: true
+ #   inputs:
+ #     - "usr/config/data_source_analysis.yaml"
+ #   config_inputs:
+ #     - usr/config/run/orchestrator.yaml
+ #   timeout_seconds: 120
+ #   retries: 1
+ #   backoff_seconds: 10
+ #   jitter_seconds: 0
 
 
 #  - id: Run Field Profile Report
@@ -406,24 +389,24 @@ backbone_jobs:
 #    backoff_seconds: 10
 #    jitter_seconds: 0
 
-  - id: Run Migration Program Dictionary
-    enabled: true
-    role: server
-    script: usr/scripts/default/migration_program_dictionary.py
-    rule: mtime_input_newer_than_last_success_marker
-    marker_match: any # or all
-    inputs:
-      - usr/config/run/migration_program_dictionary.yaml
-    config_inputs:
-      - usr/config/run/orchestrator.yaml
-    #watch_glob: "*.yaml"        # optional; omit to include all files
-    watch_recursive: true         # optional; default false
-    #check_every_seconds: 30
-    settle_seconds: 2
-    timeout_seconds: 120
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 0
+#  - id: Run Migration Program Dictionary
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/migration_program_dictionary.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - usr/config/run/migration_program_dictionary.yaml
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 2
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0#
 
 
 #  - id: Run Program Task Generator
@@ -446,29 +429,29 @@ backbone_jobs:
 #    jitter_seconds: 0
 
 
-  - id: Run program attribute reporting 
-    enabled: true
-    role: server
-    script: usr/scripts/default/attribute_reporting_processor.py
-    rule: mtime_input_newer_than_last_success_marker
-    marker_match: any # or all
-    inputs:
-      - var/tables/views/consolidated_application_view.csv
-      - var/tables/views/consolidated_server_view.csv
-      - usr/config/run/attribute_reporting.yaml
-      - var/tables/insightvm.csv
-      - var/tables/defender_serverinventory.csv
-      - var/tables/flexera.csv
-    config_inputs:
-      - usr/config/run/orchestrator.yaml
-    #watch_glob: "*.yaml"        # optional; omit to include all files
-    watch_recursive: true         # optional; default false
-    #check_every_seconds: 30
-    settle_seconds: 5
-    timeout_seconds: 120
-    retries: 1
-    backoff_seconds: 10
-    jitter_seconds: 0
+#  - id: Run program attribute reporting 
+#    enabled: true
+#    role: server
+#    script: usr/scripts/default/attribute_reporting_processor.py
+#    rule: mtime_input_newer_than_last_success_marker
+#    marker_match: any # or all
+#    inputs:
+#      - var/tables/views/consolidated_application_view.csv
+#      - var/tables/views/consolidated_server_view.csv
+#      - usr/config/run/attribute_reporting.yaml
+#      - var/tables/insightvm.csv
+#      - var/tables/defender_serverinventory.csv
+#      - var/tables/flexera.csv
+#    config_inputs:
+#      - usr/config/run/orchestrator.yaml
+#    #watch_glob: "*.yaml"        # optional; omit to include all files
+#    watch_recursive: true         # optional; default false
+#    #check_every_seconds: 30
+#    settle_seconds: 5
+#    timeout_seconds: 120
+#    retries: 1
+#    backoff_seconds: 10
+#    jitter_seconds: 0
 
 #  - id: Run Workflow Autogen
 #    enabled: true
@@ -556,26 +539,24 @@ backbone_jobs:
 #    backoff_seconds: 10
 #    jitter_seconds: 0
 
-pipeline_jobs:
-- id: Data Handling Pipeline
-  enabled: true
-  role: server
-  cooldown_seconds: 60
-  trigger_markers:
-  - var/state/orchestrator_markers/Run_Intake_Processor.marker
-  - var/state/orchestrator_markers/Run_config_compiler.marker
-  stages:
-  - id: Raw Application Tables
-    script: usr/scripts/default/application_raw_table_builder.py
-  - id: Raw Server Tables
-    script: usr/scripts/default/server_raw_table_builder.py
-  - id: Master Tables
-    script: usr/scripts/default/master_table_builder_vtx.py
-  - id: Approximation Engine
-    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
- # - id: Inferred Decisions Engine
- #   script: usr/scripts/default/inferred_decisions_engine.py
-  - id: Tag Engine
-    script: usr/scripts/default/tag_engine.py
-  - id: Master Views
-    script: usr/scripts/default/master_view_builder_vtx.py
+#pipeline_jobs:
+#- id: Data Handling Pipeline
+#  enabled: true
+#  role: server
+#  cooldown_seconds: 60
+#  trigger_markers:
+#  - var/state/orchestrator_markers/Run_Intake_Processor.marker
+#  - var/state/orchestrator_markers/Run_config_compiler.marker
+#  stages:
+#  - id: Raw Application Tables
+#    script: usr/scripts/default/application_raw_table_builder.py
+#  - id: Raw Server Tables
+#    script: usr/scripts/default/server_raw_table_builder.py
+#  - id: Master Tables
+#    script: usr/scripts/default/master_table_builder_vtx.py
+#  - id: Approximation Engine
+#    script: usr/scripts/analysis/approximation_engine_applications_vtx.py
+#  - id: Tag Engine
+#    script: usr/scripts/default/tag_engine.py
+#  - id: Master Views
+#    script: usr/scripts/default/master_view_builder_vtx.py

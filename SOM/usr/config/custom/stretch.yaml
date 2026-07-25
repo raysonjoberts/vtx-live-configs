@@ -136,6 +136,11 @@ stretches:
     csv_xlsx_convert: false
     internal_file: var/analysis/consolidated_server_and_application_report_visual.html
     external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_report_visual.html
+  - name: stretch_consolidated_server_and_application_report_visual_test_ignore.html
+    sync_type: internal_to_external
+    csv_xlsx_convert: false
+    internal_file: var/analysis/consolidated_server_and_application_report_visual_test_ignore.html
+    external_file: C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards\consolidated_server_and_application_report_visual_test_ignore.html
 
 #  - name: stretch_server_inventory_view.csv
 #    sync_type: internal_to_external

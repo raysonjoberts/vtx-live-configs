@@ -194,35 +194,24 @@ def sheet_to_dataframe(ws) -> pd.DataFrame:
     return pd.DataFrame(cleaned, columns=header)
 
 
-def normalize_anchor_columns(anchor_columns: Any, base_df: pd.DataFrame) -> List[str]:
-    if isinstance(anchor_columns, list):
-        anchors = [str(anchor).strip() for anchor in anchor_columns if str(anchor).strip()]
-    else:
-        anchors = []
-
-    if not anchors:
-        anchors = ["first"]
-
-    normalized: List[str] = []
-    for anchor in anchors:
-        resolved = str(base_df.columns[0]) if anchor.lower() == "first" else anchor
-        if resolved not in normalized:
-            normalized.append(resolved)
-    return normalized
+def normalize_anchor(anchor: str, base_df: pd.DataFrame) -> str:
+    if anchor.lower() == "first" or anchor.strip() == "":
+        return str(base_df.columns[0])
+    return anchor
 
 
-def merge_base_overlay(base_df: pd.DataFrame, existing_df: pd.DataFrame, anchor_cols: List[str]) -> pd.DataFrame:
-    if existing_df.empty or any(anchor_col not in existing_df.columns for anchor_col in anchor_cols):
+def merge_base_overlay(base_df: pd.DataFrame, existing_df: pd.DataFrame, anchor_col: str) -> pd.DataFrame:
+    if existing_df.empty or anchor_col not in existing_df.columns:
         return base_df.copy()
 
     overlay_cols = [c for c in existing_df.columns if c not in base_df.columns]
     if not overlay_cols:
         return base_df.copy()
 
-    overlay_df = existing_df[anchor_cols + overlay_cols].copy()
-    overlay_df = overlay_df.drop_duplicates(subset=anchor_cols, keep="last")
+    overlay_df = existing_df[[anchor_col] + overlay_cols].copy()
+    overlay_df = overlay_df.drop_duplicates(subset=[anchor_col], keep="last")
 
-    merged = base_df.merge(overlay_df, on=anchor_cols, how="left")
+    merged = base_df.merge(overlay_df, on=anchor_col, how="left")
     return merged
 
 
@@ -354,7 +343,7 @@ def is_dir_path(path: Path) -> bool:
 def run_base_update_excel(
     input_paths: List[Path],
     xlsx_path: Path,
-    anchor_columns: Any,
+    anchor_column: str,
     tab_names: Optional[List[str]],
     sanitize_tabs: bool,
     dry_run: bool,
@@ -380,15 +369,14 @@ def run_base_update_excel(
         if base_df.empty:
             logger.warning("Base CSV is empty: %s", csv_path)
 
-        anchors = normalize_anchor_columns(anchor_columns, base_df)
-        missing_anchors = [anchor for anchor in anchors if anchor not in base_df.columns]
-        if missing_anchors:
-            raise ValueError(f"Anchor column(s) {missing_anchors} not found in base CSV: {csv_path}")
+        anchor = normalize_anchor(anchor_column, base_df)
+        if anchor not in base_df.columns:
+            raise ValueError(f"Anchor column '{anchor}' not found in base CSV: {csv_path}")
 
         if tab_name in wb.sheetnames:
             ws = wb[tab_name]
             existing_df = sheet_to_dataframe(ws)
-            merged = merge_base_overlay(base_df, existing_df, anchors)
+            merged = merge_base_overlay(base_df, existing_df, anchor)
             update_sheet_in_place(ws, merged)
         else:
             ws = wb.create_sheet(title=tab_name)
@@ -527,7 +515,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         if mode not in ("auto", "base", "interactive"):
             raise ValueError(f"Job '{job_id}' mode must be auto|base|interactive")
 
-        anchor_columns = job.get("anchor_columns")
+        anchor_column = str(job.get("anchor_column", "first"))
         tabs = job.get("tabs") or job.get("tab_names")
         tabs = [str(t) for t in tabs] if isinstance(tabs, list) else None
         sanitize_tabs = bool(job.get("sanitize_tabs", True))
@@ -550,7 +538,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             if output_xlsx:
                 if not inputs_csv:
                     raise ValueError(f"Job '{job_id}' base update requires CSV inputs for XLSX output")
-                run_base_update_excel(inputs, outputs[0], anchor_columns, tabs, sanitize_tabs, opt.dry_run)
+                run_base_update_excel(inputs, outputs[0], anchor_column, tabs, sanitize_tabs, opt.dry_run)
             else:
                 run_base_copy(inputs, outputs, opt.dry_run)
         else:

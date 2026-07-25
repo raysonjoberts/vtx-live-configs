@@ -1,0 +1,69 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: mermaid_architecture_generator
+  title: Mermaid Architecture Generator
+  description: Generate Mermaid Markdown architecture diagrams from architectural
+    drawing views.
+  owner: default
+  version: 1.0.0
+  tags:
+  - reporting
+  - architecture
+  consumers:
+  - usr/scripts/default/p2_mermaid_architecture_generator.py
+  _vtx_origin: CUSTOM:usr/config/custom/p2_mermaid_architecture_generator.yaml
+config:
+  payload:
+    jobs:
+    - id: mermaid_architecture_generator
+      enabled: true
+      input: var\pipelines\p2_architecture_repo_pipeline\consolidated_apps_with_dbs.csv
+      output_dir: var/pipelines/p2_architecture_repo_pipeline/architecture_diagrams
+      inputs:
+      - var\pipelines\p2_architecture_repo_pipeline\consolidated_apps_with_dbs.csv
+      outputs:
+      - var/pipelines/p2_architecture_repo_pipeline/architecture_diagrams
+      clean_output_dir: true
+      delimiter: ;
+      mermaid_direction: TB
+      columns:
+        application_id: ID
+        application: TITLE_NAME
+        application_acronym: ACRONYM
+        department: DEPARTMENT_NAME
+        environment: Environment
+        hostname: Hostname
+        ip_address: IP Address
+        database_name: NAME
+        application_layer: Application_Layer
+        display_label: Display_Label
+        notes: Notes
+        migration_exclusions: tag_migration_panning_exclusions
+      database_hostname_patterns:
+      - exadata
+      - sql
+      - exp
+      labels:
+        information: Application Information
+        dmz: DMZ
+        internal_networks: Internal Networks
+        unknown: Unknown
+        database_servers: Database Servers
+        databases: Databases
+        warnings: Migration Planning Exclusions
+        warning_prefix: ❌
+        web_icon: 🌐
+        sql_icon: 🗄
+        database_server: Database Server
+      colors:
+        server_fill: '#E8F2FF'
+        server_stroke: '#2F6FAD'
+        server_text: '#1F2937'
+        database_server_fill: '#FFF3E6'
+        database_server_stroke: '#E07A1F'
+        database_server_text: '#1F2937'
+        database_fill: '#F6F3FF'
+        database_stroke: '#6D5BD0'
+        database_text: '#1F2937'
+  _vtx_origin: DEFAULT:usr/config/default/mermaid_architecture_generator.yaml

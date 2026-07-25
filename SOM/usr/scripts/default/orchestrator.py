@@ -555,7 +555,7 @@ class PipelineJob:
     id: str
     enabled: bool = True
     role: str = Role.server.value
-    cooldown_seconds: int = 300
+    cooldown_seconds: int = 60
     trigger_markers: List[str] = field(default_factory=list)
     stages: List[PipelineStage] = field(default_factory=list)
     running: bool = False

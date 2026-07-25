@@ -1,0 +1,286 @@
+_vtx:
+#  schema: v1
+#  kind: report
+#  id: server_profile_tables
+#  title: Server Profile Tables
+#  description: Auto-generated server profile YAML for raw server coalescing and downstream
+#    matrix analysis.
+#  owner: default
+#  version: 1.0.0
+#  tags:
+#  - server
+#  - masterdata
+#  - auto
+#  consumers:
+#  - usr/scripts/default/server_raw_table_builder.py
+#  - usr/scripts/analysis/server_inventory_matrix_vtx.py
+#  _vtx_origin: CUSTOM:usr/config/custom/server_profile_tables.yaml
+#config:
+#  io:
+#    inputs:
+#    - var/tables/serverinventories.csv
+#    - var/tables/ssdc-rvtools_vinfo.csv
+#    - var/tables/cmcc-rvtools_vinfo.csv
+#    - var/tables/splunk.csv
+#    - var/tables/flexera.csv
+#    - var/tables/insightvm.csv
+#    - var/tables/azure2.csv
+#    outputs:
+#    - var/masterdata/raw_server_table_auto.parquet
+#  run:
+#    enabled: true
+#    role: any
+#    log_level: INFO
+#    dry_run: false
+#    fail_fast: false
+#    cwd: ''
+#  payload:
+#    globals:
+#      vtx_root: ''
+#      default_normalization:
+#        hostname:
+#          casefold: true
+#          fqdn_to_shortname: true
+#          strip: true
+#        ip_address:
+#          strip: true
+#    inventories:
+#    - id: Server_Profile_Tables
+#      enabled: true
+#      primary_source: serverinventories
+#      attributes:
+#      - RECORDID
+#      - Hostname
+#      - IP Address
+#      - OS
+#      - OS Version
+#      - Environment
+#      - CPU
+#      - Memory
+#      - Storage
+#      - BILLINGCODE
+#      match:
+#        condition: any
+#        keys:
+#        - name: Hostname
+#          type: hostname
+#        - name: IP Address
+#          type: ip_address
+#      trust_ranking:
+#        RECORDID:
+#        - serverinventories
+#        Hostname:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        - splunk
+#        - flexera
+#        - insightvm
+#        IP Address:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        - splunk
+#        - flexera
+#        - insightvm
+#        - azure_wiz
+#        OS:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        - splunk
+#        - flexera
+#        - insightvm
+#        - azure_wiz
+#        OS Version:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        - splunk
+#        - flexera
+#        - insightvm
+#        - azure_wiz
+#        Environment:
+#        - serverinventories
+#        CPU:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        Memory:
+#        - serverinventories
+#        - ssdc-rvtools_vinfo
+#        - cmcc-rvtools_vinfo
+#        Storage:
+#        - serverinventories
+#        BILLINGCODE:
+#        - serverinventories
+#      sources:
+#      - id: serverinventories
+#        enabled: true
+#        priority: 1
+#        path: var/tables/serverinventories.csv
+#        format: csv
+#        map:
+#          RECORDID: RECORDID
+#          Hostname: SERVERNAME
+#          IP Address: IPADDRESS
+#          OS: TYPEOS
+#          OS Version: OS_VERSION
+#          Environment: ENVIRONMENT
+#          CPU: VMPROCESSORS
+#          Memory: VMMEMORY
+#          Storage: VMSTORAGE
+#          BILLINGCODE: BILLINGCODE
+#        filters: []
+#      - id: ssdc-rvtools_vinfo
+#        enabled: true
+#        priority: 2
+#        path: var/tables/ssdc-rvtools_vinfo.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: VM
+#          IP Address: Primary IP Address
+#          OS: OS according to the VMware Tools
+#          OS Version: OS according to the VMware Tools
+#          Environment: null
+#          CPU: CPUs
+#          Memory: Memory
+#          Storage: Total disk capacity MiB
+#          BILLINGCODE: null
+#        filters: []
+#      - id: cmcc-rvtools_vinfo
+#        enabled: true
+#        priority: 3
+#        path: var/tables/cmcc-rvtools_vinfo.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: VM
+#          IP Address: Primary IP Address
+#          OS: OS according to the VMware Tools
+#          Environment: null
+#          CPU: CPUs
+#          Memory: Memory
+#          Storage: Total disk capacity MiB
+#          BILLINGCODE: null
+#        filters: []
+#      - id: splunk
+#        enabled: true
+#        priority: 4
+#        path: var/tables/splunk.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: Server
+#          IP Address: null
+#          OS: os
+#          OS Version: null
+#          Environment: null
+#          CPU: null
+#          Memory: null
+#          Storage: null
+#          BILLINGCODE: null
+#        filters: []
+#      - id: flexera
+#        enabled: true
+#        priority: 5
+#        path: var/tables/flexera.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: Server
+#          IP Address: IP Address
+#          OS: null
+#          OS Version: null
+#          Environment: null
+#          CPU: null
+#          Memory: null
+#          Storage: null
+#          BILLINGCODE: null
+#        filters: []
+#      - id: insightvm
+#        enabled: true
+#        priority: 6
+#        path: var/tables/insightvm.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: Asset Names
+#          IP Address: Asset IP Address
+#          OS: Asset OS Name
+#          OS Version: null
+#          Environment: null
+#          CPU: null
+#          Memory: null
+#          Storage: null
+#          BILLINGCODE: null
+#        filters: []
+#      - id: azure_wiz
+#        enabled: true
+#        priority: 7
+#        path: var/tables/azure2.csv
+#        format: csv
+#        map:
+#          RECORDID: null
+#          Hostname: VIRTUAL_MACHINE.Name
+#          IP Address: NETWORK_ADDRESS.Name
+#          OS: typeFields.operatingSystem
+#          OS Version: null
+#          Environment: null
+#          CPU: null
+#          Memory: null
+#          Storage: null
+#          BILLINGCODE: null
+#        filters:
+#          - field: VIRTUAL_MACHINE.status
+#          - operator: "="
+#          - value: Active
+#    jobs:
+#    - id: server_raw_table
+#      enabled: true
+#      inventory_id: Server_Profile_Tables
+#      outputs:
+#        inventory_table:
+#          path: var/masterdata/raw_server_table.parquet
+#          include_presence_flags: false
+#          include_value_provenance: false
+#          include_ranked_values: false
+#          ranked_values_delimiter: ;
+#          fields:
+#          - RECORDID
+#          - Hostname
+#          - IP Address
+#          - OS
+#          - OS Version
+#          - Environment
+#          - CPU
+#          - Memory
+#          - Storage
+#          - BILLINGCODE
+#        inventory_rankings:
+#          path: var/analysis/server_inventory_field_rankings.csv
+#          include_presence_flags: false
+#          include_value_provenance: false
+#          include_ranked_values: false
+#          ranked_values_delimiter: ;
+#          fields:
+#          - RECORDID
+#          - Hostname
+#          - IP Address
+#          - OS
+#          - OS Version
+#          - Environment
+#          - CPU
+#          - Memory
+#          - Storage
+#          - BILLINGCODE
+#        presence_matrix_reports:
+#        - id: hostname_presence
+#          attribute: Hostname
+#          normalize_as: hostname
+#          source_of_truth: ssdc-rvtools_vinfo
+#          display_attributes:
+#          - IP Address
+#          path: var/analysis/presence_hostname_matrix_auto.csv
+#          html_path: var/analysis/presence_hostname_matrix_auto.html
