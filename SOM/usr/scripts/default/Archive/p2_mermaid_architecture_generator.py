@@ -44,7 +44,6 @@ def vtx_path(path_str: str | Path, *, must_exist: bool = False) -> Path:
         path = path_str
     else:
         text = os.path.expandvars(os.path.expanduser(str(path_str).strip()))
-        text = text.replace("\\", os.sep)
         text = text.replace("VTX_ROOT/", str(VTX_ROOT) + "/")
         text = text.replace("BTDM_ROOT/", str(VTX_ROOT) + "/")
         path = Path(text)
@@ -277,97 +276,6 @@ def expand_servers(
     return servers
 
 
-DEFAULT_ARR_COLUMNS = {
-    "external_prod": {
-        "hostname": "External Prod ARR Hostname",
-        "routing": "External Prod ARR Routing",
-        "region": "dmz",
-        "label": "External Prod ARR",
-    },
-    "external_test": {
-        "hostname": "External Test ARR Hostname",
-        "routing": "External Test ARR Routing",
-        "region": "dmz",
-        "label": "External Test ARR",
-    },
-    "internal_prod": {
-        "hostname": "Internal Prod ARR Hostname",
-        "routing": "Internal Prod ARR Routing",
-        "region": "internal",
-        "label": "Internal Prod ARR",
-    },
-    "internal_test": {
-        "hostname": "Internal Test ARR Hostname",
-        "routing": "Internal Test ARR Routing",
-        "region": "internal",
-        "label": "Internal Test ARR",
-    },
-}
-
-
-def arr_column_config(columns: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
-    configured = columns.get("arr")
-    result: Dict[str, Dict[str, str]] = {}
-    for key, defaults in DEFAULT_ARR_COLUMNS.items():
-        item = configured.get(key) if isinstance(configured, dict) else {}
-        if not isinstance(item, dict):
-            item = {}
-        merged = dict(defaults)
-        for field in ("hostname", "routing", "region", "label"):
-            if text(item.get(field)):
-                merged[field] = text(item.get(field))
-        result[key] = merged
-    return result
-
-
-def expand_arr_servers(
-    *,
-    rows: Sequence[Dict[str, str]],
-    app_id: str,
-    environment: str,
-    columns: Dict[str, Any],
-    delimiter: str,
-) -> List[Dict[str, str]]:
-    arr_servers: List[Dict[str, str]] = []
-    seen: OrderedDict[Tuple[str, str, str, str], None] = OrderedDict()
-    for arr_key, config in arr_column_config(columns).items():
-        hostname_col = config["hostname"]
-        routing_col = config["routing"]
-        region = config["region"]
-        label = config["label"]
-        for row in rows:
-            hostnames = split_multi(row.get(hostname_col), delimiter)
-            routings = split_multi(row.get(routing_col), delimiter)
-            if routings and not hostnames:
-                LOG.warning(
-                    "ARR routing pattern without hostname for Application_ID=%s Environment=%s category=%s routing=%s",
-                    app_id,
-                    environment,
-                    arr_key,
-                    delimiter.join(routings),
-                )
-                continue
-            for index, hostname in enumerate(hostnames):
-                clean_hostname = text(hostname)
-                if not clean_hostname:
-                    continue
-                routing = routings[index] if index < len(routings) else ""
-                key = (region, arr_key, clean_hostname.lower(), routing)
-                if key in seen:
-                    continue
-                seen[key] = None
-                arr_servers.append(
-                    {
-                        "hostname": clean_hostname,
-                        "routing": routing,
-                        "region": region,
-                        "category": arr_key,
-                        "label": label,
-                    }
-                )
-    return arr_servers
-
-
 def append_node(lines: List[str], node_id: str, label: str, class_name: str) -> None:
     lines.append(f'    {node_id}["{escape_label(label)}"]:::{class_name}')
 
@@ -405,49 +313,6 @@ def append_subgraph(
     return True
 
 
-def append_zone_subgraph(
-    lines: List[str],
-    graph_id: str,
-    title: str,
-    arr_nodes: Sequence[Tuple[str, str, str, str]],
-    server_nodes: Sequence[Tuple[str, str, str, str]],
-    nodes_per_row: int = 3,
-    indent: str = "    ",
-) -> bool:
-    if not arr_nodes and not server_nodes:
-        return False
-    if not arr_nodes:
-        return append_subgraph(lines, graph_id, title, server_nodes, nodes_per_row, indent=indent)
-    lines.append(f'{indent}subgraph {graph_id}["{mermaid_label(title)}"]')
-    lines.append(f"{indent}  direction TB")
-    section_ids: List[str] = []
-    if arr_nodes:
-        arr_graph_id = f"{graph_id}_arr"
-        if append_subgraph(
-            lines,
-            arr_graph_id,
-            "<b>ARR Servers</b>",
-            arr_nodes,
-            nodes_per_row,
-            indent=f"{indent}  ",
-        ):
-            section_ids.append(arr_graph_id)
-    if server_nodes:
-        server_graph_id = f"{graph_id}_servers"
-        if append_subgraph(
-            lines,
-            server_graph_id,
-            "<b>Application Servers</b>" if arr_nodes else " ",
-            server_nodes,
-            nodes_per_row,
-            indent=f"{indent}  ",
-        ):
-            section_ids.append(server_graph_id)
-    add_layer_connectors(lines, section_ids, indent=f"{indent}  ")
-    lines.append(f"{indent}end")
-    return True
-
-
 def server_label(server: Dict[str, str], icon: str = "") -> str:
     name = server["display_label"] or server["hostname"] or "Unnamed server"
     if icon:
@@ -459,13 +324,6 @@ def server_label(server: Dict[str, str], icon: str = "") -> str:
         parts.append(server["ip_address"])
     if server["application_layer"]:
         parts.append(server["application_layer"])
-    return "<br/>".join(parts)
-
-
-def arr_label(arr_server: Dict[str, str]) -> str:
-    parts = [arr_server["hostname"]]
-    if arr_server.get("routing"):
-        parts.append(f"Routing Pattern: {arr_server['routing']}")
     return "<br/>".join(parts)
 
 
@@ -491,7 +349,6 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
     style_defs = {
         "warning": ("#FDECEC", "#C62828", "#8A1F1F"),
         "server": (colors.get("server_fill", "#E8F2FF"), colors.get("server_stroke", "#2F6FAD"), colors.get("server_text", "#1F2937")),
-        "arrServer": (colors.get("arr_server_fill", "#E6FFFB"), colors.get("arr_server_stroke", "#0F766E"), colors.get("arr_server_text", "#134E4A")),
         "databaseServer": (colors.get("database_server_fill", "#FFF3E6"), colors.get("database_server_stroke", "#E07A1F"), colors.get("database_server_text", "#1F2937")),
         "database": (colors.get("database_fill", "#F6F3FF"), colors.get("database_stroke", "#6D5BD0"), colors.get("database_text", "#1F2937")),
     }
@@ -523,30 +380,14 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
         ("unknown", f"<b>{labels.get('unknown', 'Unknown')}</b>"),
     ]
     for region, title in region_layers:
-        arr_nodes: List[Tuple[str, str, str, str]] = []
-        server_nodes: List[Tuple[str, str, str, str]] = []
-        region_arr_servers = [server for server in instance["arr_servers"] if server["region"] == region]
-        for index, arr_server in enumerate(region_arr_servers, start=1):
-            node_id = mermaid_id(
-                f"{region}_arr_{index}_{arr_server['category']}_{arr_server['hostname']}_{arr_server['routing']}",
-                "arr",
-            )
-            arr_nodes.append((node_id, arr_label(arr_server), "arrServer", "rect"))
+        nodes: List[Tuple[str, str, str, str]] = []
         region_servers = [server for server in non_database_servers if server["region"] == region]
         for index, server in enumerate(region_servers, start=1):
             node_id = mermaid_id(f"{region}_{index}_{server['hostname']}_{server['ip_address']}", "srv")
             icon = str(labels.get("web_icon", "🌐")) if region == "dmz" else ""
-            server_nodes.append((node_id, server_label(server, icon), "server", "rect"))
+            nodes.append((node_id, server_label(server, icon), "server", "rect"))
         graph_id = f"{region}_region"
-        if append_zone_subgraph(
-            lines,
-            graph_id,
-            str(title),
-            arr_nodes,
-            server_nodes,
-            architecture_columns,
-            indent="    ",
-        ):
+        if append_subgraph(lines, graph_id, str(title), nodes, architecture_columns, indent="    "):
             present_graphs.append(graph_id)
 
     database_server_nodes = []
@@ -636,13 +477,6 @@ def build_instance(app_id: str, environment: str, rows: Sequence[Dict[str, str]]
         "environment": environment,
         "databases": unique(db for row in rows for db in split_multi(row.get(database_col), delimiter)),
         "migration_exclusions": unique(item for row in rows for item in split_multi(row.get(exclusions_col), delimiter)),
-        "arr_servers": expand_arr_servers(
-            rows=rows,
-            app_id=app_id,
-            environment=environment,
-            columns=columns,
-            delimiter=delimiter,
-        ),
         "servers": expand_servers(
             rows=rows,
             app_id=app_id,
