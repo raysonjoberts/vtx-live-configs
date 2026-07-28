@@ -290,7 +290,6 @@ config:
         - id: active_inferred_location_cmcc
           tag_value: CMCC
           conditions:
-
           - field: Inferred Server Location
             operator: notcontains
             value: SSDC
@@ -308,7 +307,6 @@ config:
         - id: active_inferred_location_ssdc
           tag_value: SSDC
           conditions:
-
           - field: Inferred Server Location
             operator: notcontains
             value: CMCC

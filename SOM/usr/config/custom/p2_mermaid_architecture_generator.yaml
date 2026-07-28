@@ -12,6 +12,7 @@ _vtx:
   - architecture
   consumers:
   - usr/scripts/default/p2_mermaid_architecture_generator.py
+  _vtx_origin: CUSTOM:usr/config/custom/p2_mermaid_architecture_generator.yaml
 config:
   payload:
     jobs:
@@ -25,7 +26,7 @@ config:
       - var/pipelines/p2_architecture_repo_pipeline/architecture_diagrams
       clean_output_dir: true
       delimiter: ;
-      mermaid_direction: TB
+      mermaid_direction: LR
       columns:
         application_id: ID
         application: TITLE_NAME
@@ -43,6 +44,20 @@ config:
       - exadata
       - sql
       - exp
+      information_sections:
+      - field: tag_migration_planning_exclusions
+        heading: Migration Planning
+        delimiter: ;
+        prefix: ❌
+      context_rules:
+      - field: External Prod ARR Hostname
+        operator: isnotnull
+        context: Architecture Warnings
+        message: ⚠️ Public ARR Server
+      - field: External Test ARR Hostname
+        operator: isnotnull
+        context: Architecture Warnings
+        message: ⚠️ Public ARR Server
       labels:
         information: Application Information
         dmz: DMZ
@@ -56,13 +71,20 @@ config:
         sql_icon: 🗄
         database_server: Database Server
       colors:
-        server_fill: '#E8F2FF'
-        server_stroke: '#2F6FAD'
-        server_text: '#1F2937'
-        database_server_fill: '#FFF3E6'
-        database_server_stroke: '#E07A1F'
-        database_server_text: '#1F2937'
-        database_fill: '#F6F3FF'
-        database_stroke: '#6D5BD0'
-        database_text: '#1F2937'
+        server_fill: '#FFFFFF'
+        server_stroke: '#666'
+        server_text: '#222'
+        arr_server_fill: '#FFFFFF'
+        arr_server_stroke: '#666'
+        arr_server_text: '#222'
+        database_server_fill: '#FFFFFF'
+        database_server_stroke: '#666'
+        database_server_text: '#222'
+        database_fill: '#FFFFFF'
+        database_stroke: '#666'
+        database_text: '#222'
+        zone_fill: '#FFF7D6'
+        zone_stroke: '#C9A227'
+        layer_fill: '#F8E29B'
+        layer_stroke: '#A66A00'
   _vtx_origin: DEFAULT:usr/config/default/mermaid_architecture_generator.yaml

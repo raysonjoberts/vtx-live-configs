@@ -16,6 +16,48 @@ _vtx:
 config:
   payload:
     jobs:
+    - id: build_db_to_server
+      enabled: true
+      base:
+        path: var/tables/databases.csv
+        anchor_field: ID
+      joins:
+      - alias: db_to_server
+        path: var/tables/database_x_server.csv
+        match_keys:
+        - left_key: ID
+          right_key: DATABASE_ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: SERVER_ID
+          output_field: SERVER_ID
+      - alias: server
+        path: var/tables/serverinventories.csv
+        match_keys:
+        - left_key: SERVER_ID
+          right_key: RECORDID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: SERVERNAME
+          output_field: Hostname
+      outputs:
+        csv: var/pipelines/p2_architecture_repo_pipeline/databases_to_servers.csv
     - id: build_consolidated_apps_with_dbs
       enabled: true
       base:
@@ -143,6 +185,42 @@ config:
           output_field: Internal Test ARR Routing
         - source_field: ARR Hostname
           output_field: Internal Test ARR Hostname
+      - alias: sql_lso_connections
+        path: var/tables/sql_lso_report.csv
+        match_keys:
+        - left_key: Name
+          right_key: Name
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: ProductName
+          output_field: LSO ProductName
+        - source_field: DataSource
+          output_field: LSO DataSource
+      - alias: sql_lso_connections
+        path: var/pipelines/p2_architecture_repo_pipeline/databases_to_servers.csv
+        match_keys:
+        - left_key: DATABASE_ID
+          right_key: ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: Production
+            Test: Test
+            Dev: Dev
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: Hostname
+          output_field: Database Server Name
       outputs:
         csv: var/pipelines/p2_architecture_repo_pipeline/consolidated_apps_with_dbs.csv
-  _vtx_origin: DEFAULT:usr/config/default/complex_join_builder_vtx.yaml
+  _vtx_origin: CUSTOM:usr/config/custom/p2_complex_join_builder_vtx.yaml

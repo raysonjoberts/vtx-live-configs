@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import ipaddress
 import logging
 import os
@@ -212,6 +213,82 @@ def first_value(rows: Sequence[Dict[str, str]], column: str) -> str:
     return ""
 
 
+def parse_number(value: Any) -> Optional[float]:
+    cleaned = text(value).replace(",", "")
+    if not cleaned:
+        return None
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def section_values(rows: Sequence[Dict[str, str]], section: Dict[str, Any], job_delimiter: str) -> List[str]:
+    field = text(section.get("field"))
+    if not field:
+        return []
+    delimiter = text(section.get("delimiter")) or job_delimiter
+    values: List[str] = []
+    for row in rows:
+        values.extend(split_multi(row.get(field), delimiter))
+    return unique(values)
+
+
+CONTEXT_OPERATORS = {"contains", "notcontains", "isnull", "isnotnull", "==", "!=", ">", "<", ">=", "<="}
+CONTEXT_OPERATORS_REQUIRING_VALUE = {"contains", "notcontains", "==", "!=", ">", "<", ">=", "<="}
+
+
+def evaluate_context_condition(row_value: Any, operator: str, compare_value: Any = None) -> bool:
+    op = text(operator).lower()
+    source_value = text(row_value)
+    target_value = text(compare_value)
+    if op == "isnull":
+        return not source_value
+    if op == "isnotnull":
+        return bool(source_value)
+    if op == "contains":
+        return target_value in source_value
+    if op == "notcontains":
+        return target_value not in source_value
+    if op == "==":
+        return source_value == target_value
+    if op == "!=":
+        return source_value != target_value
+    if op in {">", "<", ">=", "<="}:
+        source_number = parse_number(source_value)
+        target_number = parse_number(target_value)
+        if source_number is not None and target_number is not None:
+            left: Any = source_number
+            right: Any = target_number
+        else:
+            left = source_value
+            right = target_value
+        if op == ">":
+            return left > right
+        if op == "<":
+            return left < right
+        if op == ">=":
+            return left >= right
+        return left <= right
+    raise ValueError(f"Invalid context rule operator: {operator}")
+
+
+def context_messages(rows: Sequence[Dict[str, str]], rules: Sequence[Dict[str, Any]]) -> List[Tuple[str, List[str]]]:
+    contexts: OrderedDict[str, OrderedDict[str, None]] = OrderedDict()
+    for rule in rules:
+        field = text(rule.get("field"))
+        operator = text(rule.get("operator")).lower()
+        context = text(rule.get("context"))
+        message = text(rule.get("message"))
+        prefix = text(rule.get("prefix"))
+        if not field or not operator or not context or not message:
+            continue
+        rendered_message = f"{prefix} {message}".strip() if prefix else message
+        if any(evaluate_context_condition(row.get(field), operator, rule.get("value")) for row in rows):
+            contexts.setdefault(context, OrderedDict()).setdefault(rendered_message, None)
+    return [(context, list(messages.keys())) for context, messages in contexts.items()]
+
+
 def expand_servers(
     *,
     rows: Sequence[Dict[str, str]],
@@ -405,6 +482,10 @@ def append_subgraph(
     return True
 
 
+def first_node_id(nodes: Sequence[Tuple[str, str, str, str]]) -> str:
+    return nodes[0][0] if nodes else ""
+
+
 def append_zone_subgraph(
     lines: List[str],
     graph_id: str,
@@ -419,31 +500,31 @@ def append_zone_subgraph(
     if not arr_nodes:
         return append_subgraph(lines, graph_id, title, server_nodes, nodes_per_row, indent=indent)
     lines.append(f'{indent}subgraph {graph_id}["{mermaid_label(title)}"]')
-    lines.append(f"{indent}  direction TB")
-    section_ids: List[str] = []
+    lines.append(f"{indent}  direction LR")
+    first_arr_node = first_node_id(arr_nodes)
+    first_server_node = first_node_id(server_nodes)
     if arr_nodes:
-        arr_graph_id = f"{graph_id}_arr"
         if append_subgraph(
             lines,
-            arr_graph_id,
-            "<b>ARR Servers</b>",
+            f"{graph_id}_arr_layer",
+            "<b>🔀 ARR Servers</b>",
             arr_nodes,
             nodes_per_row,
             indent=f"{indent}  ",
         ):
-            section_ids.append(arr_graph_id)
+            pass
     if server_nodes:
-        server_graph_id = f"{graph_id}_servers"
         if append_subgraph(
             lines,
-            server_graph_id,
-            "<b>Application Servers</b>" if arr_nodes else " ",
+            f"{graph_id}_app_layer",
+            "<b>🖥️ Application Servers</b>",
             server_nodes,
             nodes_per_row,
             indent=f"{indent}  ",
         ):
-            section_ids.append(server_graph_id)
-    add_layer_connectors(lines, section_ids, indent=f"{indent}  ")
+            pass
+    if first_arr_node and first_server_node:
+        lines.append(f"{indent}  {first_arr_node} --> {first_server_node}")
     lines.append(f"{indent}end")
     return True
 
@@ -465,7 +546,7 @@ def server_label(server: Dict[str, str], icon: str = "") -> str:
 def arr_label(arr_server: Dict[str, str]) -> str:
     parts = [arr_server["hostname"]]
     if arr_server.get("routing"):
-        parts.append(f"Routing Pattern: {arr_server['routing']}")
+        parts.extend(["Routing Pattern", arr_server["routing"]])
     return "<br/>".join(parts)
 
 
@@ -480,25 +561,60 @@ def add_layer_connectors(lines: List[str], graph_ids: Sequence[str], indent: str
         lines.append(f"{indent}{left} --> {right}")
 
 
+def style_subgraph(graph_id: str, fill: str, stroke: str) -> str:
+    return f"style {graph_id} fill:{fill},stroke:{stroke},stroke-width:2px;"
+
+
 def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
     labels = job.get("labels") or {}
     colors = job.get("colors") or {}
     layout = job.get("layout") or {}
     direction = text(job.get("mermaid_direction")) or "TB"
     database_label = text(labels.get("database_server")) or "Database Server"
-    lines: List[str] = [f"flowchart {direction}"]
+    lines: List[str] = [
+        '%%{init:{',
+        '  "themeVariables":{',
+        '    "fontSize":"12px"',
+        '  },',
+        '  "flowchart":{',
+        '    "nodeSpacing":40,',
+        '    "rankSpacing":45,',
+        '    "diagramPadding":10,',
+        '    "htmlLabels":true',
+        '  }',
+        '}}%%',
+        "",
+        f"flowchart {direction}",
+        "",
+        "%%========================================================",
+        "%% Node Styles",
+        "%%========================================================",
+        "",
+    ]
 
     style_defs = {
-        "warning": ("#FDECEC", "#C62828", "#8A1F1F"),
-        "server": (colors.get("server_fill", "#E8F2FF"), colors.get("server_stroke", "#2F6FAD"), colors.get("server_text", "#1F2937")),
-        "arrServer": (colors.get("arr_server_fill", "#E6FFFB"), colors.get("arr_server_stroke", "#0F766E"), colors.get("arr_server_text", "#134E4A")),
-        "databaseServer": (colors.get("database_server_fill", "#FFF3E6"), colors.get("database_server_stroke", "#E07A1F"), colors.get("database_server_text", "#1F2937")),
-        "database": (colors.get("database_fill", "#F6F3FF"), colors.get("database_stroke", "#6D5BD0"), colors.get("database_text", "#1F2937")),
+        "warning": (colors.get("warning_fill", "#FFFFFF"), colors.get("warning_stroke", "#666"), colors.get("warning_text", "#222")),
+        "server": (colors.get("server_fill", "#FFFFFF"), colors.get("server_stroke", "#666"), colors.get("server_text", "#222")),
+        "arrServer": (colors.get("arr_server_fill", "#FFFFFF"), colors.get("arr_server_stroke", "#666"), colors.get("arr_server_text", "#222")),
+        "databaseServer": (colors.get("database_server_fill", "#FFFFFF"), colors.get("database_server_stroke", "#666"), colors.get("database_server_text", "#222")),
+        "database": (colors.get("database_fill", "#FFFFFF"), colors.get("database_stroke", "#666"), colors.get("database_text", "#222")),
     }
     for name, (fill, stroke, color) in style_defs.items():
-        lines.append(f"    classDef {name} fill:{fill},stroke:{stroke},color:{color};")
+        lines.append(f"classDef {name} fill:{fill},stroke:{stroke},stroke-width:1.5px,color:{color};")
+
+    lines.extend([
+        "",
+        "%%========================================================",
+        "%% Network Topology",
+        "%%========================================================",
+        "",
+    ])
 
     architecture_columns = int(layout.get("architecture_columns") or 3)
+    zone_fill = colors.get("zone_fill", "#FFF7D6")
+    zone_stroke = colors.get("zone_stroke", "#C9A227")
+    layer_fill = colors.get("layer_fill", "#F8E29B")
+    layer_stroke = colors.get("layer_stroke", "#A66A00")
 
     warnings = instance["migration_exclusions"]
     if warnings:
@@ -510,6 +626,8 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
         lines.append("    end")
 
     present_graphs: List[str] = []
+    zone_style_ids: List[str] = []
+    layer_style_ids: List[str] = []
     non_database_servers = [
         server for server in instance["servers"] if not is_database_server(server, database_label)
     ]
@@ -518,9 +636,9 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
     ]
 
     region_layers = [
-        ("dmz", f"<b>{labels.get('dmz', 'DMZ')}</b>"),
-        ("internal", f"<b>{labels.get('internal_networks', 'Internal Networks')}</b>"),
-        ("unknown", f"<b>{labels.get('unknown', 'Unknown')}</b>"),
+        ("dmz", f"<b>🛡️ {labels.get('dmz', 'DMZ')}</b>"),
+        ("internal", f"<b>🏢 {labels.get('internal_networks', 'Internal Networks')}</b>"),
+        ("unknown", f"<b>❔ {labels.get('unknown', 'Unknown')}</b>"),
     ]
     for region, title in region_layers:
         arr_nodes: List[Tuple[str, str, str, str]] = []
@@ -548,6 +666,11 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
             indent="    ",
         ):
             present_graphs.append(graph_id)
+            zone_style_ids.append(graph_id)
+            if arr_nodes:
+                layer_style_ids.append(f"{graph_id}_arr_layer")
+            if arr_nodes and server_nodes:
+                layer_style_ids.append(f"{graph_id}_app_layer")
 
     database_server_nodes = []
     for index, server in enumerate(database_servers, start=1):
@@ -558,12 +681,13 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
     if append_subgraph(
         lines,
         "database_servers",
-        f"<b>{labels.get('database_servers', 'Database Servers')}</b>",
+        f"<b>🗄️ {labels.get('database_servers', 'Database Servers')}</b>",
         database_server_nodes,
         architecture_columns,
         indent="    ",
     ):
         present_graphs.append("database_servers")
+        layer_style_ids.append("database_servers")
 
     db_nodes = []
     for index, database in enumerate(instance["databases"], start=1):
@@ -571,14 +695,31 @@ def build_mermaid(instance: Dict[str, Any], job: Dict[str, Any]) -> str:
     if append_subgraph(
         lines,
         "databases",
-        f"<b>{labels.get('databases', 'Databases')}</b>",
+        f"<b>💾 {labels.get('databases', 'Databases')}</b>",
         db_nodes,
         architecture_columns,
         indent="    ",
     ):
         present_graphs.append("databases")
+        layer_style_ids.append("databases")
 
     add_layer_connectors(lines, present_graphs)
+    style_lines = [
+        style_subgraph(graph_id, zone_fill, zone_stroke)
+        for graph_id in zone_style_ids
+    ] + [
+        style_subgraph(graph_id, layer_fill, layer_stroke)
+        for graph_id in layer_style_ids
+    ]
+    if style_lines:
+        lines.extend([
+            "",
+            "%%========================================================",
+            "%% Rendered Subgraph Styles",
+            "%%========================================================",
+            "",
+            *style_lines,
+        ])
 
     return "\n".join(lines) + "\n"
 
@@ -589,16 +730,44 @@ def build_application_information_markdown(instance: Dict[str, Any], job: Dict[s
     info_items = [
         ("Application ID", instance["application_id"]),
         ("Application Name", instance["application_name"]),
-        ("Application Acronym", instance["application_acronym"]),
+        ("Acronym", instance["application_acronym"]),
         ("Department", instance["department"]),
         ("Environment", instance["environment"]),
     ]
-    lines = [f"## {heading}", ""]
+    lines = ["<table>", "<tr>", "", '<td valign="top">', "", f"<h3>📋 {html.escape(heading, quote=False)}</h3>", ""]
     for label, value in info_items:
         clean_value = text(value)
         if not clean_value:
             continue
-        lines.extend([f"**{label}:**", clean_value, ""])
+        lines.append(f"<strong>{html.escape(label, quote=False)}:</strong> {html.escape(clean_value, quote=False)}<br>")
+    lines.extend(["", "</td>"])
+
+    section_blocks: List[str] = []
+    for section in instance.get("information_sections", []):
+        section_heading = text(section.get("heading"))
+        section_values_list = [text(value) for value in section.get("values", []) if text(value)]
+        prefix = text(section.get("prefix"))
+        if not section_heading or not section_values_list:
+            continue
+        section_blocks.extend(["", f"<h3>🚧 {html.escape(section_heading, quote=False)}</h3>", ""])
+        for value in section_values_list:
+            section_blocks.append(f"{html.escape(f'{prefix} {value}'.strip(), quote=False)}<br>")
+    if section_blocks:
+        lines.extend(["", '<td valign="top">', *section_blocks, "", "</td>"])
+
+    context_blocks: List[str] = []
+    for context in instance.get("context_messages", []):
+        context_heading = text(context.get("heading"))
+        messages = [text(message) for message in context.get("messages", []) if text(message)]
+        if not context_heading or not messages:
+            continue
+        context_blocks.extend(["", f"<h3>🏗️ {html.escape(context_heading, quote=False)}</h3>", ""])
+        for message in messages:
+            context_blocks.append(f"{html.escape(message, quote=False)}<br>")
+    if context_blocks:
+        lines.extend(["", '<td valign="top">', *context_blocks, "", "</td>"])
+
+    lines.extend(["", "</tr>", "</table>", "", "---", "", "## 🧭 Architectural Drawing", ""])
     return "\n".join(lines).rstrip() + "\n\n"
 
 
@@ -627,6 +796,22 @@ def build_instance(app_id: str, environment: str, rows: Sequence[Dict[str, str]]
     exclusions_col = columns.get("migration_exclusions", "tag_migration_panning_exclusions")
     database_patterns = [text(p) for p in job.get("database_hostname_patterns", []) if text(p)]
     database_label = text((job.get("labels") or {}).get("database_server")) or "Database Server"
+    information_sections = [
+        {
+            "heading": text(section.get("heading")),
+            "prefix": text(section.get("prefix")),
+            "values": section_values(rows, section, delimiter),
+        }
+        for section in job.get("information_sections", [])
+        if isinstance(section, dict)
+    ]
+    grouped_contexts = [
+        {"heading": heading, "messages": messages}
+        for heading, messages in context_messages(
+            rows,
+            [rule for rule in job.get("context_rules", []) if isinstance(rule, dict)],
+        )
+    ]
 
     return {
         "application_id": app_id,
@@ -636,6 +821,8 @@ def build_instance(app_id: str, environment: str, rows: Sequence[Dict[str, str]]
         "environment": environment,
         "databases": unique(db for row in rows for db in split_multi(row.get(database_col), delimiter)),
         "migration_exclusions": unique(item for row in rows for item in split_multi(row.get(exclusions_col), delimiter)),
+        "information_sections": information_sections,
+        "context_messages": grouped_contexts,
         "arr_servers": expand_arr_servers(
             rows=rows,
             app_id=app_id,
@@ -676,6 +863,38 @@ def validate_columns(rows: Sequence[Dict[str, str]], columns: Dict[str, str]) ->
         raise ValueError(f"Required input columns are missing: {', '.join(missing)}")
 
 
+def validate_context_configuration(rows: Sequence[Dict[str, str]], job: Dict[str, Any]) -> None:
+    header = set(rows[0].keys()) if rows else set()
+    for index, section in enumerate(job.get("information_sections", []) or [], start=1):
+        if not isinstance(section, dict):
+            raise ValueError(f"information_sections[{index}] must be a mapping.")
+        if not text(section.get("field")):
+            raise ValueError(f"information_sections[{index}] is missing field.")
+        if not text(section.get("heading")):
+            raise ValueError(f"information_sections[{index}] is missing heading.")
+    warned_missing_fields: OrderedDict[str, None] = OrderedDict()
+    for index, rule in enumerate(job.get("context_rules", []) or [], start=1):
+        if not isinstance(rule, dict):
+            raise ValueError(f"context_rules[{index}] must be a mapping.")
+        field = text(rule.get("field"))
+        operator = text(rule.get("operator")).lower()
+        context = text(rule.get("context"))
+        message = text(rule.get("message"))
+        if not field:
+            raise ValueError(f"context_rules[{index}] is missing field.")
+        if operator not in CONTEXT_OPERATORS:
+            raise ValueError(f"context_rules[{index}] has invalid operator: {operator}")
+        if operator in CONTEXT_OPERATORS_REQUIRING_VALUE and "value" not in rule:
+            raise ValueError(f"context_rules[{index}] operator {operator} requires value.")
+        if not context:
+            raise ValueError(f"context_rules[{index}] is missing context.")
+        if not message:
+            raise ValueError(f"context_rules[{index}] is missing message.")
+        if field not in header and field not in warned_missing_fields:
+            warned_missing_fields[field] = None
+            LOG.warning("Configured context_rules field does not exist in input header: %s", field)
+
+
 def clean_output_dir(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for path in sorted(output_dir.glob("*.md")):
@@ -688,6 +907,7 @@ def run_job(job: Dict[str, Any]) -> List[Path]:
     rows = read_rows(input_path)
     columns = job.get("columns") or {}
     validate_columns(rows, columns)
+    validate_context_configuration(rows, job)
     app_id_col = columns.get("application_id", "Application_ID")
     env_col = columns.get("environment", "Environment")
 
