@@ -35,6 +35,10 @@ config:
           - IP Address
           - OS
           - Environment
+          - Server Location
+          - Name
+          - SERVER_ID
+          - DB_SERVER
         delimiter: ;
       outputs:
         csv: var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv

@@ -54,6 +54,7 @@ config:
       output:
         dir: var/reporting
         file: migrations_servers_stats_timeline.html
+
     - id: migrations_servers_stats_v2
       name: migrations_servers_stats
       enabled: true
@@ -63,6 +64,7 @@ config:
       output:
         dir: var/reporting
         file: migrations_servers_stats_timeline_v2.html
+
     - id: migrations_disposition_tracker
       name: migrations_disposition_tracker
       enabled: true
@@ -72,4 +74,3 @@ config:
       output:
         dir: var/reporting
         file: migrations_disposition_tracker_app_view.html
-  _vtx_origin: CUSTOM:usr/config/custom/visual_stats_timeline._vtx.yaml

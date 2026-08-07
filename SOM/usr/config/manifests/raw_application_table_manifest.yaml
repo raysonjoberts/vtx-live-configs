@@ -553,6 +553,8 @@ entries:
     classification: ''
   - field: Server
     classification: ''
+  - field: DB_SERVER
+    classification: ''
 - source: application_x_database.csv
   fields:
   - field: DATABASE_ID
@@ -604,4 +606,8 @@ entries:
   - field: BUREAU_ACRONYM
     classification: ''
   - field: ORGANIZATION_ACRONYM
+    classification: ''
+- source: database_x_server.csv
+  fields:
+  - field: SERVER_ID
     classification: ''

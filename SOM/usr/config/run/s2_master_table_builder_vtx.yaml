@@ -48,6 +48,18 @@ config:
         - Hostname
         - OS
         - OS Version
+      - alias: s1_initial_server_tags
+        path: var/metadata/s1_tags_server.csv
+        left_key: RECORDID
+        right_key: anchor
+        include_fields:
+        - Server Location
+      - alias: s1_initial_application_tags
+        path: var/metadata/s1_tags_application.csv
+        left_key: ID
+        right_key: anchor
+        include_fields:
+        - ACTIVE
       outputs:
         parquet: var/masterdata/s2_master_applications.parquet
         csv: var/masterdata/s2_master_applications.csv

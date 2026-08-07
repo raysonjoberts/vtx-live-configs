@@ -58,6 +58,37 @@ config:
         operator: isnotnull
         context: Architecture Warnings
         message: ⚠️ Public ARR Server
+      - field: Internal Prod ARR Hostname
+        operator: isnotnull
+        context: Architecture Warnings
+        message: ⚠️ Internal ARR Server
+      - field: Internal Test ARR Hostname
+        operator: isnotnull
+        context: Architecture Warnings
+        message: ⚠️ Internal ARR Server
+
+      - field: Hostname
+        operator: contains
+        value: w-b1vwiwbp1
+        context: Architecture Warnings
+        message: ⚠️ Internal Production Shared IIS Server
+      - field: Hostname
+        operator: contains
+        value: w-a1vwxwbp1
+        context: Architecture Warnings
+        message: ⚠️ External Production Shared IIS Server
+      - field: Hostname
+        operator: contains
+        value: w-b3vwiwbt1
+        context: Architecture Warnings
+        message: ⚠️ Internal Test Shared IIS Server
+      - field: Hostname
+        operator: contains
+        value: w-a3vwxwbt1
+        context: Architecture Warnings
+        message: ⚠️ External Test Shared IIS Server
+
+
       labels:
         information: Application Information
         dmz: DMZ

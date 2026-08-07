@@ -8,7 +8,93 @@ scheduler:
 # ------------------------------------------------------------
 # Cron / ad-hoc jobs (schedule-driven)
 # ------------------------------------------------------------
-#cron_jobs:
+cron_jobs:
+
+  - id: Copy Architecture Drawings to Share
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/pipelines/p2_architecture_repo_pipeline/architecture_diagrams/*.md"
+      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\ArchitectureDrawings"
+      --mode copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "01 16 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy DB Drawings to Share
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/pipelines/p2_architecture_repo_pipeline/sql_db_architecture/*.md"
+      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\DBArchitecture"
+      --mode copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "08 16 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy Reporting HTML Files
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/reporting/*.html"
+      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+      --mode copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "02 16 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy Analysis HTML Files
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/analysis/*.html"
+      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+      --mode copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "02 16 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
+  - id: Copy Dictionary HTML Files
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/dictionaries/*.html"
+      --dest "C:\Users\Jayson.Roberts\State of Maine\DAFS-MaineIT CCOE - Data Dog\Correlated_Data\Reports\Dashboards"
+      --mode copy
+      --append-date no
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "02 16 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
 #  - id: Daily RAID Snapshot
 #    enabled: true
 #    role: server
@@ -140,6 +226,8 @@ pipeline_jobs:
     script: usr/scripts/default/s1_application_raw_table_builder.py
   - id: Stage 1.2- Raw Server Tables
     script: usr/scripts/default/s1_server_raw_table_builder.py
+  - id: Stage 1.3- Initial Tag Table
+    script: usr/scripts/default/s1_initial_tag_engine.py
   - id: Stage 2- Master Servers
     script: usr/scripts/default/s2_master_table_builder_vtx.py
   - id: Stage 3- Initial Views

@@ -1,0 +1,72 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: p2_sql_db_architecture_generator
+  title: SQL DB Architecture Generator
+  description: Generate Mermaid Markdown database dependency diagrams by database
+    server.
+  owner: default
+  version: 1.0.0
+  tags:
+  - reporting
+  - architecture
+  - database
+  consumers:
+  - usr/scripts/default/p2_sql_db_architecture_generator.py
+  _vtx_origin: CUSTOM:usr/config/custom/p2_sql_db_architecture_generator.yaml
+config:
+  payload:
+    jobs:
+    - id: sql_db_architecture
+      enabled: true
+      input: var/pipelines/p2_architecture_repo_pipeline/dbs_to_apps_and_servers.csv
+      output_dir: var/pipelines/p2_architecture_repo_pipeline/sql_db_architecture/
+      clean_output_dir: true
+      delimiter: ;
+      columns:
+        hostname: Hostname
+        instance: INSTANCE
+        database: NAME
+        department: DEPARTMENT_NAME
+        application: TITLE_NAME
+      labels:
+        page_title: Database Dependency Architecture
+        summary: Summary
+        topology: Database Topology
+        database_server: Database Server Name
+        instance_count: Instance Count
+        database_count: Database Count
+        department_count: Department Count
+        instance: Instance
+        database: Database
+        department: Department
+        application: Application
+      mermaid:
+        direction: LR
+        font_size: 12px
+        node_spacing: 45
+        rank_spacing: 55
+        styles:
+          hostname:
+            fill: '#FFF7D6'
+            stroke: '#A66A00'
+            text: '#222'
+            stroke_width: 2px
+          instance:
+            fill: '#E8F2FF'
+            stroke: '#2F6FAD'
+            text: '#1F2937'
+          database:
+            fill: '#F6F3FF'
+            stroke: '#6D5BD0'
+            text: '#1F2937'
+          application:
+            fill: '#FFFFFF'
+            stroke: '#666'
+            text: '#222'
+            stroke_width: 1.2px
+          department:
+            fill: '#F4F4F5'
+            stroke: '#71717A'
+            text: '#27272A'
+  _vtx_origin: CUSTOM:usr/config/custom/p2_sql_db_architecture_generator.yaml

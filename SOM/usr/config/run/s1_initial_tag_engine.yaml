@@ -1,0 +1,108 @@
+_vtx:
+  schema: v1
+  kind: transform
+  id: tag_engine
+  title: Tag Engine
+  description: Rule-driven tagging for application entities
+  owner: default
+  version: 1.0.0
+  tags:
+  - core
+  created_utc: ''
+  updated_utc: ''
+  consumers:
+  - usr/scripts/default/tag_engine.py
+  _vtx_origin: DEFAULT:usr/config/default/tag_engine.yaml
+config:
+  payload:
+    jobs:
+    - id: server_tag_engine
+      enabled: true
+      inputs:
+      - var/masterdata/s1_raw_server_table.parquet
+      outputs:
+      - var/metadata/s1_tags_server.csv
+      anchor_field: RECORDID
+      entity_type: server
+      key_delimiter: ;
+      tags:
+      - id: server_location
+        tag_column: Server Location
+        source: rule
+        key_fields: null
+        first_match_only: true
+        rules:
+        - id: location_cmcc
+          tag_value: CMCC
+          condition_logic: any
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: 10.110.
+          - field: IP Address
+            operator: contains
+            value: 10.114.
+          - field: IP Address
+            operator: contains
+            value: 10.112.32
+          - field: IP Address
+            operator: contains
+            value: 10.115.7
+          - field: IP Address
+            operator: contains
+            value: 10.115.
+          - field: IP Address
+            operator: contains
+            value: 10.215.
+          - field: IP Address
+            operator: contains
+            value: 10.112.40.
+        - id: location_ssdc
+          tag_value: SSDC
+          condition_logic: any
+          conditions:
+          - field: IP Address
+            operator: contains
+            value: 10.210.
+          - field: IP Address
+            operator: contains
+            value: 10.212.40.
+          - field: IP Address
+            operator: contains
+            value: 10.214.
+          - field: IP Address
+            operator: contains
+            value: 10.215.7
+          - field: IP Address
+            operator: contains
+            value: 10.215.17.
+          - field: IP Address
+            operator: contains
+            value: 10.215.254.
+    - id: server_tag_engine
+      enabled: true
+      inputs:
+      - var/masterdata/s1_raw_application_table.parquet
+      outputs:
+      - var/metadata/s1_tags_application.csv
+      anchor_field: ID
+      entity_type: server
+      key_delimiter: ;
+      tags:
+      - id: application_active
+        tag_column: ACTIVE
+        source: rule
+        key_fields: null
+        first_match_only: true
+        rules:
+        - id: active_applications
+          tag_value: Y
+          condition_logic: any
+          conditions:
+          - field: APPLICATION_STATUS_ID
+            operator: contains
+            value: Production
+          - field: APPLICATION_STATUS_ID
+            operator: contains
+            value: Development
+  _vtx_origin: CUSTOM:usr/config/custom/s1_initial_tag_engine.yaml

@@ -6,7 +6,7 @@ reports:
   dictionary_yaml: VTX_ROOT/usr/config/run/data_source_analysis.yaml
   output_csv: /var/analysis/consolidated_server_and_application_mapping.csv
   program_attribute_mapping:
-    Hostname: SERVERNAME
+    Hostname: Hostname
     Application Name: TITLE_NAME
     Application ID: ID
     Business Owner: Business Contact - Primary
@@ -50,25 +50,6 @@ reports:
     Application Deployment Certification: null
     TLP Data Clasfification: TLP_ID
     Application Updater: Application Inventory Updater
-  _autogen:
-    orchestrator:
-      job_type: backbone
-      role: server
-      id: Program Attribute Mapping - {name}
-      script: usr/scripts/default/data_source_analysis_mapping.py
-      args: []
-      rule: mtime_input_newer_than_last_success_marker
-      marker_match: any
-      inputs:
-      - '{name.input_csv1}'
-      outputs:
-      - '{output_csv}'
-      watch_recursive: true
-      settle_seconds: 2
-      timeout_seconds: 120
-      retries: 1
-      backoff_seconds: 10
-      jitter_seconds: 0
   _vtx_origin: CUSTOM:usr/config/custom/data_source_analysis_mapping.yaml
 - name: Archer to AIS Field Mapping
   input_csv1: /var/tables/views/consolidated_application_view.csv

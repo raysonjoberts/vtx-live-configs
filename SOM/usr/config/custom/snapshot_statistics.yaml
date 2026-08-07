@@ -1,0 +1,31 @@
+tables:
+  - name: applications
+    status:
+      column: ACTIVE          # the column in the snapshot
+      active_values: ["Y"]    # what counts as Active
+      inactive_values: ["N"]  # what counts as Not Active
+
+
+  - name: consolidated_application_view
+    status:
+      column: ACTIVE          # the column in the snapshot
+      active_values: ["Y"]    # what counts as Active
+      inactive_values: ["N"]  # what counts as Not Active
+
+  - name: s5_migrations_consolidated_application_table_expanded_by_environment
+    status:
+      column: ACTIVE          # the column in the snapshot
+      active_values: ["Y"]    # what counts as Active
+      inactive_values: ["N"]  # what counts as Not Active
+
+  - name: s5_migrations_consolidated_application_view
+    status:
+      column: ACTIVE          # the column in the snapshot
+      active_values: ["Y"]    # what counts as Active
+      inactive_values: ["N"]  # what counts as Not Active
+
+  - name: migrations_app_view.csv
+    status:
+      column: ACTIVE          # the column in the snapshot
+      active_values: ["Y"]    # what counts as Active
+      inactive_values: ["N"]  # what counts as Not Active

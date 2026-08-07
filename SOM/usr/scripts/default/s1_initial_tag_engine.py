@@ -59,7 +59,7 @@ def resolve_vtx_root() -> Path:
 
 
 VTX_ROOT = resolve_vtx_root()
-DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "s4_tag_engine.yaml"
+DEFAULT_CONFIG_PATH = VTX_ROOT / "usr" / "config" / "run" / "s1_initial_tag_engine.yaml"
 
 
 def vtx_path(path_str: str | Path, *, must_exist: bool = False) -> Path:

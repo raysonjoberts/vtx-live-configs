@@ -20,12 +20,15 @@ config:
       source_table: var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - RECORDID
       - Hostname
       - OS
       - Environment
+      - NAME
+      - DB_SERVER
       - APPLICATION_TYPE_ID
       - RISK_URGENCY_ID
       - APPLICATION_STATUS_ID
@@ -60,6 +63,7 @@ config:
       source_table: var/masterdata/s2_master_applications.parquet
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - TOTAL_USERS
@@ -183,6 +187,7 @@ config:
       source_table: var/masterdata/s2_master_applications.parquet
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - RECORDID
@@ -238,6 +243,7 @@ config:
       source_table: var/masterdata/s3_consolidated_application_table_expanded_by_environment.csv
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - Hostname
@@ -280,6 +286,7 @@ config:
       source_table: var/masterdata/s2_master_applications.parquet
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - RECORDID
@@ -308,7 +315,7 @@ config:
         delimiter: ;
       outputs:
         csv: var/tables/views/s5_billing_application_to_server_view.csv
-      tag_source_table: var/metadata/tags_application.csv
+      tag_source_table: var/metadata/s4_tags_application.csv
       tag_anchor_field: ID
       tag_output_column: tag
 
@@ -318,6 +325,7 @@ config:
       source_table: var/masterdata/s2_master_applications.parquet
       select_fields:
       - ID
+      - ACTIVE
       - ACRONYM
       - TITLE_NAME
       - DEPARTMENT_NAME
@@ -346,6 +354,6 @@ config:
         delimiter: ;
       outputs:
         csv: var/tables/views/s5_billing_application_to_db_view.csv
-      tag_source_table: var/metadata/tags_application.csv
+      tag_source_table: var/metadata/s4_tags_application.csv
       tag_anchor_field: ID
       tag_output_column: tag

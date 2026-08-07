@@ -70,6 +70,23 @@ cron_jobs:
     retries: 1
     backoff_seconds: 10
 
+  - id: Copy var/interactive /data to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/interactive/data/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "41 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
+
   - id: Copy var/tables/views to dailysnapshot
     enabled: true
     role: server
@@ -121,6 +138,23 @@ cron_jobs:
     retries: 1
     backoff_seconds: 10
 
+
+  - id: Copy var/interactive/data to dailysnapshot
+    enabled: true
+    role: server
+    script: usr/utils/file_move.py
+    args: >
+      --source "var/interactive/data/*.csv"
+      --dest "var/dailysnapshot"
+      --mode copy
+      --append-date yes
+      --date-format %Y%m%d
+      --skip-missing yes
+    schedule:
+      cron: "40 18 * * *"
+    timeout_seconds: 180
+    retries: 1
+    backoff_seconds: 10
 
   - id: Move zipped logs to log archive
     enabled: true

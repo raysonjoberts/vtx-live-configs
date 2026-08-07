@@ -15,6 +15,46 @@ tables:
     inactive_values:
     - N
   _vtx_origin: DEFAULT:usr/config/default/snapshot_statistics.yaml
+- name: applications
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: CUSTOM:usr/config/custom/snapshot_statistics.yaml
+- name: consolidated_application_view
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: CUSTOM:usr/config/custom/snapshot_statistics.yaml
+- name: s5_migrations_consolidated_application_table_expanded_by_environment
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: CUSTOM:usr/config/custom/snapshot_statistics.yaml
+- name: s5_migrations_consolidated_application_view
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: CUSTOM:usr/config/custom/snapshot_statistics.yaml
+- name: migrations_app_view.csv
+  status:
+    column: ACTIVE
+    active_values:
+    - Y
+    inactive_values:
+    - N
+  _vtx_origin: CUSTOM:usr/config/custom/snapshot_statistics.yaml
 _autogen:
   orchestrator:
     id: Snapshot Statistics - {name}

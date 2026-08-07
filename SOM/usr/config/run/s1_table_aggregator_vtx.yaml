@@ -150,4 +150,16 @@ config:
         seed_field: TLP_RATING
         lookup_field: TLP
         output_field: TLP_RATING
+      - type: simple_lookup
+        lookup_table: var/tables/database_x_server.csv
+        seed_field: DATABASE_ID
+        key: DATABASE_ID
+        include_fields:
+        - SERVER_ID
+      - type: lookup_replace
+        lookup_table: var/tables/servers.csv
+        key: RECORDID
+        seed_field: SERVER_ID
+        lookup_field: SERVERNAME
+        output_field: DB_SERVER
   _vtx_origin: CUSTOM:usr/config/custom/s1_table_aggregator_vtx.yaml

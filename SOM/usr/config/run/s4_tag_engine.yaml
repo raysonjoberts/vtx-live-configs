@@ -26,22 +26,6 @@ config:
       entity_type: application
       key_delimiter: ;
       tags:
-      - id: application_active
-        tag_column: ACTIVE
-        source: rule
-        key_fields: null
-        first_match_only: true
-        rules:
-        - id: active_applications
-          tag_value: Y
-          condition_logic: any
-          conditions:
-          - field: APPLICATION_STATUS_ID
-            operator: contains
-            value: Production
-          - field: APPLICATION_STATUS_ID
-            operator: contains
-            value: Development
       - id: adoption_stage
         tag_column: tag_adoption_stage
         source: rule
@@ -272,10 +256,10 @@ config:
         - id: active_inferred_location_cmcc
           tag_value: CMCC
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: notcontains
             value: SSDC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: CMCC
       - id: app_instance_location_ssdc
@@ -288,10 +272,10 @@ config:
         - id: active_inferred_location_ssdc
           tag_value: SSDC
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: notcontains
             value: CMCC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: SSDC
       - id: app_instance_location_on_prem_multi-site
@@ -304,10 +288,10 @@ config:
         - id: active_inferred_location_ssdc
           tag_value: on_prem-multisite
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: CMCC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: SSDC
       - id: app_ecosystem_location_cmcc
@@ -319,10 +303,10 @@ config:
         - id: ecosystem_cmcc
           tag_value: CMCC
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: notcontains
             value: SSDC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: CMCC
       - id: app_ecosystem_location_ssdc
@@ -334,10 +318,10 @@ config:
         - id: ecosystem_ssdc
           tag_value: SSDC
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: notcontains
             value: CMCC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: SSDC
       - id: app_ecosystem_location_on_prem_multi-site
@@ -349,10 +333,10 @@ config:
         - id: ecosystem_multisite
           tag_value: on_prem-multisite
           conditions:
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: CMCC
-          - field: Inferred Server Location
+          - field: Server Location
             operator: contains
             value: SSDC
       - id: contains_sql
@@ -815,32 +799,32 @@ config:
           - field: IP Address
             operator: contains
             value: 198.182.162.214
-        - id: ext_prod_arr_W-A3AS-CWTEST
-          tag_value: connected_ext_prod_arr
+        - id: ext_test_arr_W-A3AS-CWTEST
+          tag_value: connected_ext_test_arr
           conditions:
           - field: Hostname
             operator: contains
             value: w-a3vw-dpslims
-        - id: ext_prod_arr_w-b3va-dpslims
-          tag_value: connected_ext_prod_arr
+        - id: ext_test_arr_w-b3va-dpslims
+          tag_value: connected_ext_test_arr
           conditions:
           - field: Hostname
             operator: contains
             value: w-b3va-dpslims
-        - id: ext_prod_arr_w-b3vw-arr22
-          tag_value: connected_ext_prod_arr
+        - id: ext_test_arr_w-b3vw-arr22
+          tag_value: connected_ext_test_arr
           conditions:
           - field: Hostname
             operator: contains
             value: w-b3vw-arr22
-        - id: ext_prod_arr_b3vwdavetst1
-          tag_value: connected_ext_prod_arr
+        - id: ext_test_arr_b3vwdavetst1
+          tag_value: connected_ext_test_arr
           conditions:
           - field: Hostname
             operator: contains
             value: b3vwdavetst1
-        - id: ext_prod_arr_w-b3vwdavetst2
-          tag_value: connected_ext_prod_arr
+        - id: ext_test_arr_w-b3vwdavetst2
+          tag_value: connected_ext_test_arr
           conditions:
           - field: Hostname
             operator: contains

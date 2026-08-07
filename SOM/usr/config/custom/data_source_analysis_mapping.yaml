@@ -10,7 +10,7 @@ reports:
     #   key   = Program Attribute name (as you use it in the program)
     #   value = Field Name from the data_source_analysis CSV
     program_attribute_mapping:
-      Hostname: SERVERNAME
+      Hostname: Hostname
       Application Name: TITLE_NAME
       Application ID: ID
       Business Owner: Business Contact - Primary
@@ -55,25 +55,25 @@ reports:
       TLP Data Clasfification: TLP_ID
       Application Updater: Application Inventory Updater
 
-    _autogen:
-      orchestrator:
-        job_type: backbone
-        role: server
-        id: "Program Attribute Mapping - {name}"
-        script: usr/scripts/default/data_source_analysis_mapping.py
-        args: []
-        rule: mtime_input_newer_than_last_success_marker
-        marker_match: any                          # optional list (or string)
-        inputs: ["{name.input_csv1}"]      # wildcard gather
-        outputs: ["{output_csv}"]
-        #watch_glob: "*.yaml"        # optional; omit to include all files
-        watch_recursive: true         # optional; default false
-        #check_every_seconds: 30
-        settle_seconds: 2
-        timeout_seconds: 120
-        retries: 1
-        backoff_seconds: 10
-        jitter_seconds: 0        
+#    _autogen:
+#      orchestrator:
+#        job_type: backbone
+#        role: server
+#        id: "Program Attribute Mapping - {name}"
+#        script: usr/scripts/default/data_source_analysis_mapping.py
+#        args: []
+#        rule: mtime_input_newer_than_last_success_marker
+#        marker_match: any                          # optional list (or string)
+#        inputs: ["{name.input_csv1}"]      # wildcard gather
+#        outputs: ["{output_csv}"]
+#        #watch_glob: "*.yaml"        # optional; omit to include all files
+#        watch_recursive: true         # optional; default false
+#        #check_every_seconds: 30
+#        settle_seconds: 2
+#        timeout_seconds: 120
+#        retries: 1
+#        backoff_seconds: 10
+#        jitter_seconds: 0        
 
 #      stretch:
 #        sync_type: internal_to_external

@@ -236,3 +236,106 @@ config:
 
       outputs:
         csv: var/pipelines/p2_architecture_repo_pipeline/consolidated_apps_with_dbs.csv
+
+    - id: build_db_to_server_and_db
+      enabled: true
+      base:
+        path: var/pipelines/p2_architecture_repo_pipeline/databases_to_servers.csv
+        anchor_field: ID
+      joins:
+      - alias: db_to_application
+        path: var/tables/application_x_database.csv
+        match_keys:
+        - left_key: ID
+          right_key: DATABASE_ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: APP_ID
+          output_field: APP_ID
+      - alias: application
+        path: var/masterdata/s2_master_applications.parquet
+        match_keys:
+        - left_key: APP_ID
+          right_key: ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: TITLE_NAME
+          output_field: TITLE_NAME
+        - source_field: ACRONYM
+          output_field: ACRONYM
+        - source_field: DEPARTMENT_NAME
+          output_field: DEPARTMENT_NAME
+      outputs:
+        csv: var/pipelines/p2_architecture_repo_pipeline/dbs_to_apps_and_servers.csv
+
+    - id: prod_ext_requests_to_app
+      enabled: true
+      base:
+        path: var/tables/external_prod_arr_requests.csv
+        anchor_field: Rule Name
+      joins:
+      - alias: request_to_app
+        path: var/tables/views/consolidated_application_view.csv
+        match_keys:
+        - left_key: APP_ID
+          right_key: ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: TITLE_NAME
+          output_field: TITLE_NAME
+        - source_field: DEPARTMENT_ACRONYM
+          output_field: DEPARTMENT_ACRONYM
+      outputs:
+        csv: var/pipelines/p2_architecture_repo_pipeline/ext_prod_arr_requests_to_applications.csv
+
+    - id: test_ext_requests_to_app
+      enabled: true
+      base:
+        path: var/tables/external_test_arr_requests.csv
+        anchor_field: Rule Name
+      joins:
+      - alias: request_to_app
+        path: var/tables/views/consolidated_application_view.csv
+        match_keys:
+        - left_key: APP_ID
+          right_key: ID
+          normalizations:
+          - normalize_case: true
+          value_map:
+            Prod: PROD
+            Test: TEST
+            Dev: DEVL
+            Staging: TEST
+            UAT: TEST
+          unmapped_value_behavior: use_original
+        include_fields:
+        - source_field: TITLE_NAME
+          output_field: TITLE_NAME
+        - source_field: DEPARTMENT_ACRONYM
+          output_field: DEPARTMENT_ACRONYM
+      outputs:
+        csv: var/pipelines/p2_architecture_repo_pipeline/ext_test_arr_requests_to_applications.csv

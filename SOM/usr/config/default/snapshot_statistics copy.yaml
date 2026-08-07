@@ -1,0 +1,14 @@
+#tables:
+#  - name: applications
+#    status:
+#      column: ACTIVE          # the column in the snapshot
+#      active_values: ["Y"]    # what counts as Active
+#      inactive_values: ["N"]  # what counts as Not Active
+#
+#
+#  - name: consolidated_application_view
+#    status:
+#      column: ACTIVE          # the column in the snapshot
+#      active_values: ["Y"]    # what counts as Active
+#      inactive_values: ["N"]  # what counts as Not Active
+#
